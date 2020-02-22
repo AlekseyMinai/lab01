@@ -1,5 +1,7 @@
 package com.alexey.minay.lab01.task1.storage
 
+import com.alexey.minay.lab01.task1.logger.LogMessages
+import com.alexey.minay.lab01.task1.storage.states.StorageState
 import java.io.BufferedReader
 import java.io.File
 
@@ -13,9 +15,10 @@ class FileTextReader : TextReader {
                 handleResult(StorageState.Success(line))
             }
         } catch (e: Exception) {
-            handleResult(StorageState.Error)
+            handleResult(StorageState.Error(LogMessages.ERROR_READ_FILE))
         } finally {
             bufferedReader?.close()
+            handleResult(StorageState.Closed)
         }
     }
 
