@@ -6,4 +6,5 @@ object LogMessages {
     const val INVALID_SECOND_PARAM = "Invalid output path"
 
     const val ERROR_READ_FILE = "Error file reading"
+    const val ERROR_WRITE_FILE = "Error file writing"
 }
