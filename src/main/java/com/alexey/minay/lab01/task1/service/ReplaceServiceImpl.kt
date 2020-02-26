@@ -16,8 +16,8 @@ class ReplaceServiceImpl(
 ) : ReplaceService {
 
     override fun replace(args: Array<String>) {
-        when (val validState = validator.checkArgs(args)) {
+        /*when (val validState = validator.checkArgs(args)) {
             is ValidState.Invalid -> logger.log(validState.message)
-        }
+        }*/
     }
 }
