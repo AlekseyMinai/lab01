@@ -6,7 +6,6 @@ import com.alexey.minay.lab01.task1.domain.TextSplitReplacer
 private lateinit var textReplacer: TextSplitReplacer
 
 fun main(args: Array<String>) {
-    //FileTextReader().read("/home/user/IdeaProjects/lab1file/test") { println(it) }
     val argss = mutableListOf<String>()
     argss.add("/home/user/IdeaProjects/lab1file/test")
     argss.add("/home/user/IdeaProjects/lab1file/replace")

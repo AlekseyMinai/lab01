@@ -19,11 +19,9 @@ class ReplaceServiceImpl(
 ) : ReplaceService {
 
     override fun replace(args: Array<String>) {
-        /*when (val validState = validator.checkArgs(args)) {
+        val validState = validator.checkArgs(args)
+        when (validState) {
             is ValidState.Invalid -> logger.log(validState.message)
-<<<<<<< HEAD
-        }*/
-=======
             is ValidState.Valid -> {
                 startReplaceText(
                         inputFile = args[0],
@@ -51,7 +49,6 @@ class ReplaceServiceImpl(
                 handleWritingResult(writerState)
             }
         }
->>>>>>> f673fad052d651c9cceaf59110e9e179adcc644b
     }
 
     private fun handleWritingResult(writerState: WriterState) {
