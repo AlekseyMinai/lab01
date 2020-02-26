@@ -13,11 +13,11 @@ class ArgsValidatorImpl : ArgsValidator {
             return ValidState.Invalid(LogMessages.INVALID_ARGS_COUNT)
         }
         val isCorrectInputFile = checkInputFile(File(args[0]))
-        if (isCorrectInputFile) {
+        if (!isCorrectInputFile) {
             return ValidState.Invalid(LogMessages.INVALID_FIRST_PARAM)
         }
         val isCorrectOutputPath = checkOutputPath(args[1])
-        if (isCorrectOutputPath) {
+        if (!isCorrectOutputPath) {
             return ValidState.Invalid(LogMessages.INVALID_SECOND_PARAM)
         }
 
@@ -27,7 +27,7 @@ class ArgsValidatorImpl : ArgsValidator {
     private fun checkInputFile(file: File) = file.exists()
 
     private fun checkOutputPath(url: String): Boolean {
-        val path = Paths.get(url).toAbsolutePath()
+        val path = Paths.get(url).parent
         if (Files.exists(path)) {
             return true
         }
