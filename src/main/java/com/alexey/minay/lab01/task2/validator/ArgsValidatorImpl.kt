@@ -1,5 +1,4 @@
-import com.alexey.minay.lab01.task2.validator.ArgsValidator
-import com.alexey.minay.lab01.task2.validator.ValidateStatus
+package com.alexey.minay.lab01.task2.validator
 
 class ArgsValidatorImpl : ArgsValidator {
 
