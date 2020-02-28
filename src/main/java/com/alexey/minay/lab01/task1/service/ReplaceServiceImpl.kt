@@ -34,9 +34,9 @@ class ReplaceServiceImpl(
     }
 
     private fun startReplaceText(inputFile: String, outputFile: String, search: String, replace: String) {
-        textReplacer.setParams(search, replace)
+        //textReplacer.setParams(search, replace)
         textWriter.setParams(outputFile)
-        textReader.read(inputFile, ::handleReadingResult)
+        textReader.readChar(inputFile, ::handleReadingResult)
     }
 
     private fun handleReadingResult(state: StorageState)  {
@@ -44,9 +44,9 @@ class ReplaceServiceImpl(
             is StorageState.Error -> logger.log(state.message)
             is StorageState.Closed -> textWriter.close()
             is StorageState.Success -> {
-                val replacedText = textReplacer.replace(state.data)
-                val writerState = textWriter.saveText(replacedText)
-                handleWritingResult(writerState)
+                val replacedText = textReplacer.replace(state.char)
+                //val writerState = textWriter.saveText(replacedText)
+                //handleWritingResult(writerState)
             }
         }
     }

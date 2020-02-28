@@ -7,12 +7,14 @@ import java.io.File
 
 class FileTextReader : TextReader {
 
-    override fun read(inputFileUrl: String, handleResult: (state: StorageState) -> Unit) {
+    override fun readChar(inputFileUrl: String, handleResult: (state: StorageState) -> Unit) {
         var bufferedReader: BufferedReader? = null
         try {
             bufferedReader = File(inputFileUrl).bufferedReader()
-            bufferedReader.forEachLine { line ->
-                handleResult(StorageState.Success(line))
+            var symbol = bufferedReader.read()
+            while(symbol != -1) {
+                handleResult(StorageState.Success(symbol.toChar()))
+                symbol = bufferedReader.read()
             }
         } catch (e: Exception) {
             handleResult(StorageState.Error(LogMessages.ERROR_READ_FILE))
