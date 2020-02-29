@@ -4,9 +4,9 @@ import com.alexey.minay.lab01.task1.domain.ArgsValidator
 import com.alexey.minay.lab01.task1.domain.TextReplacer
 import com.alexey.minay.lab01.task1.domain.ValidState
 import com.alexey.minay.lab01.task1.logger.Logger
-import com.alexey.minay.lab01.task1.storage.states.StorageState
 import com.alexey.minay.lab01.task1.storage.TextReader
 import com.alexey.minay.lab01.task1.storage.TextWriter
+import com.alexey.minay.lab01.task1.storage.states.StorageState
 import com.alexey.minay.lab01.task1.storage.states.WriterState
 import com.alexey.minay.lab01.task1.utils.exhaustive
 
@@ -34,25 +34,26 @@ class ReplaceServiceImpl(
     }
 
     private fun startReplaceText(inputFile: String, outputFile: String, search: String, replace: String) {
-        //textReplacer.setParams(search, replace)
+        textReplacer.setParams(search, replace, ::write)
         textWriter.setParams(outputFile)
         textReader.readChar(inputFile, ::handleReadingResult)
     }
 
-    private fun handleReadingResult(state: StorageState)  {
-        when(state){
+    private fun handleReadingResult(state: StorageState) {
+        when (state) {
             is StorageState.Error -> logger.log(state.message)
             is StorageState.Closed -> textWriter.close()
-            is StorageState.Success -> {
-                val replacedText = textReplacer.replace(state.char)
-                //val writerState = textWriter.saveText(replacedText)
-                //handleWritingResult(writerState)
-            }
+            is StorageState.Success -> textReplacer.replace(state.char)
         }
     }
 
+    private fun write(text: String) {
+        val writerState = textWriter.saveText(text)
+        handleWritingResult(writerState)
+    }
+
     private fun handleWritingResult(writerState: WriterState) {
-        when(writerState){
+        when (writerState) {
             is WriterState.Error -> logger.log(writerState.message)
         }
     }
