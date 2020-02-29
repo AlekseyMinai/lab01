@@ -1,165 +1,50 @@
 package com.alexey.minay.lab01.task1
 
-import com.alexey.minay.lab01.task1.di.MainComponent
 import com.alexey.minay.lab01.task1.domain.TextSplitReplacer
 
 private lateinit var textReplacer: TextSplitReplacer
 
 fun main(args: Array<String>) {
-//    val argss = mutableListOf<String>()
-//    argss.add("/home/user/IdeaProjects/lab1file/test")
-//    argss.add("/home/user/IdeaProjects/lab1file/replace")
-//    argss.add("can")
-//    argss.add("123123123")
-//    val service = MainComponent.getReplaceService()
-//    service.replace(argss.toTypedArray())
     val replacer = TextSplitReplacer()
-    replacer.setParams("asd", "123", ::print)
+    replacer.setParams("Разработайте программу radix.exe, выполняющую перевод чисел из одной произвольной системы счисления в друг", "!", ::print)
     val before = System.currentTimeMillis()
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace(' ')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('\n')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace(' ')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('\n')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace(' ')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('d')
-    replacer.replace('a')
-    replacer.replace('s')
-    replacer.replace('d')
-    replacer.replace('d')
+    val text = "Разработайте программу radix.exe, выполняющую перевод чисел из одной произвольной системы счисления в другую произвольную и запись результата в стандартный поток вывода. Под произвольной системой счисления понимается система с основанием от 2 до 36. Системы счисления с 11-ричной до 36-ричной должны использовать заглавные буквы латинского алфавита от A до Z для представления разрядов с 1010 до 3510. Формат командной строки приложения:\n" +
+            "radix.exe <source notation> <destination notation> <value>\n" +
+            "Например, следующим способом программа должна осуществлять перевод шестнадцатеричного числа 1F в его десятичное представление:\n" +
+            "radix.exe 16 10 1F\n" +
+            "В конце строки, выводимой в стандартный поток вывода должен располагаться код \\n.\n" +
+            "Программа должна быть способна осуществлять перевод как положительных, так и отрицательных чисел, а также нуля. Особое внимание уделите переводу максимальных и минимальных целых чисел на данной платформе (они должны преобразовываться корректно).\n" +
+            "Программа должна корректно обрабатывать ошибки \n" +
+            "Внимание, для перевода строкового представления в числовое и числового в строковое в произвольных системах счисления должны быть разработаны функции:\n" +
+            "Разработайте программу radix.exe, выполняющую перевод чисел из одной произвольной системы счисления в другую произвольную и запись результата в стандартный поток вывода. Под произвольной системой счисления понимается система с основанием от 2 до 36. Системы счисления с 11-ричной до 36-ричной должны использовать заглавные буквы латинского алфавита от A до Z для представления разрядов с 1010 до 3510. Формат командной строки приложения:\n" +
+            "radix.exe <source notation> <destination notation> <value>\n" +
+            "Например, следующим способом программа должна осуществлять перевод шестнадцатеричного числа 1F в его десятичное представление:\n" +
+            "radix.exe 16 10 1F\n" +
+            "В конце строки, выводимой в стандартный поток вывода должен располагаться код \\n.\n" +
+            "Программа должна быть способна осуществлять перевод как положительных, так и отрицательных чисел, а также нуля. Особое внимание уделите переводу максимальных и минимальных целых чисел на данной платформе (они должны преобразовываться корректно).\n" +
+            "Программа должна корректно обрабатывать ошибки \n" +
+            "Внимание, для перевода строкового представления в числовое и числового в строковое в произвольных системах счисления должны быть разработаны функции:\n" +
+            "Разработайте программу radix.exe, выполняющую перевод чисел из одной произвольной системы счисления в другую произвольную и запись результата в стандартный поток вывода. Под произвольной системой счисления понимается система с основанием от 2 до 36. Системы счисления с 11-ричной до 36-ричной должны использовать заглавные буквы латинского алфавита от A до Z для представления разрядов с 1010 до 3510. Формат командной строки приложения:\n" +
+            "radix.exe <source notation> <destination notation> <value>\n" +
+            "Например, следующим способом программа должна осуществлять перевод шестнадцатеричного числа 1F в его десятичное представление:\n" +
+            "radix.exe 16 10 1F\n" +
+            "В конце строки, выводимой в стандартный поток вывода должен располагаться код \\n.\n" +
+            "Программа должна быть способна осуществлять перевод как положительных, так и отрицательных чисел, а также нуля. Особое внимание уделите переводу максимальных и минимальных целых чисел на данной платформе (они должны преобразовываться корректно).\n" +
+            "Программа должна корректно обрабатывать ошибки \n" +
+            "Внимание, для перевода строкового представления в числовое и числового в строковое в произвольных системах счисления должны быть разработаны функции:\n" +
+            "Разработайте программу radix.exe, выполняющую перевод чисел из одной произвольной системы счисления в другую произвольную и запись результата в стандартный поток вывода. Под произвольной системой счисления понимается система с основанием от 2 до 36. Системы счисления с 11-ричной до 36-ричной должны использовать заглавные буквы латинского алфавита от A до Z для представления разрядов с 1010 до 3510. Формат командной строки приложения:\n" +
+            "radix.exe <source notation> <destination notation> <value>\n" +
+            "Например, следующим способом программа должна осуществлять перевод шестнадцатеричного числа 1F в его десятичное представление:\n" +
+            "radix.exe 16 10 1F\n" +
+            "В конце строки, выводимой в стандартный поток вывода должен располагаться код \\n.\n" +
+            "Программа должна быть способна осуществлять перевод как положительных, так и отрицательных чисел, а также нуля. Особое внимание уделите переводу максимальных и минимальных целых чисел на данной платформе (они должны преобразовываться корректно).\n" +
+            "Программа должна корректно обрабатывать ошибки \n" +
+            "Внимание, для перевода строкового представления в числовое и числового в строковое в произвольных системах счисления должны быть разработаны функции:\n"
+    text.forEach { replacer.replace(it) }
 
 
     replacer.finish()
     val after = System.currentTimeMillis()
-    print(after-before)
+    //print(after-before)
 }
 

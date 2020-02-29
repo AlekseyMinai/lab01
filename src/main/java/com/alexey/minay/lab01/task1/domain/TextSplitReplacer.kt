@@ -1,11 +1,14 @@
 package com.alexey.minay.lab01.task1.domain
 
-class TextSplitReplacer(
-        private val maxBufferSize: Int = 10
-) : TextReplacer {
+class TextSplitReplacer : TextReplacer {
 
-    private var search: String? = null
-    private var replace: String? = null
+    private val bufferSize: Int
+        get() {
+            val minBuffer = Math.max(search.length, replace.length) * 2
+            return Math.max(1024, minBuffer)
+        }
+    private var search: String = ""
+    private var replace: String = ""
     private var sendBuffer: (String) -> Unit = {}
 
     private var buffer = StringBuilder()
@@ -23,46 +26,52 @@ class TextSplitReplacer(
         if (isNotSetParams()) {
             throw RuntimeException("It's necessary to call setParams(search: String, replace: String, sendBuffer: (String) -> Unit) after replace")
         }
-        search?.let { search ->
-            buffer.append(char)
-            replaceBuffer.append(char)
-            if (replaceBuffer.length > search.length) {
-                replaceBuffer.deleteCharAt(0)
-            }
-            if (isCounterStarted()) {
-                counter++
-            }
-            if (buffer.length == maxBufferSize) {
-                sendingBuffer = buffer.toString()
-                buffer.clear()
-                startCounter()
-            }
-            if (replaceBuffer.toString() == search) {
-                when (counter) {
-                    0 ->
-                        replace?.let { replace ->
-                            buffer.delete(buffer.length - replace.length, buffer.length)
-                            buffer.append(replace)
-                        }
-                    else ->
-                        replace?.let { replace ->
-                            val sendingBufferSuffix = replace.removeRange(replace.length - counter + 1, replace.length)
-                            sendingBuffer = sendingBuffer.removeRange(sendingBuffer.length - sendingBufferSuffix.length, sendingBuffer.length) + sendingBufferSuffix
-                            val bufferedPrefix = replace.removeRange(0, replace.length - counter+1)
-                            buffer.delete(0, bufferedPrefix.length)
-                            buffer.append(bufferedPrefix)
-                        }
+        buffer.append(char)
+        replaceBuffer.append(char)
+        if (replaceBuffer.length > search.length) {
+            replaceBuffer.deleteCharAt(0)
+        }
+        if (isCounterStarted()) {
+            counter++
+        }
+
+        if (replaceBuffer.toString() == search) {
+            when (counter) {
+                0 -> {
+                    buffer.delete(buffer.length - search.length, buffer.length)
+                    buffer.append(replace)
+                }
+                else -> {
+
+                    val sendingBufferDeleteStart = sendingBuffer.length - search.length - 1 + counter
+                    val sendingBufferDeleteEnd = sendingBuffer.length
+
+                    val deletedSymbols = sendingBufferDeleteEnd - sendingBufferDeleteStart
+
+                    sendingBuffer =
+                            sendingBuffer.removeRange(sendingBufferDeleteStart, sendingBufferDeleteEnd) + replace
+
+                    buffer.delete(0, search.length - deletedSymbols)
                 }
             }
-            if (isReplaceWithoutSplit()) {
-                counter = 0
-                sendBuffer(sendingBuffer)
-            }
-
         }
+
+        if (buffer.length == bufferSize) {
+            sendingBuffer = buffer.toString()
+            buffer.clear()
+            startCounter()
+        }
+        if (isReplaceWithoutSplit()) {
+            counter = 0
+            sendBuffer(sendingBuffer)
+            sendingBuffer = ""
+        }
+
+
     }
 
     override fun finish() {
+        sendBuffer(sendingBuffer)
         sendBuffer(buffer.toString())
     }
 
@@ -72,8 +81,8 @@ class TextSplitReplacer(
 
     private fun isCounterStarted() = counter != 0
 
-    private fun isReplaceWithoutSplit() = counter == search?.length
+    private fun isReplaceWithoutSplit() = counter == search.length
 
-    private fun isNotSetParams() = search.isNullOrEmpty() || replace.isNullOrEmpty()
+    private fun isNotSetParams() = search.isEmpty() || replace.isEmpty()
 
 }
