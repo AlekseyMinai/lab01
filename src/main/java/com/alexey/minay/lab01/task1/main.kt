@@ -1,12 +1,12 @@
 package com.alexey.minay.lab01.task1
 
-import com.alexey.minay.lab01.task1.domain.TextSplitReplacer
+import com.alexey.minay.lab01.task1.domain.BufferTextReplacer
 
-private lateinit var textReplacer: TextSplitReplacer
+private lateinit var textReplacer: BufferTextReplacer
 
 fun main(args: Array<String>) {
-    val replacer = TextSplitReplacer()
-    replacer.setParams("Разработайте программу radix.exe, выполняющую перевод чисел из одной произвольной системы счисления в друг", "!", ::print)
+    val replacer = BufferTextReplacer()
+    replacer.setParams("ра", "!!!!!!!!!!!!!!!", ::print)
     val before = System.currentTimeMillis()
     val text = "Разработайте программу radix.exe, выполняющую перевод чисел из одной произвольной системы счисления в другую произвольную и запись результата в стандартный поток вывода. Под произвольной системой счисления понимается система с основанием от 2 до 36. Системы счисления с 11-ричной до 36-ричной должны использовать заглавные буквы латинского алфавита от A до Z для представления разрядов с 1010 до 3510. Формат командной строки приложения:\n" +
             "radix.exe <source notation> <destination notation> <value>\n" +
