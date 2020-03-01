@@ -4,6 +4,7 @@ import com.alexey.minay.lab01.task1.logger.LogMessages
 import com.alexey.minay.lab01.task1.storage.states.WriterState
 import java.io.BufferedWriter
 import java.io.File
+import java.nio.charset.Charset
 
 class FileTextWriter : TextWriter {
 
@@ -12,18 +13,17 @@ class FileTextWriter : TextWriter {
 
     override fun setParams(outputFileUrl: String) {
         if (bufferedWriter == null) {
-            bufferedWriter = File(outputFileUrl).bufferedWriter()
+            bufferedWriter = File(outputFileUrl).bufferedWriter(Charset.forName("Windows-1251"))
         }
         if (url != outputFileUrl) {
             bufferedWriter?.close()
-            bufferedWriter = File(outputFileUrl).bufferedWriter()
+            bufferedWriter = File(outputFileUrl).bufferedWriter(Charset.forName("Windows-1251"))
         }
     }
 
     override fun saveText(text: String): WriterState {
         try {
             bufferedWriter?.write(text)
-            bufferedWriter?.append("\n")
         } catch (e: Exception) {
             return WriterState.Error(LogMessages.ERROR_WRITE_FILE)
         }

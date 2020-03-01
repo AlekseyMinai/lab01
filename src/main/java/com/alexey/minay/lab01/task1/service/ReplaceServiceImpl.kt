@@ -2,7 +2,7 @@ package com.alexey.minay.lab01.task1.service
 
 import com.alexey.minay.lab01.task1.domain.ArgsValidator
 import com.alexey.minay.lab01.task1.domain.TextReplacer
-import com.alexey.minay.lab01.task1.domain.ValidState
+import com.alexey.minay.lab01.task1.domain.ValidationState
 import com.alexey.minay.lab01.task1.logger.Logger
 import com.alexey.minay.lab01.task1.storage.TextReader
 import com.alexey.minay.lab01.task1.storage.TextWriter
@@ -21,8 +21,8 @@ class ReplaceServiceImpl(
     override fun replace(args: Array<String>) {
         val validState = validator.checkArgs(args)
         when (validState) {
-            is ValidState.Invalid -> logger.log(validState.message)
-            is ValidState.Valid -> {
+            is ValidationState.Invalid -> logger.log(validState.message)
+            is ValidationState.Valid -> {
                 startReplaceText(
                         inputFile = args[0],
                         outputFile = args[1],

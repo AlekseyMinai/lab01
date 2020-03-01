@@ -7,21 +7,20 @@ import java.nio.file.Paths
 
 class ArgsValidatorImpl : ArgsValidator {
 
-    override fun checkArgs(args: Array<String>): ValidState {
+    override fun checkArgs(args: Array<String>): ValidationState {
         val countArgs = args.size
         if (countArgs != VALID_ARGS_COUNT) {
-            return ValidState.Invalid(LogMessages.INVALID_ARGS_COUNT)
+            return ValidationState.Invalid(LogMessages.INVALID_ARGS_COUNT)
         }
         val isCorrectInputFile = checkInputFile(File(args[0]))
         if (!isCorrectInputFile) {
-            return ValidState.Invalid(LogMessages.INVALID_FIRST_PARAM)
+            return ValidationState.Invalid(LogMessages.INVALID_FIRST_PARAM)
         }
         val isCorrectOutputPath = checkOutputPath(args[1])
         if (!isCorrectOutputPath) {
-            return ValidState.Invalid(LogMessages.INVALID_SECOND_PARAM)
+            return ValidationState.Invalid(LogMessages.INVALID_SECOND_PARAM)
         }
-
-        return ValidState.Valid
+        return ValidationState.Valid
     }
 
     private fun checkInputFile(file: File) = file.exists()
