@@ -8,7 +8,8 @@ class InvertApplication {
             val matrix = arrayOf(intArrayOf(1, 2, 3), intArrayOf(2, 8, 4), intArrayOf(3, 4, 5))
             printMatrix(matrix)
             println()
-            print(findDeterminantOf3x3(matrix))
+            print(findDeterminant(matrix))
+
         }
 
         private fun printMatrix(matrix: Array<IntArray>){
