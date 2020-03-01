@@ -42,8 +42,11 @@ class ReplaceServiceImpl(
     private fun handleReadingResult(state: StorageState) {
         when (state) {
             is StorageState.Error -> logger.log(state.message)
-            is StorageState.Closed -> textWriter.close()
             is StorageState.Success -> textReplacer.replace(state.char)
+            is StorageState.Closed -> {
+                textReplacer.finish()
+                textWriter.close()
+            }
         }
     }
 
