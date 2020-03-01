@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: com.alexey.minay.lab01.task1.Application
+

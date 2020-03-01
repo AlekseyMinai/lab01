@@ -75,7 +75,7 @@ class BufferTextReplacer : TextReplacer {
 
     private fun clearBuffer() {
         sendingBuffer = buffer.toString()
-        buffer.clear()
+        buffer.delete(0, buffer.length)
         startCounter()
     }
 
