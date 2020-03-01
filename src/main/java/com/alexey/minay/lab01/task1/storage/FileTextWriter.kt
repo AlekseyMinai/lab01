@@ -10,6 +10,7 @@ class FileTextWriter : TextWriter {
 
     private var bufferedWriter: BufferedWriter? = null
     private var url: String? = null
+    private var wasError = false
 
     override fun setParams(outputFileUrl: String) {
         if (bufferedWriter == null) {
@@ -25,12 +26,17 @@ class FileTextWriter : TextWriter {
         try {
             bufferedWriter?.write(text)
         } catch (e: Exception) {
+            wasError = true
             return WriterState.Error(LogMessages.ERROR_WRITE_FILE)
         }
         return WriterState.Success
     }
 
-    override fun close() {
+    override fun close(): WriterState {
         bufferedWriter?.close()
+        if (wasError) {
+            return WriterState.Finished(LogMessages.FINISHED_WITH_ERROR_WRITE_FILE)
+        }
+        return WriterState.Finished(LogMessages.FINISHED_WITH_SUCCESS_WRITE_FILE)
     }
 }

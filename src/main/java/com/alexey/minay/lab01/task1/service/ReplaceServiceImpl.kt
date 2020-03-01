@@ -45,7 +45,8 @@ class ReplaceServiceImpl(
             is StorageState.Success -> textReplacer.replace(state.char)
             is StorageState.Closed -> {
                 textReplacer.finish()
-                textWriter.close()
+                val writerState = textWriter.close()
+                handleWritingResult(writerState)
             }
         }
     }
@@ -58,6 +59,7 @@ class ReplaceServiceImpl(
     private fun handleWritingResult(writerState: WriterState) {
         when (writerState) {
             is WriterState.Error -> logger.log(writerState.message)
+            is WriterState.Finished -> logger.log(writerState.message)
         }
     }
 
