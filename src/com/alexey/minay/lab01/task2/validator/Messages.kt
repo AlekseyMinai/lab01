@@ -1,4 +1,4 @@
-package com.alexey.minay.lab01.task2
+package com.alexey.minay.lab01.task2.validator
 
 object Messages {
     const val INCORRECT_ARGS_QUANTITY = "Incorrect args quantity"

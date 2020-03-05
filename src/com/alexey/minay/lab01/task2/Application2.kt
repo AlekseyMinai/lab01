@@ -1,6 +1,7 @@
 package com.alexey.minay.lab01.task2
 
 import com.alexey.minay.lab01.task2.di.MainComponent
+import com.alexey.minay.lab01.task2.validator.Messages
 
 class Application2 {
 

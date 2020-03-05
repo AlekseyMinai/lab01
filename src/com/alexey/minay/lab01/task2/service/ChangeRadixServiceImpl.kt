@@ -1,8 +1,8 @@
 package com.alexey.minay.lab01.task2.service
 
-import com.alexey.minay.lab01.task2.Messages
-import com.alexey.minay.lab01.task2.RadixChangerImpl
-import com.alexey.minay.lab01.task2.RadixChangerResult
+import com.alexey.minay.lab01.task2.validator.Messages
+import com.alexey.minay.lab01.task2.radix.RadixChangerImpl
+import com.alexey.minay.lab01.task2.radix.RadixChangerResult
 import com.alexey.minay.lab01.task2.ui.View
 
 class ChangeRadixServiceImpl(

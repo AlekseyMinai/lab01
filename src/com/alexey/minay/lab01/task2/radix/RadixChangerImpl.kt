@@ -1,4 +1,4 @@
-package com.alexey.minay.lab01.task2
+package com.alexey.minay.lab01.task2.radix
 
 import com.alexey.minay.lab01.task2.validator.ArgsValidator
 import com.alexey.minay.lab01.task2.validator.ValidateStatus
