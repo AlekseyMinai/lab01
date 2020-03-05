@@ -9,8 +9,8 @@ class RadixChangerImpl(
         private val numbers: List<Char>
 ): RadixChanger {
 
-    override fun change(oldRadix: String, newRadix: String, value: String): RadixChangerResult =
-            when (validator.validate(oldRadix, newRadix, value, numbers)) {
+    override fun change(oldRadixStr: String, newRadixStr: String, value: String): RadixChangerResult =
+            when (validator.validate(oldRadixStr, newRadixStr, value, numbers)) {
                 ValidateStatus.INCORRECT_OLD_RADIX -> RadixChangerResult.IncorrectOldRadix
                 ValidateStatus.INCORRECT_NEW_RADIX -> RadixChangerResult.IncorrectNewRadix
                 ValidateStatus.INCORRECT_VALUE -> RadixChangerResult.IncorrectValue
@@ -19,13 +19,13 @@ class RadixChangerImpl(
                         RadixChangerResult.Success("-" +
                                 value
                                         .removePrefix("-")
-                                        .toBase10From(oldRadix.toInt())
-                                        .fromBase10To(newRadix.toInt()))
+                                        .toBase10From(oldRadixStr.toInt())
+                                        .fromBase10To(newRadixStr.toInt()))
                     } else {
                         RadixChangerResult.Success(
                                 value
-                                        .toBase10From(oldRadix.toInt())
-                                        .fromBase10To(newRadix.toInt()))
+                                        .toBase10From(oldRadixStr.toInt())
+                                        .fromBase10To(newRadixStr.toInt()))
                     }
                 }
             }
