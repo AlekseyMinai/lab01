@@ -3,8 +3,9 @@ package com.alexey.minay.lab01.task2.validator
 class ArgsValidatorImpl : ArgsValidator {
 
     override fun validate(oldRadixStr: String, newRadixStr: String, value: String, numbers: List<Char>): ValidateStatus {
-        val oldRadix = oldRadixStr.toInt()
-        val newRadix = newRadixStr.toInt()
+        val oldRadix = toIntRadix(oldRadixStr)
+        val newRadix = toIntRadix(oldRadixStr)
+
         if (oldRadix !in 2..numbers.size) {
             return ValidateStatus.INCORRECT_OLD_RADIX
         }
@@ -22,4 +23,13 @@ class ArgsValidatorImpl : ArgsValidator {
         }
         return ValidateStatus.VALID
     }
+
+    private fun toIntRadix(radix: String): Int {
+        return try {
+            radix.toInt()
+        } catch (e: Exception) {
+            -1
+        }
+    }
+
 }
