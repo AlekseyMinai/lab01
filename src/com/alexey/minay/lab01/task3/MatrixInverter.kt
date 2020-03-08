@@ -4,6 +4,8 @@ package com.alexey.minay.lab01.task3
 //
 //}
 
+
+
 fun findDeterminant(matrix: Array<IntArray>): Int {
     if(matrix.size == 1){
         return matrix[0][0]
@@ -33,6 +35,10 @@ fun findMinorOf(matrix: Array<IntArray>, rowPosition: Int, columnPosition: Int):
         }
     }
     return minorDeterminant.toTypedArray()
+}
+
+fun inversion(matrix: Array<IntArray>){
+
 }
 
 
