@@ -11,7 +11,8 @@ class ChangeRadixServiceImpl(
 ) : ChangeRadixService {
 
     override fun change(oldRadix: String, newRadix: String, value: String) {
-        when (val result = radixChanger.change(oldRadix, newRadix, value)) {
+        val result = radixChanger.change(oldRadix, newRadix, value)
+        when (result) {
             is RadixChangerResult.Success -> view.showResult(result.value)
             is RadixChangerResult.IncorrectNewRadix -> view.showResult(Messages.INCORRECT_NEW_RADIX)
             is RadixChangerResult.IncorrectOldRadix -> view.showResult(Messages.INCORRECT_OLD_RADIX)
