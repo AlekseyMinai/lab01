@@ -1,4 +1,4 @@
-package com.alexey.minay.lab01.task3
+package com.alexey.minay.lab01.task3.matrix
 
 import java.util.*
 
@@ -17,12 +17,12 @@ object MatrixUtils {
         return randomMatrix.toTypedArray()
     }
 
-    fun invert(matrix: Array<FloatArray>): Array<FloatArray> {
+    fun invert(matrix: Array<DoubleArray>): Array<DoubleArray> {
         val matrixSize = matrix.size
         val unitMatrix = getUnitMatrixWith(matrixSize)
         for (rowIndex in 0 until matrixSize) {
             var diagonalValue = matrix[rowIndex][rowIndex]
-            if (diagonalValue == 0f) {
+            if (diagonalValue == 0.0) {
                 getRideOfDiagonalZero(matrix, unitMatrix, rowIndex)
                 diagonalValue = matrix[rowIndex][rowIndex]
             }
@@ -33,22 +33,22 @@ object MatrixUtils {
         return unitMatrix
     }
 
-    private fun getUnitMatrixWith(size: Int): Array<FloatArray> {
-        val unitMatrix = mutableListOf<FloatArray>()
+    private fun getUnitMatrixWith(size: Int): Array<DoubleArray> {
+        val unitMatrix = mutableListOf<DoubleArray>()
         for (i in 0 until size) {
-            val rowUnitMatrix = mutableListOf<Float>()
+            val rowUnitMatrix = mutableListOf<Double>()
             for (k in 0 until size) {
-                val value = if (k == i) 1f else 0f
+                val value = if (k == i) 1.0 else 0.0
                 rowUnitMatrix.add(value)
             }
-            unitMatrix.add(rowUnitMatrix.toFloatArray())
+            unitMatrix.add(rowUnitMatrix.toDoubleArray())
         }
         return unitMatrix.toTypedArray()
     }
 
-    private fun getRideOfDiagonalZero(matrix: Array<FloatArray>, unitMatrix: Array<FloatArray>, rowIndex: Int) {
+    private fun getRideOfDiagonalZero(matrix: Array<DoubleArray>, unitMatrix: Array<DoubleArray>, rowIndex: Int) {
         var rowForSumIndex = 0
-        while (matrix[rowForSumIndex][rowIndex] == 0f) {
+        while (matrix[rowForSumIndex][rowIndex] == 0.0) {
             rowForSumIndex++
         }
         for (cell in 0 until matrix.size) {
@@ -57,14 +57,14 @@ object MatrixUtils {
         }
     }
 
-    private fun getOneOnTheDiagonal(matrix: Array<FloatArray>, unitMatrix: Array<FloatArray>, rowIndex: Int, diagonalValue: Float) {
+    private fun getOneOnTheDiagonal(matrix: Array<DoubleArray>, unitMatrix: Array<DoubleArray>, rowIndex: Int, diagonalValue: Double) {
         for (cellIndex in 0 until matrix.size) {
             matrix[rowIndex][cellIndex] /= diagonalValue
             unitMatrix[rowIndex][cellIndex] /= diagonalValue
         }
     }
 
-    private fun getZerosUnderDiagonal(matrix: Array<FloatArray>, unitMatrix: Array<FloatArray>, rowIndex: Int) {
+    private fun getZerosUnderDiagonal(matrix: Array<DoubleArray>, unitMatrix: Array<DoubleArray>, rowIndex: Int) {
         for (setToZeroRow in rowIndex + 1 until matrix.size) {
             val setToZeroRatio = matrix[setToZeroRow][rowIndex]
             for (cell in 0 until matrix.size) {
@@ -74,7 +74,7 @@ object MatrixUtils {
         }
     }
 
-    private fun getZerosAboveDiagonal(matrix: Array<FloatArray>, unitMatrix: Array<FloatArray>) {
+    private fun getZerosAboveDiagonal(matrix: Array<DoubleArray>, unitMatrix: Array<DoubleArray>) {
         for (setToZeroColumn in matrix.size - 1 downTo 1) {
             for (setToZeroRow in setToZeroColumn - 1 downTo 0) {
                 val setToZeroRatio = matrix[setToZeroRow][setToZeroColumn]
