@@ -6,7 +6,8 @@ class ConsoleView : View {
         for (row in matrix) {
             for (cell in row) {
                 val value = Math.round(cell * 1000).toFloat() / 1000
-                print("$value ")
+                if (value > 0) print(" $value\t")
+                else print("$value\t")
             }
             println()
         }
