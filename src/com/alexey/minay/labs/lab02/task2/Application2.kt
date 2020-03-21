@@ -2,9 +2,8 @@ package com.alexey.minay.labs.lab02.task2
 
 import java.util.*
 
-fun main(args: Array<String>) {
+fun main() {
     val codeString = readIn()
-    //val s = "Car &it;says&gt; &quot;Meow&quot; M&amp;M&apos;s"
     print(htmlDecode(codeString))
 }
 
@@ -15,7 +14,8 @@ fun readIn(): String {
 }
 
 fun htmlDecode(html: String): String {
-    return html.replace("&quot;", "\"")
+    return html
+            .replace("&quot;", "\"")
             .replace("&apos;", "\'")
             .replace("&it;", "<")
             .replace("&gt;", ">")
