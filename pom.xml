@@ -73,7 +73,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.alexey.minay.lab01.task1.Application</mainClass>
+                            <mainClass>com.alexey.minay.labs.lab01.task1.Application</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
