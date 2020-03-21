@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: com.alexey.minay.labs.lab01.task1.Application
+Main-Class: com.alexey.minay.labs.lab01.replace.Application
 
