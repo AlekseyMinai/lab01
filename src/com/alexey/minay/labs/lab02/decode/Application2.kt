@@ -1,4 +1,4 @@
-package com.alexey.minay.labs.lab02.task2
+package com.alexey.minay.labs.lab02.decode
 
 import java.util.*
 
@@ -9,8 +9,7 @@ fun main() {
 
 fun readIn(): String {
     print("введите закодированную строку:")
-    val scanner = Scanner(System.`in`)
-    return scanner.nextLine()
+    return readLine().toString()
 }
 
 fun htmlDecode(html: String): String {

@@ -13,10 +13,8 @@ fun main() {
 }
 
 fun readIn(): List<Double> {
-    val scanner = Scanner(System.`in`)
     println("Введите числа с плавающей точкой, разделенные пробелами:")
-    val input = scanner.nextLine()
-    return input.toDoubleList()
+    return readLine().toString().toDoubleList()
 }
 
 fun String.toDoubleList(): List<Double> {
