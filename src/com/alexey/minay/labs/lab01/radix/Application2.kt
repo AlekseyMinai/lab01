@@ -35,6 +35,7 @@ class Application2 {
             is RadixChangerResult.IncorrectNewRadix -> view.showResult(Messages.INCORRECT_NEW_RADIX)
             is RadixChangerResult.IncorrectOldRadix -> view.showResult(Messages.INCORRECT_OLD_RADIX)
             is RadixChangerResult.IncorrectValue -> view.showResult(Messages.INCORRECT_VALUE)
+            is RadixChangerResult.TooBigValue -> view.showResult(Messages.INCORRECT_VALUE)
         }
     }
 
