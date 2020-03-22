@@ -11,11 +11,9 @@ import com.alexey.minay.labs.lab01.replace.storage.states.StorageState
 import com.alexey.minay.labs.lab01.replace.storage.states.WriterState
 import com.alexey.minay.labs.lab01.replace.utils.exhaustive
 
-
-
 open class ReplaceApplication {
 
-    companion object{
+    companion object {
         @JvmStatic
         fun main(args: Array<String>) {
             ReplaceApplication().replace(args)
