@@ -1,6 +1,4 @@
-package com.alexey.minay.labs.lab02.decode
-
-import java.util.*
+package com.alexey.minay.labs.lab02.decode02
 
 fun main() {
     val codeString = readIn()

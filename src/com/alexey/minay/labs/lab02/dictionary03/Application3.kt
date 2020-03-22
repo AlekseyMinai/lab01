@@ -1,4 +1,4 @@
-package com.alexey.minay.labs.lab02.dictionary
+package com.alexey.minay.labs.lab02.dictionary03
 
 import java.io.File
 

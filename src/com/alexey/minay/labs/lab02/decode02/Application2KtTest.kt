@@ -1,4 +1,4 @@
-package com.alexey.minay.labs.lab02.decode
+package com.alexey.minay.labs.lab02.decode02
 
 import org.junit.After
 import org.junit.Assert.*

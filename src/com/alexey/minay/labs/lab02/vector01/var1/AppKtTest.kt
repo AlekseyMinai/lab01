@@ -1,4 +1,4 @@
-package com.alexey.minay.labs.lab02.vector.var1
+package com.alexey.minay.labs.lab02.vector01.var1
 
 import org.junit.After
 import org.junit.Assert.assertEquals
