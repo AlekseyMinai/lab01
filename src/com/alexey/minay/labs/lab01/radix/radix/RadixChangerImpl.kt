@@ -16,31 +16,43 @@ class RadixChangerImpl(
                 ValidateStatus.INCORRECT_VALUE -> RadixChangerResult.IncorrectValue
                 ValidateStatus.VALID -> {
                     if (isNegativeValue(value)) {
-                        RadixChangerResult.Success("-" +
-                                value
-                                        .removePrefix("-")
-                                        .toBase10From(oldRadixStr.toInt())
-                                        .fromBase10To(newRadixStr.toInt()))
+                        val invertBase10Result = value
+                                .removePrefix("-")
+                                .toBase10From(oldRadixStr.toInt())
+                        when (invertBase10Result) {
+                            is Base10Result.OverFlow -> RadixChangerResult.TooBigValue
+                            is Base10Result.Success -> RadixChangerResult.Success("-" +
+                                    invertBase10Result.result
+                                            .fromBase10To(newRadixStr.toInt()))
+                        }
                     } else {
-                        RadixChangerResult.Success(
-                                value
-                                        .toBase10From(oldRadixStr.toInt())
-                                        .fromBase10To(newRadixStr.toInt()))
+                        when (val invertBase10Result = value.toBase10From(oldRadixStr.toInt())) {
+                            is Base10Result.OverFlow -> RadixChangerResult.TooBigValue
+                            is Base10Result.Success -> RadixChangerResult.Success(
+                                    invertBase10Result.result
+                                            .fromBase10To(newRadixStr.toInt()))
+                        }
+
                     }
                 }
             }
 
     private fun isNegativeValue(value: String) = value[0] == '-'
 
-    private fun String.toBase10From(base: Int): Int {
+    private fun String.toBase10From(base: Int): Base10Result {
         val reverseNum = this.reversed()
         var result = 0
         reverseNum.forEachIndexed { index, charNum ->
             val stringNum = charNum.toUpperCase()
             val base10Num = numbers.indexOf(stringNum)
-            result += base10Num * (base.toDouble().pow(index).toInt())
+            try {
+                val numForSum = Math.multiplyExact(base10Num, base.toDouble().pow(index).toInt())
+                result = Math.addExact(result, numForSum)
+            } catch (e: Exception) {
+                return Base10Result.OverFlow
+            }
         }
-        return result
+        return Base10Result.Success(result)
     }
 
     private fun Int.fromBase10To(base: Int): String {
@@ -59,6 +71,11 @@ class RadixChangerImpl(
 
     private fun Int.toStringNum(): Char {
         return numbers[this]
+    }
+
+    sealed class Base10Result {
+        object OverFlow : Base10Result()
+        class Success(val result: Int) : Base10Result()
     }
 
 }

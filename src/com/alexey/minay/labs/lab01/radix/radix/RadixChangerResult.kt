@@ -5,4 +5,5 @@ sealed class RadixChangerResult {
     object IncorrectOldRadix : RadixChangerResult()
     object IncorrectNewRadix : RadixChangerResult()
     object IncorrectValue : RadixChangerResult()
+    object TooBigValue : RadixChangerResult()
 }
