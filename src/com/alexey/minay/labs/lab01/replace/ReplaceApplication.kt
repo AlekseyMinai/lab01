@@ -1,24 +1,34 @@
-package com.alexey.minay.labs.lab01.replace.service
+package com.alexey.minay.labs.lab01.replace
 
-import com.alexey.minay.labs.lab01.replace.domain.ArgsValidator
-import com.alexey.minay.labs.lab01.replace.domain.TextReplacer
-import com.alexey.minay.labs.lab01.replace.domain.ValidationState
+import com.alexey.minay.labs.lab01.replace.domain.*
+import com.alexey.minay.labs.lab01.replace.logger.ConsoleLogger
 import com.alexey.minay.labs.lab01.replace.logger.Logger
+import com.alexey.minay.labs.lab01.replace.storage.FileTextReader
+import com.alexey.minay.labs.lab01.replace.storage.FileTextWriter
 import com.alexey.minay.labs.lab01.replace.storage.TextReader
 import com.alexey.minay.labs.lab01.replace.storage.TextWriter
 import com.alexey.minay.labs.lab01.replace.storage.states.StorageState
 import com.alexey.minay.labs.lab01.replace.storage.states.WriterState
 import com.alexey.minay.labs.lab01.replace.utils.exhaustive
 
-class ReplaceServiceImpl(
-        val validator: ArgsValidator,
-        val logger: Logger,
-        val textReader: TextReader,
-        val textWriter: TextWriter,
-        val textReplacer: TextReplacer
-) : ReplaceService {
 
-    override fun replace(args: Array<String>) {
+
+open class ReplaceApplication {
+
+    companion object{
+        @JvmStatic
+        fun main(args: Array<String>) {
+            ReplaceApplication().replace(args)
+        }
+    }
+
+    private val validator: ArgsValidator = ArgsValidatorImpl()
+    private val logger: Logger = ConsoleLogger()
+    private val textReader: TextReader = FileTextReader()
+    private val textWriter: TextWriter = FileTextWriter()
+    private val textReplacer: TextReplacer = BufferTextReplacer()
+
+    fun replace(args: Array<String>) {
         val validState = validator.checkArgs(args)
         when (validState) {
             is ValidationState.Invalid -> logger.log(validState.message)
@@ -64,3 +74,6 @@ class ReplaceServiceImpl(
     }
 
 }
+
+
+
