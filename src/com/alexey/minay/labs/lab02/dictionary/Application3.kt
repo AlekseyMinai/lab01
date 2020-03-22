@@ -2,14 +2,14 @@ package com.alexey.minay.labs.lab02.dictionary
 
 import java.io.File
 
-fun main() {
-    val dictionaryProvider = DictionaryProvider("/home/user/labs/oop-master/tasks/dic")
+fun main(args: Array<String>) {
+    val dictionaryProvider = DictionaryProvider(args[0])
     val dictionary = dictionaryProvider.readDictionary()
     var isResumed = true
     while (isResumed) {
         print("Введите слово для перевода: ")
         val inputWord = readLine()
-        if(inputWord.isNullOrBlank()){
+        if (inputWord.isNullOrBlank()) {
             print("Некорректный ввод. \n")
             continue
         }
@@ -18,11 +18,10 @@ fun main() {
                 isResumed = false
                 dictionaryProvider.close()
             }
-            else -> dictionaryProvider.handleWord(inputWord, dictionary)
+            else -> dictionaryProvider.handleWord(inputWord.toLowerCase(), dictionary)
         }
     }
 }
-
 
 class DictionaryProvider(private val url: String) {
 
