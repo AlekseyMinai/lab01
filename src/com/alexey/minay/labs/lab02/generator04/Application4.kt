@@ -4,39 +4,44 @@ import java.lang.StrictMath.sqrt
 import java.util.*
 
 fun main() {
-    val before = System.currentTimeMillis()
-    val primeMembersSet = generatePrimeMembersSet3(100_000_000)
-    val after = System.currentTimeMillis()
-    println(after - before)
+    val primeMembersSet = generatePrimeMembersSet(100_000_000)
     print(primeMembersSet.size)
 }
 
-fun generatePrimeMembersSet3(upperBound: Int): Set<Int> {
+fun generatePrimeMembersSet(upperBound: Int): Set<Int> {
     if (upperBound > 100_000_000) {
         print("Превышен допустимый порог")
         return emptySet()
     }
-    val list = BitSet(upperBound)
-    val bef = sqrt(upperBound.toDouble()).toInt()
-    for (i in 0 until bef) {
+    val numBitSet = BitSet(upperBound)
+    markPrimeNumberIn(numBitSet, upperBound)
+    return generatePrimeMembersSet(numBitSet, upperBound)
+}
+
+private fun markPrimeNumberIn(numbBitSet: BitSet, upperBound: Int) {
+    val before = sqrt(upperBound.toDouble()).toInt()
+    for (i in 0 until before) {
         if (i < 2) {
-            list.set(i)
+            numbBitSet.set(i)
         }
 
-        if (!list[i]) {
+        if (!numbBitSet[i]) {
             for (j in i * i..upperBound step i) {
-                list.set(j)
+                numbBitSet.set(j)
             }
         }
     }
+}
 
-   val set = mutableSetOf<Int>()
-
-    for(i in 0 until upperBound){
-        if (!list[i]){
-            set.add(i)
+private fun generatePrimeMembersSet(numBitSet: BitSet, upperBound: Int): Set<Int> {
+    val primeMembersSet = mutableSetOf<Int>()
+    for (i in 0 until upperBound) {
+        if (!numBitSet[i]) {
+            primeMembersSet.add(i)
         }
     }
-    return set
+    return primeMembersSet
 }
+
+
 
