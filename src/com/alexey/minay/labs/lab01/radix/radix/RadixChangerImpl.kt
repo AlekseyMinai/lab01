@@ -2,12 +2,12 @@ package com.alexey.minay.labs.lab01.radix.radix
 
 import com.alexey.minay.labs.lab01.radix.validator.ArgsValidator
 import com.alexey.minay.labs.lab01.radix.validator.ValidateStatus
-import java.math.BigInteger
+import kotlin.math.pow
 
 class RadixChangerImpl(
         private val validator: ArgsValidator,
         private val numbers: List<Char>
-): RadixChanger {
+) : RadixChanger {
 
     override fun change(oldRadixStr: String, newRadixStr: String, value: String): RadixChangerResult =
             when (validator.validate(oldRadixStr, newRadixStr, value, numbers)) {
@@ -32,28 +32,28 @@ class RadixChangerImpl(
 
     private fun isNegativeValue(value: String) = value[0] == '-'
 
-    private fun String.toBase10From(base: Int): BigInteger {
+    private fun String.toBase10From(base: Int): Int {
         val reverseNum = this.reversed()
-        var result = BigInteger("0")
+        var result = 0
         reverseNum.forEachIndexed { index, charNum ->
             val stringNum = charNum.toUpperCase()
-            val base10Num = numbers.indexOf(stringNum).toBigInteger()
-            result += base10Num * (base.toBigInteger().pow(index))
+            val base10Num = numbers.indexOf(stringNum)
+            result += base10Num * (base.toDouble().pow(index).toInt())
         }
         return result
     }
 
-    private fun BigInteger.fromBase10To(base: Int): String {
+    private fun Int.fromBase10To(base: Int): String {
         var num = this
         var translatedNum = ""
         do {
-            val resultAndRemainder = num.divideAndRemainder(base.toBigInteger())
-            translatedNum += resultAndRemainder[1].toInt().toStringNum()
-            num = resultAndRemainder[0]
-            if (num < base.toBigInteger()) {
-                translatedNum += num.toInt().toStringNum()
+            val resultAndRemainder = num % base
+            translatedNum += resultAndRemainder.toStringNum()
+            num /= base
+            if (num < base) {
+                translatedNum += num.toStringNum()
             }
-        } while (num >= base.toBigInteger())
+        } while (num >= base)
         return translatedNum.reversed()
     }
 
