@@ -1,9 +1,9 @@
-package car
+package com.alexey.minay.labs.lab03.car
 
 class CarImpl : Car {
 
-    var isSwitchedOn = false
-    var movementState = MovementState.STAND
+    private var isSwitchedOn = false
+    private var movementState = MovementState.STAND
     var speed: Int = 0
     var gear: Int = 0
 
@@ -124,13 +124,13 @@ class CarImpl : Car {
     override fun printInfo() {
         val engineState = if (isSwitchedOn) "Запущен" else "Заглушен"
         println("Состояние двигателя: $engineState")
-        println("Направление движения: ${movementState.name}")
+        println("Направление движения: ${movementState.value}")
         println("Скорость: $speed")
         println("Передача: $gear")
     }
 
 
-    enum class MovementState(s: String) {
+    enum class MovementState(val value: String) {
         FORWARD("движется вперед"),
         REVERS("движется назад"),
         STAND("стоит")

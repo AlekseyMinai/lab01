@@ -1,4 +1,4 @@
-package car
+package com.alexey.minay.labs.lab03.car
 
 interface Car {
 

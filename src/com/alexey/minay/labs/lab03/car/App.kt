@@ -1,4 +1,4 @@
-package car
+package com.alexey.minay.labs.lab03.car
 
 fun main(args: Array<String>) {
     println("Для завершения работы приложения введите \"...\"")
