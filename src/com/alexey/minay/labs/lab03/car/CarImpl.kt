@@ -4,8 +4,8 @@ class CarImpl : Car {
 
     private var isSwitchedOn = false
     private var movementState = MovementState.STAND
-    var speed: Int = 0
-    var gear: Int = 0
+    private var speed: Int = 0
+    private var gear: Int = 0
 
     private val gearRanges = mutableListOf(
             0..20, 0..30, 20..50, 30..60, 40..90, 50..150
@@ -69,7 +69,7 @@ class CarImpl : Car {
             println("Невозможно включить $newGear передачу при скорости $speed. Допустимый диапазон ${gearRanges[newGear]}")
             return false
         }
-        println("Включена передача ")
+        println("Включена передача")
         gear = newGear
         return true
     }
@@ -99,7 +99,7 @@ class CarImpl : Car {
             return if (newSpeed > speed) {
                 println("Невозможно увеличить скорость на нейтральной передаче")
                 false
-            }else{
+            } else {
                 speed = newSpeed
                 println("Затормозили до $speed")
                 true
@@ -128,7 +128,6 @@ class CarImpl : Car {
         println("Скорость: $speed")
         println("Передача: $gear")
     }
-
 
     enum class MovementState(val value: String) {
         FORWARD("движется вперед"),
