@@ -15,7 +15,7 @@ class Circle(
 
     override fun getPerimeter(): Double = 2 * 3.14 * radius
 
-    override fun getOutlineColor() = outLineColor
+    override fun getOutlineColor(): Int = outLineColor
 
     fun getCenter(): Point = center
 
