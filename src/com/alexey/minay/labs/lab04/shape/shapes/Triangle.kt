@@ -1,6 +1,9 @@
-package com.alexey.minay.labs.lab04.shape
+package com.alexey.minay.labs.lab04.shape.shapes
 
-class Circle : SolidShape {
+import com.alexey.minay.labs.lab04.shape.shapes.Point
+import com.alexey.minay.labs.lab04.shape.shapes.SolidShape
+
+class Triangle : SolidShape {
 
     override fun getFillColor(): Int {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -14,15 +17,19 @@ class Circle : SolidShape {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getOutlineColor(): Double {
+    override fun getOutlineColor(): Int {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun getCenter(): Point {
+    fun getVertex1(): Point {
         TODO()
     }
 
-    fun getRadius(): Point {
+    fun getVertex2(): Point {
+        TODO()
+    }
+
+    fun getVertex3(): Point {
         TODO()
     }
 

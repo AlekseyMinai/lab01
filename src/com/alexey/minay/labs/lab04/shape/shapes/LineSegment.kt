@@ -1,4 +1,4 @@
-package com.alexey.minay.labs.lab04.shape
+package com.alexey.minay.labs.lab04.shape.shapes
 
 class LineSegment : Shape {
 
@@ -18,11 +18,11 @@ class LineSegment : Shape {
         return super.toString()
     }
 
-    fun getStartPoint(): Point{
+    fun getStartPoint(): Point {
         TODO()
     }
 
-    fun getEndPoint(): Point{
+    fun getEndPoint(): Point {
         TODO()
     }
 }
