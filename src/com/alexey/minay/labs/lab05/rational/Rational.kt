@@ -1,4 +1,4 @@
-package com.alexey.minay.labs.lab05.rational
+package rational
 
 data class Rational(
         private var numeration: Int = 0,
@@ -9,9 +9,27 @@ data class Rational(
         numeration = newNumeration
     }
 
-    fun getNumeration() = numeration
+    fun getNumeration() = if (numeration < 0 && denominator < 0) -numeration else numeration
 
-    fun getDenominator() = denominator
+    fun getDenominator() = if (numeration < 0 && denominator < 0) -denominator else denominator
+
+    fun toCompoundFraction(): Pair<Int, Rational> {
+        if (numeration < 0 && denominator < 0) {
+            numeration = -numeration
+            denominator = -denominator
+        }
+        val intNum = numeration / denominator
+        numeration -= denominator * intNum
+        if (intNum < 0) {
+            if (numeration < 0) {
+                numeration = -numeration
+            }
+            if (denominator < 0) {
+                denominator = -denominator
+            }
+        }
+        return Pair(intNum, this)
+    }
 
     override fun toDouble() = (numeration / denominator).toDouble()
 
@@ -28,12 +46,5 @@ data class Rational(
     override fun toLong() = (numeration / denominator).toLong()
 
     override fun toShort() = (numeration / denominator).toShort()
-
-    override fun equals(other: Any?): Boolean {
-        when(other){
-            is Number -> return super.equals(Rational(other.toInt()))
-        }
-        return super.equals(other)
-    }
 
 }
