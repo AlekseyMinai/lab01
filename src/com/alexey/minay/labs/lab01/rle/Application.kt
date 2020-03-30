@@ -3,21 +3,21 @@ package com.alexey.minay.labs.lab01.rle
 import java.io.File
 import java.io.FileOutputStream
 
-fun main(args: Array<String>){
-    if (args.size < 3){
-        print("не зватает аргументов")
+fun main(args: Array<String>) {
+    if (args.size != 3) {
+        print("incorrect args")
         return
     }
-    when(args[0]){
+    when (args[0]) {
         "pack" -> pack(args[1], args[2])
         "unpack" -> unpack(args[1], args[2])
     }
 }
 
-fun pack(inputUrl: String, outputUrl: String){
+fun pack(inputUrl: String, outputUrl: String) {
     val file = File(inputUrl)
-    if(!file.exists()){
-        print("Файл не существует")
+    if (!file.exists()) {
+        print("File not exist")
         return
     }
     val input = file.inputStream()
@@ -30,11 +30,11 @@ fun pack(inputUrl: String, outputUrl: String){
         if (lastByte != -1 && byte != lastByte) {
             writeBytes(output, theSameByteCounter, lastByte)
             theSameByteCounter = 0
-
         }
+
         lastByte = byte
         theSameByteCounter++
-        if(theSameByteCounter > 254){
+        if (theSameByteCounter > 254 || input.available() == 0) {
             writeBytes(output, theSameByteCounter, lastByte)
             theSameByteCounter = 0
             lastByte = -1
@@ -44,15 +44,15 @@ fun pack(inputUrl: String, outputUrl: String){
     output.close()
 }
 
-private fun writeBytes(output: FileOutputStream, theSameByteCounter: Int, lastByte: Int){
-    output.write(theSameByteCounter)
+private fun writeBytes(output: FileOutputStream, theSameByteQuantity: Int, lastByte: Int) {
+    output.write(theSameByteQuantity)
     output.write(lastByte)
 }
 
-fun unpack(inputUrl: String, outputUrl: String){
+fun unpack(inputUrl: String, outputUrl: String) {
     val file = File(inputUrl)
-    if(!file.exists()){
-        print("Файл не существует")
+    if (!file.exists()) {
+        print("File not exist")
         return
     }
     val input = file.inputStream()
@@ -61,7 +61,7 @@ fun unpack(inputUrl: String, outputUrl: String){
     while (input.available() > 0) {
         val quantity = input.read()
         val byte = input.read()
-        for (i in 0 until quantity){
+        for (i in 0 until quantity) {
             output.write(byte)
         }
     }
