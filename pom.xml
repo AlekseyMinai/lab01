@@ -74,7 +74,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.alexey.minay.labs.lab01.replace.ReplaceApplication</mainClass>
+                            <mainClass>com.alexey.minay.labs.lab01.invert.InvertApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
