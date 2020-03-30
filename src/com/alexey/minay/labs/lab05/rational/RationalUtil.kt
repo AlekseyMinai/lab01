@@ -1,4 +1,4 @@
-package rational
+package com.alexey.minay.labs.lab05.rational
 
 operator fun Rational.unaryMinus(): Rational {
     this.setNumeration(-this.getNumeration())

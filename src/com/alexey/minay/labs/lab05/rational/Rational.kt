@@ -1,4 +1,4 @@
-package rational
+package com.alexey.minay.labs.lab05.rational
 
 data class Rational(
         private var numeration: Int = 0,
