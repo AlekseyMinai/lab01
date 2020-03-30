@@ -4,6 +4,10 @@ import java.io.File
 import java.io.FileOutputStream
 
 fun main(args: Array<String>){
+    if (args.size < 3){
+        print("не зватает аргументов")
+        return
+    }
     when(args[0]){
         "pack" -> pack(args[1], args[2])
         "unpack" -> unpack(args[1], args[2])
@@ -13,6 +17,7 @@ fun main(args: Array<String>){
 fun pack(inputUrl: String, outputUrl: String){
     val file = File(inputUrl)
     if(!file.exists()){
+        print("Файл не существует")
         return
     }
     val input = file.inputStream()
@@ -47,6 +52,7 @@ private fun writeBytes(output: FileOutputStream, theSameByteCounter: Int, lastBy
 fun unpack(inputUrl: String, outputUrl: String){
     val file = File(inputUrl)
     if(!file.exists()){
+        print("Файл не существует")
         return
     }
     val input = file.inputStream()
