@@ -1,60 +1,83 @@
 package com.alexey.minay.labs.lab01.live
 
-import java.util.*
+import java.io.File
 
-
-fun main(args: Array<String>){
-
-    val screenBefore = fillEmptyScreenWith(16).fillBeforeScreen()
+fun main(args: Array<String>) {
+    if (args.isEmpty()) {
+        print("Incorrect params")
+        return
+    }
+    val screenBefore = readScreen(args[0])
     printIteration(screenBefore)
-
-}
-
-fun calculateNextItaration(screenBefore: Array<CharArray>){
-    for (i in 1 until screenBefore.size - 1){
-        for (k in 1 until screenBefore.size - 1){
-            screenBefore[i][k]
-        }
+    val screenAfter = calculateNextIteration(screenBefore)
+    if (args.size < 2) {
+        printIteration(screenAfter)
+        return
     }
+    writeFile(args[1], screenAfter)
 }
 
-fun Array<CharArray>.fillBeforeScreen(): Array<CharArray> {
-    val random = Random()
-    for (i in 0 until size){
-        for (k in 0 until size){
-            if (i in 1..(size - 2) && k in 1..(size - 2)){
-                //this[i][k] = if (random.nextBoolean()) '#' else ' '
-            }
-        }
+fun readScreen(url: String): Array<CharArray> {
+    val file = File(url)
+    if (!file.exists()) {
+        println("File doesn't exist")
     }
-    this[5][13] = '#'
-    this[5][14] = '#'
-    this[6][14] = '#'
-    this[4][13] = '#'
-    return this
-}
-
-fun fillEmptyScreenWith(size: Int): Array<CharArray> {
     val screen = mutableListOf<CharArray>()
-    for (i in 0..size){
-        val row = mutableListOf<Char>()
-        for (k in 0..size){
-            if (i == 0 || i == size || k == 0 || k == size){
-                row.add('*')
-            }else{
-                row.add(' ')
+    val bufferedReader = file.bufferedReader()
+    val iterator = bufferedReader.lineSequence().iterator()
+    iterator.forEach {
+        screen.add(it.toCharArray())
+    }
+    bufferedReader.close()
+    return screen.toTypedArray()
+}
+
+fun calculateNextIteration(screen: Array<CharArray>): Array<CharArray> {
+    val newScreen = copyOf(screen)
+    for (i in 1 until screen.size - 1) {
+        for (k in 1 until screen.size - 1) {
+            var quantityLiveCell = 0
+            if (screen[i - 1][k] == '#') quantityLiveCell++
+            if (screen[i][k - 1] == '#') quantityLiveCell++
+            if (screen[i + 1][k] == '#') quantityLiveCell++
+            if (screen[i][k + 1] == '#') quantityLiveCell++
+            if (quantityLiveCell == 3) {
+                newScreen[i][k] = '#'
+            } else if (quantityLiveCell > 3 || quantityLiveCell < 2) {
+                newScreen[i][k] = ' '
             }
         }
-        screen.add(row.toCharArray())
+    }
+    return newScreen
+}
+
+fun copyOf(oldScreen: Array<CharArray>): Array<CharArray> {
+    val screen = mutableListOf<CharArray>()
+    for (row in oldScreen) {
+        val rowChars = mutableListOf<Char>()
+        for (element in row) {
+            rowChars.add(element)
+        }
+        screen.add(rowChars.toCharArray())
     }
     return screen.toTypedArray()
 }
 
-fun printIteration(screen: Array<CharArray>){
+fun printIteration(screen: Array<CharArray>) {
     screen.forEach { chars ->
         chars.forEach {
             print(it)
         }
         println()
     }
+}
+
+fun writeFile(url: String, screen: Array<CharArray>) {
+    val file = File(url)
+    val bufferedWriter = file.bufferedWriter()
+    screen.forEach {
+        bufferedWriter.write(it)
+        bufferedWriter.newLine()
+    }
+    bufferedWriter.close()
 }
