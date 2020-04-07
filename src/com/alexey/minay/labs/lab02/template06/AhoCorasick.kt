@@ -2,158 +2,138 @@ package com.alexey.minay.labs.lab02.template06
 
 import java.util.concurrent.LinkedBlockingQueue
 
+class AhoCorasick {
+    private val root = Vertex(level = 0, parent = null)
+    private val templates = mutableListOf<String>()
 
-class AhoCorasick(
-        private val entryList: List<Entry>,
-        private val alphabet: List<Char>
-) {
-    private val alphabetSize: Int
-        get() = 32
-    private val vertexList = mutableListOf<Vertex>()
-    private var vertexCount = 0
+    class Vertex(val isLeaf: Boolean = false,
+                 val level: Int,
+                 var parent: Vertex?,
+                 val parentKey: String = "",
+                 val key: String = "",
+                 val searchIndex: Int = -1
+    ) {
+        var suffixLink: Vertex? = null
+        var child = mutableMapOf<String, Vertex>()
 
-    fun solve(text: String) {
-        vertexList.add(Vertex(alphabetSize))
-        vertexList.add(Vertex(alphabetSize))
-        vertexCount = 1
-        for (entry in entryList) {
-            addToTrie(entry)
+        override fun toString(): String {
+            return "(level = $level, key = $key, sl = $suffixLink)"
         }
+    }
 
-        var vertexCursor = 0
-        for (char in text.toCharArray()) {
-            vertexCursor = go(vertexCursor, charToIndex(char))
-            val vertex = vertexList[vertexCursor]
-            if (vertex.isLeaf) {
-                val word = StringBuilder()
-                var cursor = vertex
-                do {
-                    word.append(cursor.symbol)
-                    cursor = vertexList[cursor.parent]
-                } while (cursor.parent != -1)
-                println(word.reverse())
+    fun initWith(templates: List<String>) {
+        this.templates.addAll(templates)
+        for (i in templates.indices) {
+            add(templates[i], i)
+        }
+        addSuffixLinks()
+    }
+
+    fun searchIn(text: String): List<Result>{
+        var cursor = root
+        val result = mutableListOf<Result>()
+        text.forEachIndexed { index, char ->
+            var isResume = true
+            while (isResume) {
+                val nextVertex = cursor.child[char.toString()]
+                if (nextVertex != null) {
+                    if (nextVertex.isLeaf) {
+                        cursor = nextVertex
+                        println(templates[nextVertex.searchIndex])
+                        result.add(Result(index, templates[nextVertex.searchIndex]))
+                        isResume = false
+                    } else {
+                        cursor = nextVertex
+                        isResume = false
+                    }
+                } else {
+                    cursor = when {
+                        cursor.suffixLink != null -> cursor.suffixLink!!
+                        else -> {
+                            isResume = false
+                            root
+                        }
+                    }
+                }
             }
-            vertexCursor = go(vertexCursor, charToIndex(char))
         }
+        return result
     }
 
-    private fun addToTrie(entry: Entry) {
-        var vertexCursor = 0
-        for (char in entry.value.toCharArray()) {
-            val charIndex = charToIndex(char)
-            if (vertexList[vertexCursor].next[charIndex] == -1) {
-                val vertex = vertexList[vertexCount]
-                vertex.suffixLink = -1
-                vertex.parent = vertexCursor
-                vertex.symbol = char
-                vertex.charIndexFromParent = charIndex
-                vertexList.add(Vertex(alphabetSize))
-                vertexList[vertexCursor].next[charIndex] = vertexCount++
+    fun print() {
+        val vertex = root
+        val queue = LinkedBlockingQueue<Vertex>()
+        queue.put(vertex)
+        while (!queue.isEmpty()) {
+            val nextVertex = queue.poll()
+            println("$nextVertex")
+            nextVertex.child.forEach {
+                queue.put(it.value)
             }
-            vertexCursor = vertexList[vertexCursor].next[charIndex]
         }
-        vertexList[vertexCursor].isLeaf = true
     }
 
-    private fun charToIndex(char: Char): Int {
-        return char - 'a'
-    }
-
-    private fun go(vertexCursor: Int, charIndex: Int): Int {
-        val vertex = vertexList[vertexCursor]
-        if (vertex.go[charIndex] == -1) {
-            if (vertex.next[charIndex] != -1) {
-                vertex.go[charIndex] = vertex.next[charIndex]
+    private fun add(template: String, searchIndex: Int) {
+        var vertex = root
+        var parenKey = ""
+        template.forEachIndexed { index, char ->
+            if (vertex.child[char.toString()] == null) {
+                val isLeaf = index == template.length - 1
+                val newVertex = Vertex(
+                        isLeaf = isLeaf,
+                        level = vertex.level + 1,
+                        parent = vertex,
+                        parentKey = parenKey,
+                        key = char.toString(),
+                        searchIndex = if(isLeaf) searchIndex else -1
+                )
+                vertex.child[char.toString()] = newVertex
+                vertex = newVertex
             } else {
-                vertex.go[charIndex] = if (vertexCursor == 0) 0 else go(goBySuffixLink(vertexCursor), charIndex)
+                vertex = vertex.child[char.toString()]!!
             }
+            parenKey = char.toString()
         }
-        return vertex.go[charIndex]
     }
 
-    private fun goBySuffixLink(vertexCursor: Int): Int {
-        val vertex = vertexList[vertexCursor]
-        if (vertex.suffixLink == -1) {
-            if (vertexCursor == 0 || vertex.parent == 0) {
-                vertex.suffixLink = 0
-            } else {
-                vertex.suffixLink = go(goBySuffixLink(vertex.parent), vertex.charIndexFromParent)
+    private fun addSuffixLinks(){
+        val vertex = root
+        val queueVertex = LinkedBlockingQueue<Vertex>()
+        val queueKey = LinkedBlockingQueue<String>()
+        queueVertex.put(vertex)
+        while (!queueVertex.isEmpty()) {
+            val currentVertex = queueVertex.poll()
+            val currentKey = queueKey.poll()
+            currentVertex.child.forEach{
+                queueVertex.put(it.value)
+                queueKey.put(it.key)
+            }
+            when {
+                currentVertex.level == 1 -> currentVertex.suffixLink = root
+                currentVertex.level > 1 -> {
+                    var cursor = currentVertex.parent
+                    var isLookingForSuffixLink = true
+                    while (isLookingForSuffixLink) {
+                        val parentSuffixLink = cursor?.suffixLink
+                        if (parentSuffixLink == null) {
+                            isLookingForSuffixLink = false
+                            if (root.child[currentKey] != null) {
+                                currentVertex.suffixLink = root.child[currentKey]
+                            }else{
+                                currentVertex.suffixLink = root
+                            }
+                            continue
+                        }
+                        if (parentSuffixLink.child[currentKey] == null) {
+                            cursor = parentSuffixLink.suffixLink
+                            isLookingForSuffixLink = false
+                        } else {
+                            currentVertex.suffixLink = parentSuffixLink.child[currentKey]
+                            isLookingForSuffixLink = false
+                        }
+                    }
+                }
             }
         }
-        return vertex.suffixLink
-    }
-
-    class Entry(val value: String)
-
-    class Vertex(alphabetSize: Int) {
-        val next = Array(alphabetSize) { -1 }
-        var isLeaf = false
-        var parent = -1
-        var charIndexFromParent = -1
-        var suffixLink = -1
-        val go = Array(alphabetSize) { -1 }
-        var symbol: Char = (-1).toChar()
     }
 }
-
-//private fun addSuffixLinks(/*vertex: Vertex = root*/) {
-//    val vertex = root
-//    val queue = LinkedBlockingQueue<AhoCorasick2.Vertex>()
-//    queue.put(vertex)
-//    while (!queue.isEmpty()) {
-//        vertex.child.forEach {
-//            queue.put(it.value)
-//            val currentVertex = it.value
-//            when {
-//                currentVertex.level == 1 -> currentVertex.suffixLink = root
-//                currentVertex.level > 1 -> {
-//                    var cursor = it.value.parent
-//                    var isLookingForSuffixLink = true
-//                    while (isLookingForSuffixLink) {
-//                        val parentSuffixLink = cursor?.suffixLink
-//                        if (parentSuffixLink == null) {
-//                            isLookingForSuffixLink = false
-//                            it.value.suffixLink = root
-//                            continue
-//                        }
-//                        if (parentSuffixLink.child[it.key] == null) {
-//                            cursor = parentSuffixLink.suffixLink
-//                        } else {
-//                            it.value.suffixLink = parentSuffixLink.child[it.key]
-//                            isLookingForSuffixLink = false
-//                        }
-//                    }
-//                }
-//            }
-//            //addSuffixLinks(it.value)
-//        }
-//    }
-//}
-
-//    private fun addSuffixLinks(vertex: Vertex = root) {
-//        vertex.child.forEach {
-//            val currentVertex = it.value
-//            when {
-//                currentVertex.level == 1 -> currentVertex.suffixLink = root
-//                currentVertex.level > 1 -> {
-//                    var cursor = it.value.parent
-//                    var isLookingForSuffixLink = true
-//                    while (isLookingForSuffixLink) {
-//                        val parentSuffixLink = cursor?.suffixLink
-//                        if (parentSuffixLink == null) {
-//                            isLookingForSuffixLink = false
-//                            it.value.suffixLink = root
-//                            continue
-//                        }
-//                        if (parentSuffixLink.child[it.key] == null) {
-//                            cursor = parentSuffixLink.suffixLink
-//                        } else {
-//                            it.value.suffixLink = parentSuffixLink.child[it.key]
-//                            isLookingForSuffixLink = false
-//                        }
-//                    }
-//                }
-//            }
-//            addSuffixLinks(it.value)
-//        }
-//    }
