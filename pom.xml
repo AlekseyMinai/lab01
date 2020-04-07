@@ -74,7 +74,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.alexey.minay.labs.lab01.rle.ApplicationKt</mainClass>
+                            <mainClass>com.alexey.minay.labs.lab01.replace.ReplaceApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
