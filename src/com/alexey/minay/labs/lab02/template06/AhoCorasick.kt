@@ -42,7 +42,7 @@ class AhoCorasick {
                         if(nextVertex.child.isEmpty()){
                             cursor = root
                         }
-                        println(templates[nextVertex.searchIndex])
+                        //println(templates[nextVertex.searchIndex])
                         result.add(Result(index, templates[nextVertex.searchIndex]))
                         isResume = false
                     } else {
