@@ -1,13 +1,7 @@
 package com.alexey.minay.labs.lab02.template06
 
 fun main(args: Array<String>) {
-    val template = "-AABBCCCCCABC+"
-    val params = mutableMapOf(Pair("A", "[a]"),
-            Pair("AA", "[aa]"), Pair("B", "[b]"), Pair("BB", "[bb]"), Pair("C", "[c]"), Pair("CC", "[cc]"))
 
-    val template2 = "Hello, %USER_NAME%. Today is {WEEK_DAY}."
-    val params2 = mutableMapOf(Pair("%USER_NAME%", "Super %USER_NAME% {WEEK_DAY}"), Pair("{WEEK_DAY}", "Friday. {WEEK_DAY}"))
-    println(expandTemplate(template, params))
 }
 
 fun expandTemplate(template: String, params: Map<String, String>): String {
@@ -15,15 +9,22 @@ fun expandTemplate(template: String, params: Map<String, String>): String {
     val paramsList = getListParamsFrom(params)
     ahoCorasick.initWith(paramsList)
     val results = ahoCorasick.searchIn(template)
+    return replaceTemplate(template, params, results)
+}
 
+private fun getListParamsFrom(mapParams: Map<String, String>): List<String> {
+    val params = mutableListOf<String>()
+    params.addAll(mapParams.keys)
+    return params
+}
+
+private fun replaceTemplate(template: String, params: Map<String, String>, results: List<Result>): String {
     var replacedTemplate = template
     var offset = 0
     for (i in results.indices) {
-        if (i == results.size - 1){
-            val replaceRange = results[i].place - results[i].word.length  + 1 + offset..results[i].place + offset
-            val replaceKey = params[results[i].word]
-            replacedTemplate = replaceKey?.let { replacedTemplate.replaceRange(replaceRange, it) }.toString()
-            offset += params[results[i].word]?.length?.minus(results[i].word.length) ?: 0
+        if (i == results.size - 1) {
+            replacedTemplate = replace(replacedTemplate, results[i], params, offset)
+            offset = calculateOffset(offset, params, results[i].word)
             continue
         }
         val next = results[i + 1]
@@ -31,19 +32,23 @@ fun expandTemplate(template: String, params: Map<String, String>): String {
         val nextStart = next.place - next.word.length
         val isNeedToReplace = nextStart >= currentEnd
         if (isNeedToReplace) {
-            val replaceRange = results[i].place - results[i].word.length  + 1 + offset..results[i].place + offset
-            val replaceKey = params[results[i].word]
-            replacedTemplate = replaceKey?.let { replacedTemplate.replaceRange(replaceRange, it) }.toString()
-            offset += params[results[i].word]?.length?.minus(results[i].word.length) ?: 0
+            replacedTemplate = replace(replacedTemplate, results[i], params, offset)
+            offset = calculateOffset(offset, params, results[i].word)
         }
     }
     return replacedTemplate
 }
 
-fun getListParamsFrom(mapParams: Map<String, String>): List<String> {
-    val params = mutableListOf<String>()
-    params.addAll(mapParams.keys)
-    return params
+private fun replace(replacedTemplate: String, result: Result, params: Map<String, String>, offset: Int): String {
+    val param = result.word
+    val startReplacingWord = result.place - param.length + 1 + offset
+    val endReplacingWord = result.place + offset
+    val replaceRange = startReplacingWord..endReplacingWord
+    val value = params[param] ?: return replacedTemplate
+    return replacedTemplate.replaceRange(replaceRange, value)
 }
 
-data class Result(val place: Int, val word: String)
+private fun calculateOffset(offset: Int, params: Map<String, String>, param: String): Int {
+    val value = params[param] ?: return 0
+    return offset + value.length - param.length
+}
