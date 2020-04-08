@@ -7,7 +7,7 @@ fun main(args: Array<String>) {
 
     val template2 = "Hello, %USER_NAME%. Today is {WEEK_DAY}."
     val params2 = mutableMapOf(Pair("%USER_NAME%", "Super %USER_NAME% {WEEK_DAY}"), Pair("{WEEK_DAY}", "Friday. {WEEK_DAY}"))
-    println(expandTemplate(template2, params2))
+    println(expandTemplate(template, params))
 }
 
 fun expandTemplate(template: String, params: Map<String, String>): String {
