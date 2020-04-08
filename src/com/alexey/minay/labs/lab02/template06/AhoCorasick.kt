@@ -39,6 +39,9 @@ class AhoCorasick {
                 if (nextVertex != null) {
                     if (nextVertex.isLeaf) {
                         cursor = nextVertex
+                        if(nextVertex.child.isEmpty()){
+                            cursor = root
+                        }
                         println(templates[nextVertex.searchIndex])
                         result.add(Result(index, templates[nextVertex.searchIndex]))
                         isResume = false
