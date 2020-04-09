@@ -7,22 +7,6 @@ class AhoCorasick {
     private val root = Vertex(level = 0, parent = null)
     private val templates = mutableListOf<String>()
 
-    class Vertex(
-            val isLeaf: Boolean = false,
-            val level: Int,
-            var parent: Vertex?,
-            val key: String = "",
-            val searchIndex: Int = -1
-    ) {
-        var suffixLink: Vertex? = null
-        var child = mutableMapOf<String, Vertex>()
-
-        override fun toString(): String {
-            return "(level = $level, key = $key, sl = $suffixLink)"
-        }
-
-    }
-
     fun initWith(templates: List<String>) {
         this.templates.addAll(templates)
         for (i in templates.indices) {
@@ -45,11 +29,10 @@ class AhoCorasick {
                             cursor = root
                         }
                         result.add(Result(index, templates[nextVertex.searchIndex]))
-                        isResume = false
                     } else {
                         cursor = nextVertex
-                        isResume = false
                     }
+                    isResume = false
                 } else {
                     cursor = when {
                         cursor.suffixLink != null -> cursor.suffixLink!!
@@ -79,9 +62,9 @@ class AhoCorasick {
 
     private fun add(template: String, searchIndex: Int) {
         var vertex = root
-        var parenKey = ""
         template.forEachIndexed { index, char ->
-            if (vertex.child[char.toString()] == null) {
+            val nextVertex = vertex.child[char.toString()]
+            if (nextVertex == null) {
                 val isLeaf = index == template.length - 1
                 val newVertex = Vertex(
                         isLeaf = isLeaf,
@@ -93,9 +76,8 @@ class AhoCorasick {
                 vertex.child[char.toString()] = newVertex
                 vertex = newVertex
             } else {
-                vertex = vertex.child[char.toString()]!!
+                vertex = nextVertex
             }
-            parenKey = char.toString()
         }
     }
 
@@ -113,30 +95,50 @@ class AhoCorasick {
             }
             when {
                 currentVertex.level == 1 -> currentVertex.suffixLink = root
-                currentVertex.level > 1 -> {
-                    var cursor = currentVertex.parent
-                    var isLookingForSuffixLink = true
-                    while (isLookingForSuffixLink) {
-                        val parentSuffixLink = cursor?.suffixLink
-                        if (parentSuffixLink == null) {
-                            isLookingForSuffixLink = false
-                            if (root.child[currentKey] != null) {
-                                currentVertex.suffixLink = root.child[currentKey]
-                            } else {
-                                currentVertex.suffixLink = root
-                            }
-                            continue
-                        }
-                        if (parentSuffixLink.child[currentKey] == null) {
-                            cursor = parentSuffixLink.suffixLink
-                            isLookingForSuffixLink = false
-                        } else {
-                            currentVertex.suffixLink = parentSuffixLink.child[currentKey]
-                            isLookingForSuffixLink = false
-                        }
-                    }
-                }
+                currentVertex.level > 1 -> addSuffixLink(currentVertex, currentKey)
             }
         }
     }
+
+    private fun addSuffixLink(currentVertex: Vertex, currentKey: String) {
+        var cursor = currentVertex.parent
+        var isLookingForSuffixLink = true
+        while (isLookingForSuffixLink) {
+            val parentSuffixLink = cursor?.suffixLink
+            if (parentSuffixLink == null) {
+                val nextVertex = root.child[currentKey]
+                isLookingForSuffixLink = false
+                if (nextVertex != null) {
+                    currentVertex.suffixLink = nextVertex
+                } else {
+                    currentVertex.suffixLink = root
+                }
+                continue
+            }
+            val suffixLinkVertex = parentSuffixLink.child[currentKey]
+            if (suffixLinkVertex == null) {
+                cursor = parentSuffixLink.suffixLink
+            } else {
+                currentVertex.suffixLink = suffixLinkVertex
+            }
+            isLookingForSuffixLink = false
+        }
+    }
+
+    class Vertex(
+            val isLeaf: Boolean = false,
+            val level: Int,
+            var parent: Vertex?,
+            val key: String = "",
+            val searchIndex: Int = -1
+    ) {
+        var suffixLink: Vertex? = null
+        var child = mutableMapOf<String, Vertex>()
+
+        override fun toString(): String {
+            return "(level = $level, key = $key, sl = $suffixLink)"
+        }
+
+    }
+
 }

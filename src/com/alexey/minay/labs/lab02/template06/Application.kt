@@ -1,5 +1,7 @@
 package com.alexey.minay.labs.lab02.template06
 
+import org.junit.Assert
+
 fun main(args: Array<String>) {
 
 }
