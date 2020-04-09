@@ -3,15 +3,16 @@ package com.alexey.minay.labs.lab02.template06
 import java.util.concurrent.LinkedBlockingQueue
 
 class AhoCorasick {
+
     private val root = Vertex(level = 0, parent = null)
     private val templates = mutableListOf<String>()
 
-    class Vertex(val isLeaf: Boolean = false,
-                 val level: Int,
-                 var parent: Vertex?,
-                 val parentKey: String = "",
-                 val key: String = "",
-                 val searchIndex: Int = -1
+    class Vertex(
+            val isLeaf: Boolean = false,
+            val level: Int,
+            var parent: Vertex?,
+            val key: String = "",
+            val searchIndex: Int = -1
     ) {
         var suffixLink: Vertex? = null
         var child = mutableMapOf<String, Vertex>()
@@ -19,6 +20,7 @@ class AhoCorasick {
         override fun toString(): String {
             return "(level = $level, key = $key, sl = $suffixLink)"
         }
+
     }
 
     fun initWith(templates: List<String>) {
@@ -29,7 +31,7 @@ class AhoCorasick {
         addSuffixLinks()
     }
 
-    fun searchIn(text: String): List<Result>{
+    fun searchIn(text: String): List<Result> {
         var cursor = root
         val result = mutableListOf<Result>()
         text.forEachIndexed { index, char ->
@@ -39,10 +41,9 @@ class AhoCorasick {
                 if (nextVertex != null) {
                     if (nextVertex.isLeaf) {
                         cursor = nextVertex
-                        if(nextVertex.child.isEmpty()){
+                        if (nextVertex.child.isEmpty()) {
                             cursor = root
                         }
-                        //println(templates[nextVertex.searchIndex])
                         result.add(Result(index, templates[nextVertex.searchIndex]))
                         isResume = false
                     } else {
@@ -86,9 +87,8 @@ class AhoCorasick {
                         isLeaf = isLeaf,
                         level = vertex.level + 1,
                         parent = vertex,
-                        parentKey = parenKey,
                         key = char.toString(),
-                        searchIndex = if(isLeaf) searchIndex else -1
+                        searchIndex = if (isLeaf) searchIndex else -1
                 )
                 vertex.child[char.toString()] = newVertex
                 vertex = newVertex
@@ -99,7 +99,7 @@ class AhoCorasick {
         }
     }
 
-    private fun addSuffixLinks(){
+    private fun addSuffixLinks() {
         val vertex = root
         val queueVertex = LinkedBlockingQueue<Vertex>()
         val queueKey = LinkedBlockingQueue<String>()
@@ -107,7 +107,7 @@ class AhoCorasick {
         while (!queueVertex.isEmpty()) {
             val currentVertex = queueVertex.poll()
             val currentKey = queueKey.poll()
-            currentVertex.child.forEach{
+            currentVertex.child.forEach {
                 queueVertex.put(it.value)
                 queueKey.put(it.key)
             }
@@ -122,7 +122,7 @@ class AhoCorasick {
                             isLookingForSuffixLink = false
                             if (root.child[currentKey] != null) {
                                 currentVertex.suffixLink = root.child[currentKey]
-                            }else{
+                            } else {
                                 currentVertex.suffixLink = root
                             }
                             continue
