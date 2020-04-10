@@ -1,7 +1,7 @@
 package com.alexey.minay.labs.lab02.parser05
 
 fun main() {
-    val url = "https://kotlinlang.ru/docs/reference/lambdas.html"
+    val url = "http://www.mysite.com/docs/document1.html?page=30&lang=en#title"
 
     var protocol: Protocol? = null
     var port: Int? = null
