@@ -1,11 +1,14 @@
 package com.alexey.minay.labs.lab04.shape.shapes
 
+import com.alexey.minay.labs.lab04.shape.canvas.ICanvas
+import com.alexey.minay.labs.lab04.shape.canvas.CanvasDrawable
+
 class Rectangle(
         private val leftTop: Point,
         private val rightBottom: Point,
         private val fillColor: Int,
         private val outLineColor: Int
-) : SolidShape {
+) : SolidShape, CanvasDrawable {
 
     override fun getFillColor(): Int = fillColor
 
@@ -22,4 +25,8 @@ class Rectangle(
     fun getWidth() = rightBottom.x - leftTop.x
 
     fun getHeight() = leftTop.y - rightBottom.y
+
+    override fun draw(canvas: ICanvas) {
+
+    }
 }
