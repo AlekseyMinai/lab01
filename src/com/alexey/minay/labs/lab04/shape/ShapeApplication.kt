@@ -1,23 +1,18 @@
 package com.alexey.minay.labs.lab04.shape
 
-import com.alexey.minay.labs.lab04.shape.canvas.FxCanvas
 import com.alexey.minay.labs.lab04.shape.canvas.ICanvas
 import com.alexey.minay.labs.lab04.shape.shapes.*
 import javafx.application.Application
+import javafx.fxml.FXMLLoader
 import javafx.geometry.Insets
 import javafx.geometry.Pos
+import javafx.scene.Parent
 import javafx.scene.Scene
-import javafx.scene.canvas.Canvas
-import javafx.scene.canvas.GraphicsContext
-import javafx.scene.control.Button
-import javafx.scene.control.TextField
-import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
-import javafx.scene.layout.VBox
-import javafx.scene.paint.Color
 import javafx.scene.text.Text
 import javafx.stage.Modality
 import javafx.stage.Stage
+
 
 class ShapeApplication : Application() {
 
@@ -29,7 +24,17 @@ class ShapeApplication : Application() {
     }
 
     override fun start(primaryStage: Stage?) {
-        primaryStage?.title = "Draw"
+        val root = FXMLLoader.load<Parent>(javaClass.getResource("main.fxml"))
+        val scene = Scene(root)
+
+        primaryStage?.scene = scene;
+
+        primaryStage?.title = "Hello JavaFX";
+        primaryStage?.width = 1300.0;
+        primaryStage?.height = 800.0;
+        primaryStage?.isResizable = false
+        primaryStage?.show();
+        /*primaryStage?.title = "Draw"
 
         val root = VBox()
 
@@ -63,7 +68,7 @@ class ShapeApplication : Application() {
             handleInput(input, fxCanvas)
         }
 
-        primaryStage?.show()
+        primaryStage?.show()*/
     }
 
     private fun openHelp(primaryStage: Stage?) {
