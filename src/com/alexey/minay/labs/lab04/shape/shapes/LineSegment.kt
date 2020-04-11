@@ -1,28 +1,26 @@
 package com.alexey.minay.labs.lab04.shape.shapes
 
-class LineSegment : Shape {
+import kotlin.math.pow
 
-    override fun getArea(): Double {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+class LineSegment(
+        private val outlineColor: Int,
+        private val start: Point,
+        private val end: Point
+) : Shape {
 
-    override fun getPerimeter(): Double {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getArea() = 0.0
 
-    override fun getOutlineColor(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getPerimeter() = 0.0
+
+    override fun getOutlineColor() = outlineColor
 
     override fun toString(): String {
-        return super.toString()
+        return "Line Segment with start = $start and end = $end"
     }
 
-    fun getStartPoint(): Point {
-        TODO()
-    }
+    fun getStartPoint() = start
 
-    fun getEndPoint(): Point {
-        TODO()
-    }
+    fun getEndPoint() = end
+
+    fun getLength() = ((end.x - start.x).pow(2) + (end.y - start.y).pow(2)).pow(0.5)
 }

@@ -1,36 +1,30 @@
 package com.alexey.minay.labs.lab04.shape.shapes
 
-import com.alexey.minay.labs.lab04.shape.shapes.Point
-import com.alexey.minay.labs.lab04.shape.shapes.SolidShape
+import kotlin.math.absoluteValue
 
-class Triangle : SolidShape {
+class Triangle(
+        private val vertex1: Point,
+        private val vertex2: Point,
+        private val vertex3: Point,
+        private val fillColor: Int,
+        private val outlineColor: Int
+) : SolidShape {
 
-    override fun getFillColor(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getFillColor() = fillColor
 
-    override fun getArea(): Double {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getArea() = ((vertex1.x - vertex3.x) * (vertex2.y - vertex3.y) -
+            (vertex1.y - vertex3.y) * (vertex2.x - vertex3.x)).absoluteValue / 2.0
 
-    override fun getPerimeter(): Double {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getPerimeter() = LineSegment(outlineColor, vertex1, vertex2).getLength() +
+            LineSegment(outlineColor, vertex1, vertex3).getLength() +
+            LineSegment(outlineColor, vertex2, vertex3).getLength()
 
-    override fun getOutlineColor(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getOutlineColor() = outlineColor
 
-    fun getVertex1(): Point {
-        TODO()
-    }
+    fun getVertex1() = vertex1
 
-    fun getVertex2(): Point {
-        TODO()
-    }
+    fun getVertex2() = vertex2
 
-    fun getVertex3(): Point {
-        TODO()
-    }
+    fun getVertex3() = vertex3
 
 }

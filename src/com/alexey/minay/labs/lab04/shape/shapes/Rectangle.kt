@@ -11,13 +11,9 @@ class Rectangle(
 
     override fun getArea() = getWidth() * getHeight()
 
-    override fun getPerimeter(): Double {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getPerimeter() = getWidth() * 2 + getHeight() * 2
 
-    override fun getOutlineColor(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getOutlineColor() = outLineColor
 
     fun getLeftTop() = leftTop
 
