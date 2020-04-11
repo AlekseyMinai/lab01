@@ -40,6 +40,10 @@ class FxCanvas(
         graphicsContext?.fillOval(center.x, center.y, radius, radius)
     }
 
+    override fun clearAll() {
+        graphicsContext?.clearRect(0.0,0.0, 1000.0, 400.0)
+    }
+
     private fun MyColor.toFx(): Color {
         return Color(red, green, blue, 1.0)
     }

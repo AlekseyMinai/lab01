@@ -9,5 +9,6 @@ interface ICanvas {
     fun fillPolygon(points: List<Point>, fillColor: MyColor)
     fun drawCircle(center: Point, radius: Double, lineColor: MyColor)
     fun fillCircle(center: Point, radius: Double, fillColor: MyColor)
+    fun clearAll()
 
 }
