@@ -6,8 +6,8 @@ class Triangle(
         private val vertex1: Point,
         private val vertex2: Point,
         private val vertex3: Point,
-        private val fillColor: Int,
-        private val outlineColor: Int
+        private val fillColor: MyColor,
+        private val outlineColor: MyColor
 ) : SolidShape {
 
     override fun getFillColor() = fillColor

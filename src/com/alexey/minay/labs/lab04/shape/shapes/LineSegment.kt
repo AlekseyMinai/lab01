@@ -3,7 +3,7 @@ package com.alexey.minay.labs.lab04.shape.shapes
 import kotlin.math.pow
 
 class LineSegment(
-        private val outlineColor: Int,
+        private val outlineColor: MyColor,
         private val start: Point,
         private val end: Point
 ) : Shape {

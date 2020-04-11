@@ -1,5 +1,7 @@
 package com.alexey.minay.labs.lab04.shape
 
+import com.alexey.minay.labs.lab04.shape.canvas.FxCanvas
+import com.alexey.minay.labs.lab04.shape.canvas.ICanvas
 import javafx.application.Application
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -54,9 +56,11 @@ class ShapeApplication : Application() {
         val graphicsContext = canvas.graphicsContext2D
 
         helpButton.setOnAction { openHelp(primaryStage) }
+
+        val fxCanvas = FxCanvas(canvas)
         addButton.setOnAction {
             val input = textField.text
-            handleInput(input)
+            handleInput(input, fxCanvas)
         }
 
         primaryStage?.show()
@@ -82,8 +86,8 @@ class ShapeApplication : Application() {
 
     }
 
-    private fun handleInput(input: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun handleInput(input: String?, canvas: ICanvas) {
+
     }
 
 

@@ -5,8 +5,8 @@ import kotlin.math.pow
 class Circle(
         private val center: Point,
         private val radius: Double,
-        private val fillColor: Int,
-        private val outlineColor: Int
+        private val fillColor: MyColor,
+        private val outlineColor: MyColor
 ) : SolidShape {
 
     override fun getFillColor() = fillColor
@@ -15,7 +15,7 @@ class Circle(
 
     override fun getPerimeter(): Double = 2 * PI * radius
 
-    override fun getOutlineColor(): Int = outlineColor
+    override fun getOutlineColor() = outlineColor
 
     fun getCenter(): Point = center
 

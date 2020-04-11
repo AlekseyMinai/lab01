@@ -6,11 +6,11 @@ import com.alexey.minay.labs.lab04.shape.canvas.CanvasDrawable
 class Rectangle(
         private val leftTop: Point,
         private val rightBottom: Point,
-        private val fillColor: Int,
-        private val outLineColor: Int
+        private val fillColor: MyColor,
+        private val outLineColor: MyColor
 ) : SolidShape, CanvasDrawable {
 
-    override fun getFillColor(): Int = fillColor
+    override fun getFillColor() = fillColor
 
     override fun getArea() = getWidth() * getHeight()
 
