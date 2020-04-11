@@ -1,5 +1,7 @@
 package com.alexey.minay.labs.lab04.shape.shapes
 
+import com.alexey.minay.labs.lab04.shape.canvas.CanvasDrawable
+import com.alexey.minay.labs.lab04.shape.canvas.ICanvas
 import kotlin.math.absoluteValue
 
 class Triangle(
@@ -8,7 +10,7 @@ class Triangle(
         private val vertex3: Point,
         private val fillColor: MyColor,
         private val outlineColor: MyColor
-) : SolidShape {
+) : SolidShape, CanvasDrawable {
 
     override fun getFillColor() = fillColor
 
@@ -26,5 +28,12 @@ class Triangle(
     fun getVertex2() = vertex2
 
     fun getVertex3() = vertex3
+
+    override fun draw(canvas: ICanvas) {
+        canvas.drawLine(vertex1, vertex2, outlineColor)
+        canvas.drawLine(vertex2, vertex3, outlineColor)
+        canvas.drawLine(vertex3, vertex1, outlineColor)
+        canvas.fillPolygon(mutableListOf(vertex1, vertex2, vertex3), fillColor)
+    }
 
 }

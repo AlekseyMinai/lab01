@@ -16,19 +16,28 @@ class FxCanvas(
     override fun drawLine(from: Point, to: Point, lineColor: MyColor) {
         graphicsContext?.stroke = lineColor.toFx()
         graphicsContext?.lineWidth = 3.0
-        graphicsContext?.strokeLine(from.x, from.x, to.x, to.y)
+        graphicsContext?.strokeLine(from.x, from.y, to.x, to.y)
     }
 
     override fun fillPolygon(points: List<Point>, fillColor: MyColor) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        graphicsContext?.fill = fillColor.toFx()
+        val xPoints = mutableListOf<Double>()
+        val yPoints = mutableListOf<Double>()
+        points.forEach {
+            xPoints.add(it.x)
+            yPoints.add(it.y)
+        }
+        graphicsContext?.fillPolygon(xPoints.toDoubleArray(), yPoints.toDoubleArray(), points.size)
     }
 
     override fun drawCircle(center: Point, radius: Double, lineColor: MyColor) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        graphicsContext?.stroke = lineColor.toFx()
+        graphicsContext?.strokeOval(center.x, center.y, radius, radius)
     }
 
     override fun fillCircle(center: Point, radius: Double, fillColor: MyColor) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        graphicsContext?.fill = fillColor.toFx()
+        graphicsContext?.fillOval(center.x, center.y, radius, radius)
     }
 
     private fun MyColor.toFx(): Color {

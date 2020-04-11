@@ -2,6 +2,7 @@ package com.alexey.minay.labs.lab04.shape
 
 import com.alexey.minay.labs.lab04.shape.canvas.FxCanvas
 import com.alexey.minay.labs.lab04.shape.canvas.ICanvas
+import com.alexey.minay.labs.lab04.shape.shapes.*
 import javafx.application.Application
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -33,13 +34,14 @@ class ShapeApplication : Application() {
         val root = VBox()
 
         val scene = Scene(root, 650.0, 500.0)
+        primaryStage?.isResizable = false
         primaryStage?.scene = scene
 
         val infoText = Text("Введите команду для создания фигуры")
         root.children.add(infoText)
 
         val textField = TextField()
-        StackPane.setMargin(textField, Insets(20.0,20.0,20.0,20.0))
+        StackPane.setMargin(textField, Insets(20.0, 20.0, 20.0, 20.0))
         root.children.add(textField)
 
         val horizontalWidget = HBox()
@@ -52,8 +54,6 @@ class ShapeApplication : Application() {
 
         val canvas = Canvas(650.0, 500.0)
         root.children.add(canvas)
-
-        val graphicsContext = canvas.graphicsContext2D
 
         helpButton.setOnAction { openHelp(primaryStage) }
 
@@ -87,38 +87,37 @@ class ShapeApplication : Application() {
     }
 
     private fun handleInput(input: String?, canvas: ICanvas) {
+        val rectangle = Rectangle(
+                leftTop = Point(2.0, 2.0),
+                rightBottom = Point(100.0, 100.0),
+                outlineColor = MyColor(0.2, 0.2, 0.2),
+                fillColor = MyColor(0.2, 0.2, 0.2)
+        )
 
-    }
+        val circle = Circle(
+                center = Point(200.0, 50.0),
+                radius = 30.0,
+                outlineColor = MyColor(0.8, 0.2, 0.2),
+                fillColor = MyColor(0.2, 0.8, 0.2)
+        )
 
+        val line = LineSegment(
+                start = Point(20.0, 50.0),
+                end = Point(400.0, 5.0),
+                outlineColor = MyColor(0.2, 0.8, 0.2)
+        )
 
-
-
-
-
-
-
-
-
-
-
-
-
-    private fun draw(graphicsContext: GraphicsContext?) {
-        graphicsContext?.fill = Color.AQUA
-        graphicsContext?.stroke = Color.BLUE
-        graphicsContext?.lineWidth = 5.0
-        graphicsContext?.strokeLine(40.0, 10.0, 10.0, 40.0)
-        graphicsContext?.fillPolygon(doubleArrayOf(10.0, 40.0, 10.0, 40.0), doubleArrayOf(210.0, 210.0, 240.0, 240.0), 4)
-        graphicsContext?.strokePolygon(doubleArrayOf(10.0, 40.0, 10.0, 40.0), doubleArrayOf(210.0, 210.0, 240.0, 240.0), 4)
-    }
-
-    private fun draw2(graphicsContext: GraphicsContext?) {
-        graphicsContext?.fill = Color.AQUA
-        graphicsContext?.stroke = Color.BLUE
-        graphicsContext?.lineWidth = 5.0
-        graphicsContext?.strokeLine(140.0, 110.0, 110.0, 40.0)
-        graphicsContext?.fillPolygon(doubleArrayOf(150.0, 140.0, 110.0, 140.0), doubleArrayOf(1210.0, 1210.0, 1240.0, 1240.0), 4)
-        graphicsContext?.strokePolygon(doubleArrayOf(150.0, 140.0, 110.0, 140.0), doubleArrayOf(1210.0, 1210.0, 1240.0, 1240.0), 4)
+        val triangle = Triangle(
+                vertex1 = Point(400.0, 300.0),
+                vertex2 = Point(350.0, 250.0),
+                vertex3 = Point(300.0, 400.0),
+                outlineColor = MyColor(0.8, 0.2, 0.2),
+                fillColor = MyColor(0.2, 0.8, 0.2)
+        )
+        rectangle.draw(canvas)
+        circle.draw(canvas)
+        line.draw(canvas)
+        triangle.draw(canvas)
     }
 
 }

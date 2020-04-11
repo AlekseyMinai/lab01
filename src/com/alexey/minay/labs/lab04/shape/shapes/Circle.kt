@@ -1,5 +1,7 @@
 package com.alexey.minay.labs.lab04.shape.shapes
 
+import com.alexey.minay.labs.lab04.shape.canvas.CanvasDrawable
+import com.alexey.minay.labs.lab04.shape.canvas.ICanvas
 import kotlin.math.pow
 
 class Circle(
@@ -7,7 +9,7 @@ class Circle(
         private val radius: Double,
         private val fillColor: MyColor,
         private val outlineColor: MyColor
-) : SolidShape {
+) : SolidShape, CanvasDrawable {
 
     override fun getFillColor() = fillColor
 
@@ -20,6 +22,11 @@ class Circle(
     fun getCenter(): Point = center
 
     fun getRadius(): Double = radius
+
+    override fun draw(canvas: ICanvas) {
+        canvas.drawCircle(center, radius, outlineColor)
+        canvas.fillCircle(center, radius, fillColor)
+    }
 
     override fun toString(): String {
         return "Circle with center $center, " +
