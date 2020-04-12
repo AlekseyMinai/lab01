@@ -32,16 +32,16 @@ class FxCanvas(
 
     override fun drawCircle(center: Point, radius: Double, lineColor: MyColor) {
         graphicsContext?.stroke = lineColor.toFx()
-        graphicsContext?.strokeOval(center.x, center.y, radius, radius)
+        graphicsContext?.strokeOval(center.x - radius, center.y - radius, radius * 2, radius * 2)
     }
 
     override fun fillCircle(center: Point, radius: Double, fillColor: MyColor) {
         graphicsContext?.fill = fillColor.toFx()
-        graphicsContext?.fillOval(center.x, center.y, radius, radius)
+        graphicsContext?.fillOval(center.x - radius, center.y - radius, radius * 2, radius * 2)
     }
 
     override fun clearAll() {
-        graphicsContext?.clearRect(0.0,0.0, 1000.0, 400.0)
+        graphicsContext?.clearRect(0.0, 0.0, 1000.0, 400.0)
     }
 
     private fun MyColor.toFx(): Color {

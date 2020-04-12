@@ -6,7 +6,6 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Stage
 
-
 class ShapeApplication : Application() {
 
     companion object {
@@ -17,11 +16,9 @@ class ShapeApplication : Application() {
     }
 
     override fun start(primaryStage: Stage?) {
-        val root = FXMLLoader.load<Parent>(javaClass.getResource("main.fxml"))
+        val root = FXMLLoader.load<Parent>(javaClass.getResource("ui/main.fxml"))
         val scene = Scene(root)
-
         primaryStage?.scene = scene;
-
         primaryStage?.title = "Hello JavaFX";
         primaryStage?.width = 1300.0;
         primaryStage?.height = 800.0;
