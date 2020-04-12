@@ -14,7 +14,6 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.StackPane
-import javafx.scene.paint.Color
 import javafx.stage.Modality
 import javafx.stage.Stage
 import kotlin.math.pow
@@ -77,13 +76,13 @@ class MainController {
 
         if (!isMouseEvent) {
             val params = paramsTextField.text
-            val splitParams = params.split(" ")
-            if (splitParams.size != 2 || !params.contains("leftTop=") || !params.contains("rightBottom=")) {
+            val splitParams = params.split(SPLITTER)
+            if (splitParams.size != 2 || !params.contains(LEFT_TOP_PREFIX) || !params.contains(RIGHT_BOTTOM_PREFIX)) {
                 showHelpWindow()
                 return
             }
-            val leftTopSplitString = splitParams[0].removePrefix("leftTop=").split(";")
-            val rightBottomSplitString = splitParams[1].removePrefix("rightBottom=").split(";")
+            val leftTopSplitString = splitParams[0].removePrefix(LEFT_TOP_PREFIX).split(PARAM_SPLITTER)
+            val rightBottomSplitString = splitParams[1].removePrefix(RIGHT_BOTTOM_PREFIX).split(PARAM_SPLITTER)
             leftTop = Point(leftTopSplitString[0].toDouble(), leftTopSplitString[1].toDouble())
             rightBottom = Point(rightBottomSplitString[0].toDouble(), rightBottomSplitString[1].toDouble())
         }
@@ -104,14 +103,14 @@ class MainController {
         var center = Point((startPoint.x + endPoint.x) / 2, (startPoint.y + endPoint.y) / 2)
         if (!isMouseEvent) {
             val params = paramsTextField.text
-            val splitParams = params.split(" ")
-            if (splitParams.size != 2 || !params.contains("center=") || !params.contains("radius=")) {
+            val splitParams = params.split(SPLITTER)
+            if (splitParams.size != 2 || !params.contains(CENTER_PREFIX) || !params.contains(RADIUS_PREFIX)) {
                 showHelpWindow()
                 return
             }
-            val centerSplitString = splitParams[0].removePrefix("center=").split(";")
+            val centerSplitString = splitParams[0].removePrefix(CENTER_PREFIX).split(PARAM_SPLITTER)
             center = Point(centerSplitString[0].toDouble(), centerSplitString[1].toDouble())
-            radius = splitParams[1].removePrefix("radius=").toDouble()
+            radius = splitParams[1].removePrefix(RADIUS_PREFIX).toDouble()
         }
 
         val circle = Circle(
@@ -131,14 +130,14 @@ class MainController {
         var vertex3 = Point(endPoint.x, startPoint.y)
         if (!isMouseEvent) {
             val params = paramsTextField.text
-            val splitParams = params.split(" ")
-            if (splitParams.size != 3 || !params.contains("vertex1=") || !params.contains("vertex2=") || !params.contains("vertex3=")) {
+            val splitParams = params.split(SPLITTER)
+            if (splitParams.size != 3 || !params.contains(VERTEX1_PREFIX) || !params.contains(VERTEX2_PREFIX) || !params.contains(VERTEX3_PREFIX)) {
                 showHelpWindow()
                 return
             }
-            val vertex1SplitString = splitParams[0].removePrefix("vertex1=").split(";")
-            val vertex2SplitString = splitParams[1].removePrefix("vertex2=").split(";")
-            val vertex3SplitString = splitParams[2].removePrefix("vertex3=").split(";")
+            val vertex1SplitString = splitParams[0].removePrefix(VERTEX1_PREFIX).split(PARAM_SPLITTER)
+            val vertex2SplitString = splitParams[1].removePrefix(VERTEX2_PREFIX).split(PARAM_SPLITTER)
+            val vertex3SplitString = splitParams[2].removePrefix(VERTEX3_PREFIX).split(PARAM_SPLITTER)
             vertex1 = Point(vertex1SplitString[0].toDouble(), vertex1SplitString[1].toDouble())
             vertex2 = Point(vertex2SplitString[0].toDouble(), vertex2SplitString[1].toDouble())
             vertex3 = Point(vertex3SplitString[0].toDouble(), vertex3SplitString[1].toDouble())
@@ -161,13 +160,13 @@ class MainController {
 
         if (!isMouseEvent) {
             val params = paramsTextField.text
-            val splitParams = params.split(" ")
-            if (splitParams.size != 2 || !params.contains("startPoint=") || !params.contains("endPoint=")) {
+            val splitParams = params.split(SPLITTER)
+            if (splitParams.size != 2 || !params.contains(START_POINT_PREFIX) || !params.contains(END_POINT_PREFIX)) {
                 showHelpWindow()
                 return
             }
-            val leftTopSplitString = splitParams[0].removePrefix("startPoint=").split(";")
-            val rightBottomSplitString = splitParams[1].removePrefix("endPoint=").split(";")
+            val leftTopSplitString = splitParams[0].removePrefix(START_POINT_PREFIX).split(PARAM_SPLITTER)
+            val rightBottomSplitString = splitParams[1].removePrefix(END_POINT_PREFIX).split(PARAM_SPLITTER)
             startPoint = Point(leftTopSplitString[0].toDouble(), leftTopSplitString[1].toDouble())
             endPoint = Point(rightBottomSplitString[0].toDouble(), rightBottomSplitString[1].toDouble())
         }
@@ -194,17 +193,35 @@ class MainController {
 
     private fun getHelpText() =
             when (choiceBox.value) {
-                choiceBox.items[0] -> " Параметры для прямоугольника \nдолжны быть " +
-                        "следующего вида: \n\"leftTop=30;40 rightBottom=60;70\""
-                choiceBox.items[1] -> " Параметры для круга \n" +
-                        "должны быть следующего вида: \n" +
-                        "\"center=30;40 radius=60\""
-                choiceBox.items[2] -> " Параметры для треугольника \n" +
-                        "должны быть следующего вида: \n" +
-                        "\"vertex1=30;40 vertex2=130;110 vertex3=60;70\""
-                choiceBox.items[3] -> " Параметры для линии \nдолжны быть " +
-                        "следующего вида: \n\"startPoint=30;40 endPoint=60;70\""
+                choiceBox.items[0] -> RECTANGLE_HELP
+                choiceBox.items[1] -> CIRCLE_HELP
+                choiceBox.items[2] -> TRIANGLE_HELP
+                choiceBox.items[3] -> LINE_HELP
                 else -> throw RuntimeException("Unknown shape type")
             }
+
+    companion object {
+        const val RECTANGLE_HELP = " Параметры для прямоугольника \nдолжны быть " +
+                "следующего вида: \n\"leftTop=30;40 rightBottom=60;70\""
+        const val CIRCLE_HELP = " Параметры для круга \nдолжны быть следующего вида: \n" +
+                "\"center=30;40 radius=60\""
+        const val TRIANGLE_HELP = " Параметры для треугольника \n" +
+                "должны быть следующего вида: \n\"vertex1=30;40 vertex2=130;110 vertex3=60;70\""
+        const val LINE_HELP = " Параметры для линии \nдолжны быть " +
+                "следующего вида: \n\"startPoint=30;40 endPoint=60;70\""
+
+        const val LEFT_TOP_PREFIX = "leftTop="
+        const val RIGHT_BOTTOM_PREFIX = "rightBottom="
+        const val CENTER_PREFIX = "center="
+        const val RADIUS_PREFIX = "radius="
+        const val VERTEX1_PREFIX = "vertex1="
+        const val VERTEX2_PREFIX = "vertex2="
+        const val VERTEX3_PREFIX = "vertex3="
+        const val START_POINT_PREFIX = "startPoint="
+        const val END_POINT_PREFIX = "endPoint="
+
+        const val SPLITTER = " "
+        const val PARAM_SPLITTER = ";"
+    }
 
 }
