@@ -13,7 +13,7 @@ class Circle(
 
     override fun getFillColor() = fillColor
 
-    override fun getArea(): Double = PI * radius.pow(2)
+    override fun getArea() = PI * radius.pow(2)
 
     override fun getPerimeter(): Double = 2 * PI * radius
 

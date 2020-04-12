@@ -2,6 +2,7 @@ package com.alexey.minay.labs.lab04.shape.shapes
 
 import com.alexey.minay.labs.lab04.shape.canvas.CanvasDrawable
 import com.alexey.minay.labs.lab04.shape.canvas.ICanvas
+import kotlin.math.absoluteValue
 
 class Rectangle(
         private val leftTop: Point,
@@ -10,8 +11,8 @@ class Rectangle(
         private val outlineColor: MyColor
 ) : SolidShape, CanvasDrawable {
 
-    private val rightTop: Point by lazy { Point(rightBottom.x, leftTop.y) }
-    private val leftBottom: Point by lazy { Point(leftTop.x, rightBottom.y) }
+    val rightTop: Point by lazy { Point(rightBottom.x, leftTop.y) }
+    val leftBottom: Point by lazy { Point(leftTop.x, rightBottom.y) }
 
     override fun getFillColor() = fillColor
 
@@ -25,9 +26,9 @@ class Rectangle(
 
     fun getRightBottom() = rightBottom
 
-    fun getWidth() = rightBottom.x - leftTop.x
+    fun getWidth() = (rightBottom.x - leftTop.x).absoluteValue
 
-    fun getHeight() = leftTop.y - rightBottom.y
+    fun getHeight() = (leftTop.y - rightBottom.y).absoluteValue
 
     override fun draw(canvas: ICanvas) {
         canvas.drawLine(rightTop, leftTop, outlineColor)
