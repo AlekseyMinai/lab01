@@ -41,7 +41,7 @@ class FxCanvas(
     }
 
     override fun clearAll() {
-        graphicsContext?.clearRect(0.0, 0.0, 1000.0, 400.0)
+        graphicsContext?.clearRect(0.0, 0.0, 1000.0, 800.0)
     }
 
     private fun MyColor.toFx(): Color {

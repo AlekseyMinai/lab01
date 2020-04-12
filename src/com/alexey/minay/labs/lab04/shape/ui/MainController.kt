@@ -12,12 +12,18 @@ import javafx.scene.control.ChoiceBox
 import javafx.scene.control.ColorPicker
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.StackPane
+import javafx.scene.paint.Color
 import javafx.stage.Modality
 import javafx.stage.Stage
+import kotlin.math.pow
 
 
 class MainController {
+
+    private var startPoint = Point(0.0, 0.0)
+    private var endPoint = Point(0.0, 0.0)
 
     @FXML
     private lateinit var canvas: Canvas
@@ -35,7 +41,7 @@ class MainController {
 
     @FXML
     fun onDraw(actionEvent: ActionEvent) {
-        handleInput(fxCanvas)
+        drawShape(false)
     }
 
     @FXML
@@ -43,73 +49,134 @@ class MainController {
         fxCanvas.clearAll()
     }
 
-    private fun handleInput(canvas: ICanvas) {
+    @FXML
+    fun onMousePressed(mouseEvent: MouseEvent) {
+        startPoint = Point(mouseEvent.x, mouseEvent.y)
+    }
+
+    @FXML
+    fun onMouseReleased(mouseEvent: MouseEvent) {
+        endPoint = Point(mouseEvent.x, mouseEvent.y)
+        drawShape(true)
+    }
+
+    private fun drawShape(isMouseEvent: Boolean) {
         when (choiceBox.value) {
-            choiceBox.items[0] -> drawRectangle(canvas)
-            choiceBox.items[1] -> drawCircle(canvas)
-            choiceBox.items[2] -> drawTriangle(canvas)
-            choiceBox.items[3] -> drawLine(canvas)
+            choiceBox.items[0] -> drawRectangle(isMouseEvent)
+            choiceBox.items[1] -> drawCircle(isMouseEvent)
+            choiceBox.items[2] -> drawTriangle(isMouseEvent)
+            choiceBox.items[3] -> drawLine(isMouseEvent)
         }
     }
 
-    private fun drawRectangle(canvas: ICanvas) {
-        val params = paramsTextField.text
-        val splitParams = params.split(" ")
-        if (splitParams.size != 2 || !params.contains("leftTop=") || !params.contains("rightBottom=")) {
-            showHelpWindow()
-            return
-        }
+    private fun drawRectangle(isMouseEvent: Boolean) {
         val outlineColor = outlineColorPicker.value
         val fillColor = fillColorPicker.value
-        val leftTopSplitString = splitParams[0].removePrefix("leftTop=").split(";")
-        val rightBottomSplitString = splitParams[1].removePrefix("rightBottom=").split(";")
+        var leftTop = startPoint
+        var rightBottom = endPoint
+
+        if (!isMouseEvent) {
+            val params = paramsTextField.text
+            val splitParams = params.split(" ")
+            if (splitParams.size != 2 || !params.contains("leftTop=") || !params.contains("rightBottom=")) {
+                showHelpWindow()
+                return
+            }
+            val leftTopSplitString = splitParams[0].removePrefix("leftTop=").split(";")
+            val rightBottomSplitString = splitParams[1].removePrefix("rightBottom=").split(";")
+            leftTop = Point(leftTopSplitString[0].toDouble(), leftTopSplitString[1].toDouble())
+            rightBottom = Point(rightBottomSplitString[0].toDouble(), rightBottomSplitString[1].toDouble())
+        }
+
         val rectangle = Rectangle(
-                leftTop = Point(leftTopSplitString[0].toDouble(), leftTopSplitString[1].toDouble()),
-                rightBottom = Point(rightBottomSplitString[0].toDouble(), rightBottomSplitString[1].toDouble()),
+                leftTop = leftTop,
+                rightBottom = rightBottom,
                 outlineColor = MyColor(outlineColor.red, outlineColor.green, outlineColor.blue),
                 fillColor = MyColor(fillColor.red, fillColor.green, fillColor.blue)
         )
-        rectangle.draw(canvas)
+        rectangle.draw(fxCanvas)
     }
 
-    private fun drawCircle(canvas: ICanvas) {
-        val params = paramsTextField.text
-        val splitParams = params.split(" ")
-        if (splitParams.size != 2 || !params.contains("center=") || !params.contains("radius=")) {
-            showHelpWindow()
-            return
-        }
-        val center = splitParams[0].removePrefix("center=").split(";")
-        val radius = splitParams[1].removePrefix("radius=").toDouble()
+    private fun drawCircle(isMouseEvent: Boolean) {
         val outlineColor = outlineColorPicker.value
         val fillColor = fillColorPicker.value
+        var radius = ((endPoint.x - startPoint.x).pow(2) + (endPoint.y - startPoint.y).pow(2)).pow(0.5) / 2
+        var center = Point((startPoint.x + endPoint.x) / 2, (startPoint.y + endPoint.y) / 2)
+        if (!isMouseEvent) {
+            val params = paramsTextField.text
+            val splitParams = params.split(" ")
+            if (splitParams.size != 2 || !params.contains("center=") || !params.contains("radius=")) {
+                showHelpWindow()
+                return
+            }
+            val centerSplitString = splitParams[0].removePrefix("center=").split(";")
+            center = Point(centerSplitString[0].toDouble(), centerSplitString[1].toDouble())
+            radius = splitParams[1].removePrefix("radius=").toDouble()
+        }
+
         val circle = Circle(
-                center = Point(center[0].toDouble(), center[1].toDouble()),
+                center = center,
                 radius = radius,
                 outlineColor = MyColor(outlineColor.red, outlineColor.green, outlineColor.blue),
                 fillColor = MyColor(fillColor.red, fillColor.green, fillColor.blue)
         )
-        circle.draw(canvas)
+        circle.draw(fxCanvas)
     }
 
-    private fun drawTriangle(canvas: ICanvas) {
+    private fun drawTriangle(isMouseEvent: Boolean) {
+        val outlineColor = outlineColorPicker.value
+        val fillColor = fillColorPicker.value
+        var vertex1 = startPoint
+        var vertex2 = endPoint
+        var vertex3 = Point(endPoint.x, startPoint.y)
+        if (!isMouseEvent) {
+            val params = paramsTextField.text
+            val splitParams = params.split(" ")
+            if (splitParams.size != 3 || !params.contains("vertex1=") || !params.contains("vertex2=") || !params.contains("vertex3=")) {
+                showHelpWindow()
+                return
+            }
+            val vertex1SplitString = splitParams[0].removePrefix("vertex1=").split(";")
+            val vertex2SplitString = splitParams[1].removePrefix("vertex2=").split(";")
+            val vertex3SplitString = splitParams[2].removePrefix("vertex3=").split(";")
+            vertex1 = Point(vertex1SplitString[0].toDouble(), vertex1SplitString[1].toDouble())
+            vertex2 = Point(vertex2SplitString[0].toDouble(), vertex2SplitString[1].toDouble())
+            vertex3 = Point(vertex3SplitString[0].toDouble(), vertex3SplitString[1].toDouble())
+        }
+
         val triangle = Triangle(
-                vertex1 = Point(400.0, 300.0),
-                vertex2 = Point(350.0, 250.0),
-                vertex3 = Point(300.0, 400.0),
-                outlineColor = MyColor(0.8, 0.2, 0.2),
-                fillColor = MyColor(0.2, 0.8, 0.2)
+                vertex1 = vertex1,
+                vertex2 = vertex2,
+                vertex3 = vertex3,
+                outlineColor = MyColor(outlineColor.red, outlineColor.green, outlineColor.blue),
+                fillColor = MyColor(fillColor.red, fillColor.green, fillColor.blue)
         )
-        triangle.draw(canvas)
+        triangle.draw(fxCanvas)
     }
 
-    private fun drawLine(canvas: ICanvas) {
+    private fun drawLine(isMouseEvent: Boolean) {
+        val outlineColor = outlineColorPicker.value
+        var startPoint = startPoint
+        var endPoint = endPoint
+
+        if (!isMouseEvent) {
+            val params = paramsTextField.text
+            val splitParams = params.split(" ")
+            if (splitParams.size != 2 || !params.contains("startPoint=") || !params.contains("endPoint=")) {
+                showHelpWindow()
+                return
+            }
+            val leftTopSplitString = splitParams[0].removePrefix("startPoint=").split(";")
+            val rightBottomSplitString = splitParams[1].removePrefix("endPoint=").split(";")
+            startPoint = Point(leftTopSplitString[0].toDouble(), leftTopSplitString[1].toDouble())
+            endPoint = Point(rightBottomSplitString[0].toDouble(), rightBottomSplitString[1].toDouble())
+        }
         val line = LineSegment(
-                start = Point(20.0, 50.0),
-                end = Point(400.0, 5.0),
-                outlineColor = MyColor(0.2, 0.8, 0.2)
+                start = startPoint,
+                end = endPoint,
+                outlineColor = MyColor(outlineColor.red, outlineColor.green, outlineColor.blue)
         )
-        line.draw(canvas)
+        line.draw(fxCanvas)
     }
 
     private fun showHelpWindow() {
@@ -132,8 +199,11 @@ class MainController {
                 choiceBox.items[1] -> " Параметры для круга \n" +
                         "должны быть следующего вида: \n" +
                         "\"center=30;40 radius=60\""
-                choiceBox.items[2] -> ""
-                choiceBox.items[3] -> ""
+                choiceBox.items[2] -> " Параметры для треугольника \n" +
+                        "должны быть следующего вида: \n" +
+                        "\"vertex1=30;40 vertex2=130;110 vertex3=60;70\""
+                choiceBox.items[3] -> " Параметры для линии \nдолжны быть " +
+                        "следующего вида: \n\"startPoint=30;40 endPoint=60;70\""
                 else -> throw RuntimeException("Unknown shape type")
             }
 
