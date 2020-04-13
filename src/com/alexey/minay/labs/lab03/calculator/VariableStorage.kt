@@ -25,8 +25,7 @@ class VariableStorage {
     }
 
     fun fn(functionName: String, functionOrNameFunction: String) {
-        val parsedFunction = FunctionParser.parse(functionOrNameFunction)
-        when (parsedFunction) {
+        when (val parsedFunction = FunctionParser.parse(functionOrNameFunction)) {
             is ParserState.IncorrectFunction -> {
                 if (functions[functionOrNameFunction] != null) {
                     functions[functionName] = functions[functionOrNameFunction]!!
