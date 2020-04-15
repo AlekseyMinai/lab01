@@ -18,12 +18,12 @@ class CircleTest {
     )
 
     @Test
-    fun shouldCalculateCorrectArea() {
+    fun shouldCalculateArea() {
         assertEquals(7850.0, circle.getArea(), 0.001)
     }
 
     @Test
-    fun shouldCalculateCorrectPerimeter() {
+    fun shouldCalculatePerimeter() {
         assertEquals(314.0, circle.getPerimeter(), 0.001)
     }
 

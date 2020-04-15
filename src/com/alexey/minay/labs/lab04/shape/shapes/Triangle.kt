@@ -3,6 +3,7 @@ package com.alexey.minay.labs.lab04.shape.shapes
 import com.alexey.minay.labs.lab04.shape.canvas.CanvasDrawable
 import com.alexey.minay.labs.lab04.shape.canvas.ICanvas
 import kotlin.math.absoluteValue
+import kotlin.math.pow
 
 class Triangle(
         private val vertex1: Point,
@@ -17,9 +18,12 @@ class Triangle(
     override fun getArea() = ((vertex1.x - vertex3.x) * (vertex2.y - vertex3.y) -
             (vertex1.y - vertex3.y) * (vertex2.x - vertex3.x)).absoluteValue / 2.0
 
-    override fun getPerimeter() = LineSegment(outlineColor, vertex1, vertex2).getLength() +
-            LineSegment(outlineColor, vertex1, vertex3).getLength() +
-            LineSegment(outlineColor, vertex2, vertex3).getLength()
+    override fun getPerimeter() = getSideLength(vertex1, vertex2) +
+            getSideLength(vertex1, vertex3) +
+            getSideLength(vertex2, vertex3)
+
+    private fun getSideLength(start: Point, end: Point) =
+            ((end.x - start.x).pow(2) + (end.y - start.y).pow(2)).pow(0.5)
 
     override fun getOutlineColor() = outlineColor
 

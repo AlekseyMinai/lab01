@@ -19,12 +19,12 @@ class TriangleTest {
     )
 
     @Test
-    fun shouldCalculateCorrectArea() {
+    fun shouldCalculateArea() {
         Assert.assertEquals(2115.0, triangle.getArea(), 0.01)
     }
 
     @Test
-    fun shouldCalculateCorrectPerimeter() {
+    fun shouldCalculatePerimeter() {
         Assert.assertEquals(450.71, triangle.getPerimeter(), 0.01)
     }
 

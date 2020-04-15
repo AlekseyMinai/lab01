@@ -18,12 +18,12 @@ class LineTest {
     )
 
     @Test
-    fun shouldReturnCorrectLength(){
+    fun shouldReturnLength(){
         assertEquals(32.45, line.getLength(), 0.01)
     }
 
     @Test
-    fun shouldInvokeCanvasMethods() {
+    fun shouldInvokeMethods() {
         val mockCanvas = mock<ICanvas>()
         line.draw(mockCanvas)
         verify(mockCanvas, times(1))

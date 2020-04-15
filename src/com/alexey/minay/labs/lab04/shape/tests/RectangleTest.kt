@@ -18,12 +18,12 @@ class RectangleTest {
     )
 
     @Test
-    fun shouldCalculateCorrectArea() {
+    fun shouldCalculateArea() {
         Assert.assertEquals(486.0, rectangle.getArea(), 0.001)
     }
 
     @Test
-    fun shouldCalculateCorrectPerimeter() {
+    fun shouldCalculatePerimeter() {
         Assert.assertEquals(90.0, rectangle.getPerimeter(), 0.001)
     }
 
