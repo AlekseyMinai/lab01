@@ -1,8 +1,9 @@
 package com.alexey.minay.labs.lab03.calculator
 
-fun main(args: Array<String>) {
+fun main() {
 
     val variableStorage = VariableStorage()
+    fillFibonacciFunctions(variableStorage)
     var isResume = true
     println("Калькулятор запущен")
     println("Введите комнаду")
@@ -33,5 +34,14 @@ fun main(args: Array<String>) {
             "fn" -> variableStorage.fn(variable, value)
             else -> println("Некорректный ввод")
         }
+    }
+}
+
+fun fillFibonacciFunctions(variableStorage: VariableStorage){
+    variableStorage.let("x0", "0")
+    variableStorage.let("x1", "1")
+    variableStorage.let("x2", "1")
+    for (i in 3..100){
+        variableStorage.fn("x$i", "x${i-1}+x${i-2}")
     }
 }

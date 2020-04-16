@@ -38,16 +38,27 @@ class VariableStorage {
 
     fun print(key: String) {
         if (variables[key] != null) {
-            print(variables[key]?.roundTo2Char())
+            println(variables[key]?.roundTo2Char())
             return
         }
-        if (functions[key] != null) {
-            val function = functions[key]
-            val firstArg = variables[function?.firstKeyVariable] ?: Double.NaN
-            val secondArg = variables[function?.secondKeyVariable] ?: Double.NaN
-            println(function?.function?.invoke(firstArg, secondArg)?.roundTo2Char())
-            return
+        println(calculateFunction(key))
+//        val function = functions[key]
+//        if (function != null) {
+//            val firstArg = variables[function.firstKeyVariable] ?: Double.NaN
+//            val secondArg = variables[function.secondKeyVariable] ?: Double.NaN
+//            println(function.function.invoke(firstArg, secondArg).roundTo2Char())
+//            return
+//        }
+    }
+
+    private fun calculateFunction(key: String): Double {
+        val function = functions[key]
+        if (function != null) {
+            val firstArg = variables[function.firstKeyVariable] ?: calculateFunction(function.firstKeyVariable) ?: Double.NaN
+            val secondArg = variables[function.secondKeyVariable] ?: calculateFunction(function.secondKeyVariable) ?: Double.NaN
+            return function.function.invoke(firstArg, secondArg)
         }
+        return Double.NaN
     }
 
     fun printVars() {
