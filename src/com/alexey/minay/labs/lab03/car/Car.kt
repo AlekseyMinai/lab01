@@ -6,7 +6,6 @@ interface Car {
     fun turnOffEngine(): Boolean
     fun setGear(newGear: Int): Boolean
     fun setSpeed(newSpeed: Int): Boolean
-
     fun isEngineStarted(): Boolean
     fun getMovementState(): String
     fun getSpeed(): Int

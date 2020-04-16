@@ -1,6 +1,6 @@
 package com.alexey.minay.labs.lab03.car
 
-fun main(args: Array<String>) {
+fun main() {
     println("Для завершения работы приложения введите \"...\"")
     println("Для помощи введите help")
     val car = CarImpl()
