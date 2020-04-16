@@ -2,10 +2,10 @@ package com.alexey.minay.labs.lab03.car
 
 class CarImpl : Car {
 
-    var isEngineStarted = false
-    var movementState = MovementState.STAND
-    var speed: Int = 0
-    var gear: Int = 0
+    private var isEngineStarted = false
+    private var movementState = MovementState.STAND
+    private var speed: Int = 0
+    private var gear: Int = 0
 
     override fun turnOnEngine(): Boolean {
         if (isEngineStarted) {
@@ -16,13 +16,7 @@ class CarImpl : Car {
     }
 
     override fun turnOffEngine(): Boolean {
-        if (movementState != MovementState.STAND) {
-            return false
-        }
-        if (gear != 0) {
-            return false
-        }
-        if (!isEngineStarted) {
+        if (movementState != MovementState.STAND || gear != 0 || !isEngineStarted) {
             return false
         }
         isEngineStarted = false
@@ -30,13 +24,9 @@ class CarImpl : Car {
     }
 
     override fun setGear(newGear: Int): Boolean {
-        if (newGear < -1 || newGear > 5) {
+        if (newGear < -1 || newGear > 5 || !isEngineStarted
+                || (movementState == MovementState.REVERS && speed != 0 && gear != 0)) {
             return false
-        }
-        if (!isEngineStarted) {
-            return false
-        }
-        if (movementState == MovementState.REVERS && speed != 0 && gear != 0) {
         }
         if (newGear == -1) {
             if (speed != 0) {
@@ -49,7 +39,7 @@ class CarImpl : Car {
             gear = newGear
             return true
         }
-        val gearRange = gearRanges[newGear.toString()] ?: return false
+        val gearRange = GEAR_RANGES[newGear.toString()] ?: return false
         if (speed !in gearRange) {
             return false
         }
@@ -58,14 +48,11 @@ class CarImpl : Car {
     }
 
     override fun setSpeed(newSpeed: Int): Boolean {
-        if (!isEngineStarted) {
-            return false
-        }
-        if (speed < 0 || speed > 150) {
+        if (!isEngineStarted || speed < 0 || speed > 150) {
             return false
         }
         if (gear == -1) {
-            val gearRange = gearRanges["-1"] ?: return false
+            val gearRange = GEAR_RANGES[gear.toString()] ?: return false
             if (newSpeed !in gearRange) {
                 return false
             }
@@ -83,7 +70,7 @@ class CarImpl : Car {
                 true
             }
         }
-        val gearRange = gearRanges[gear.toString()] ?: return false
+        val gearRange = GEAR_RANGES[gear.toString()] ?: return false
         if (newSpeed !in gearRange) {
             return false
         }
@@ -97,13 +84,13 @@ class CarImpl : Car {
         return true
     }
 
-    override fun printInfo() {
-        val engineState = if (isEngineStarted) "Запущен" else "Заглушен"
-        println("Состояние двигателя: $engineState")
-        println("Направление движения: ${movementState.value}")
-        println("Скорость: $speed")
-        println("Передача: $gear")
-    }
+    override fun isEngineStarted() = isEngineStarted
+
+    override fun getMovementState() = movementState.value
+
+    override fun getSpeed() = speed
+
+    override fun getGear() = gear
 
     enum class MovementState(val value: String) {
         FORWARD("движется вперед"),
@@ -112,7 +99,7 @@ class CarImpl : Car {
     }
 
     companion object{
-        private val gearRanges = mutableMapOf(
+        private val GEAR_RANGES = mapOf(
                 Pair("-1", 0..20),
                 Pair("1", 0..30),
                 Pair("2", 20..50),

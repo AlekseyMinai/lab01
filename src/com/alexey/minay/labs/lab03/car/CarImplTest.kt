@@ -6,121 +6,121 @@ import org.junit.Test
 
 class CarImplTest{
 
-    private lateinit var car: Car
+    private lateinit var mCar: Car
 
     @Before
     fun setUpCar(){
-        car = CarImpl()
+        mCar = CarImpl()
     }
 
     @Test
     fun shouldTurnOnEngine(){
-        assert(car.turnOnEngine())
+        assert(mCar.turnOnEngine())
     }
 
     @Test
     fun shouldNotTurnOnEngineIfAlreadyTurnedOn(){
-        car.turnOnEngine()
-        assertFalse(car.turnOnEngine())
+        mCar.turnOnEngine()
+        assertFalse(mCar.turnOnEngine())
     }
 
     @Test
     fun shouldTurnOffEngine(){
-        car.turnOnEngine()
-        assert(car.turnOffEngine())
+        mCar.turnOnEngine()
+        assert(mCar.turnOffEngine())
     }
 
     @Test
     fun shouldNotTurnOffEngineIfAlreadyTurnOff(){
-        car.turnOnEngine()
-        car.turnOffEngine()
-        assertFalse(car.turnOffEngine())
+        mCar.turnOnEngine()
+        mCar.turnOffEngine()
+        assertFalse(mCar.turnOffEngine())
     }
 
     @Test
     fun shouldNotTurnOffEngineIfMoving(){
-        car.turnOnEngine()
-        car.setGear(1)
-        car.setSpeed(10)
-        assertFalse(car.turnOffEngine())
+        mCar.turnOnEngine()
+        mCar.setGear(1)
+        mCar.setSpeed(10)
+        assertFalse(mCar.turnOffEngine())
     }
 
     @Test
     fun shouldNotTurnOffEngineIfGearNotNeutral(){
-        car.turnOnEngine()
-        car.setGear(1)
-        assertFalse(car.turnOffEngine())
+        mCar.turnOnEngine()
+        mCar.setGear(1)
+        assertFalse(mCar.turnOffEngine())
     }
 
     @Test
     fun shouldNotSetIncorrectGear(){
-        car.turnOnEngine()
-        assertFalse(car.setGear(-2))
-        assertFalse(car.setGear(6))
+        mCar.turnOnEngine()
+        assertFalse(mCar.setGear(-2))
+        assertFalse(mCar.setGear(6))
     }
 
     @Test
     fun shouldNotSetGearIfIncorrectSpeedRange(){
-        car.turnOnEngine()
-        assertFalse(car.setGear(3))
+        mCar.turnOnEngine()
+        assertFalse(mCar.setGear(3))
     }
 
     @Test
     fun shouldSetGear(){
-        car.turnOnEngine()
-        assert(car.setGear(1))
+        mCar.turnOnEngine()
+        assert(mCar.setGear(1))
     }
 
     @Test
     fun shouldSetSecondGear(){
-        car.turnOnEngine()
-        car.setGear(1)
-        car.setSpeed(20)
-        assert(car.setGear(2))
+        mCar.turnOnEngine()
+        mCar.setGear(1)
+        mCar.setSpeed(20)
+        assert(mCar.setGear(2))
     }
 
     @Test
     fun shouldNotSetReverseGearIfMoved(){
-        car.turnOnEngine()
-        car.setGear(1)
-        car.setSpeed(20)
-        assertFalse(car.setGear(-1))
+        mCar.turnOnEngine()
+        mCar.setGear(1)
+        mCar.setSpeed(20)
+        assertFalse(mCar.setGear(-1))
     }
 
     @Test
     fun shouldNotSetSpeedIfEngineTurnedOff(){
-        assertFalse(car.setSpeed(20))
+        assertFalse(mCar.setSpeed(20))
     }
 
     @Test
     fun shouldNotSetSpeedIfGearNotSelect(){
-        car.turnOnEngine()
-        assertFalse(car.setSpeed(20))
+        mCar.turnOnEngine()
+        assertFalse(mCar.setSpeed(20))
     }
 
     @Test
     fun shouldSetSpeed(){
-        car.turnOnEngine()
-        car.setGear(1)
-        assert(car.setSpeed(20))
+        mCar.turnOnEngine()
+        mCar.setGear(1)
+        assert(mCar.setSpeed(20))
     }
 
     @Test
     fun shouldNotIncreaseSpeedIfSelectNeutral(){
-        car.turnOnEngine()
-        car.setGear(1)
-        car.setSpeed(20)
-        car.setGear(0)
-        assertFalse(car.setSpeed(25))
+        mCar.turnOnEngine()
+        mCar.setGear(1)
+        mCar.setSpeed(20)
+        mCar.setGear(0)
+        assertFalse(mCar.setSpeed(25))
     }
 
     @Test
     fun shouldReduceSpeedIfSelectNeutral(){
-        car.turnOnEngine()
-        car.setGear(1)
-        car.setSpeed(20)
-        car.setGear(0)
-        assert(car.setSpeed(18))
+        mCar.turnOnEngine()
+        mCar.setGear(1)
+        mCar.setSpeed(20)
+        mCar.setGear(0)
+        assert(mCar.setSpeed(18))
     }
 
 }

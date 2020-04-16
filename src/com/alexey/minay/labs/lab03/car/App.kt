@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
         val splittedUserInput = userInput?.split("_")
         when (splittedUserInput?.get(0)?.toLowerCase()) {
             "..." -> isResume = false
-            "info" -> car.printInfo()
+            "info" -> printInfo(car)
             "help" -> printHelp()
             "engineon" -> car.turnOnEngine()
             "engineoff" -> car.turnOffEngine()
@@ -21,6 +21,14 @@ fun main(args: Array<String>) {
             else -> println("Неизвестная команда")
         }
     }
+}
+
+fun printInfo(car: Car) {
+    val engineState = if (car.isEngineStarted()) "Запущен" else "Заглушен"
+    println("Состояние двигателя: $engineState")
+    println("Направление движения: ${car.getMovementState()}")
+    println("Скорость: ${car.getSpeed()}")
+    println("Передача: ${car.getGear()}")
 }
 
 fun printHelp() {
