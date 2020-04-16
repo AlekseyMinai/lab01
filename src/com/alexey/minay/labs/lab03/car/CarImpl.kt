@@ -2,127 +2,103 @@ package com.alexey.minay.labs.lab03.car
 
 class CarImpl : Car {
 
-    private var isSwitchedOn = false
-    private var movementState = MovementState.STAND
-    private var speed: Int = 0
-    private var gear: Int = 0
-
-    private val gearRanges = mutableListOf(
-            0..20, 0..30, 20..50, 30..60, 40..90, 50..150
-    )
+    var isEngineStarted = false
+    var movementState = MovementState.STAND
+    var speed: Int = 0
+    var gear: Int = 0
 
     override fun turnOnEngine(): Boolean {
-        if (isSwitchedOn) {
-            println("Двигатель уже запущен")
+        if (isEngineStarted) {
             return false
         }
-        isSwitchedOn = true
-        println("Двигатель запущен")
+        isEngineStarted = true
         return true
     }
 
     override fun turnOffEngine(): Boolean {
         if (movementState != MovementState.STAND) {
-            println("При движении выключить двигатель нельзя")
             return false
         }
         if (gear != 0) {
-            println("Двигатель может быть выключен только на нейтральной передаче")
             return false
         }
-        if (!isSwitchedOn) {
-            println("Двигатель уже заглушен")
+        if (!isEngineStarted) {
             return false
         }
-        isSwitchedOn = false
-        println("Двигатель заглушен")
+        isEngineStarted = false
         return true
     }
 
     override fun setGear(newGear: Int): Boolean {
         if (newGear < -1 || newGear > 5) {
-            println("Передачи $newGear не существует")
             return false
         }
-        if (!isSwitchedOn) {
-            println("Передачу можно включить только при запущенном двигателе")
+        if (!isEngineStarted) {
             return false
         }
         if (movementState == MovementState.REVERS && speed != 0 && gear != 0) {
-            println("При движении назад можно включить только нейтральную передачу")
         }
         if (newGear == -1) {
             if (speed != 0) {
-                println("При включении задней передачи скорость должна быь равна 0")
                 return false
             }
             gear = newGear
-            println("Включена задняя передача")
             return true
         }
         if (newGear == 0) {
             gear = newGear
-            println("Передача переключена на нейтраль")
             return true
         }
-        if (speed !in gearRanges[newGear]) {
-            println("Невозможно включить $newGear передачу при скорости $speed. Допустимый диапазон ${gearRanges[newGear]}")
+        val gearRange = gearRanges[newGear.toString()] ?: return false
+        if (speed !in gearRange) {
             return false
         }
-        println("Включена передача")
         gear = newGear
         return true
     }
 
     override fun setSpeed(newSpeed: Int): Boolean {
-        if (!isSwitchedOn) {
-            println("Движение с выключенным двигателем невозможно")
+        if (!isEngineStarted) {
             return false
         }
         if (speed < 0 || speed > 150) {
-            println("Заданна невозможная скорость")
             return false
         }
         if (gear == -1) {
-            if (newSpeed !in gearRanges[0]) {
-                println("Невозможно изменить скорость на этой передаче")
+            val gearRange = gearRanges["-1"] ?: return false
+            if (newSpeed !in gearRange) {
                 return false
             }
             if (newSpeed != 0) {
                 movementState = MovementState.REVERS
             }
             speed = newSpeed
-            println("Скорость изменена на $newSpeed")
             return true
         }
         if (gear == 0) {
             return if (newSpeed > speed) {
-                println("Невозможно увеличить скорость на нейтральной передаче")
                 false
             } else {
                 speed = newSpeed
-                println("Затормозили до $speed")
                 true
             }
         }
-        if (newSpeed !in gearRanges[gear]) {
-            println("Невозможно изменить скорость на этой передаче")
+        val gearRange = gearRanges[gear.toString()] ?: return false
+        if (newSpeed !in gearRange) {
             return false
         }
         if (newSpeed == 0) {
-            println("Скорость изменена")
             speed = newSpeed
             movementState = MovementState.STAND
             return true
         }
         speed = newSpeed
         movementState = MovementState.FORWARD
-        println("Скорость изменена на $newSpeed")
         return true
     }
 
     override fun printInfo() {
-        val engineState = if (isSwitchedOn) "Запущен" else "Заглушен"
+        val engineState = if (isEngineStarted) "Запущен" else "Заглушен"
         println("Состояние двигателя: $engineState")
         println("Направление движения: ${movementState.value}")
         println("Скорость: $speed")
@@ -134,5 +110,17 @@ class CarImpl : Car {
         REVERS("движется назад"),
         STAND("стоит")
     }
+
+    companion object{
+        private val gearRanges = mutableMapOf(
+                Pair("-1", 0..20),
+                Pair("1", 0..30),
+                Pair("2", 20..50),
+                Pair("3", 30..60),
+                Pair("4", 40..90),
+                Pair("5", 50..150)
+        )
+    }
+
 }
 
