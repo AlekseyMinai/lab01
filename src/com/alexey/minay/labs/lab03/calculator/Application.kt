@@ -2,7 +2,7 @@ package com.alexey.minay.labs.lab03.calculator
 
 fun main() {
 
-    val variableStorage = VariableStorage()
+    val variableStorage = VariableStorage(::print)
     fillFibonacciFunctions(variableStorage)
     var isResume = true
     println("Калькулятор запущен")

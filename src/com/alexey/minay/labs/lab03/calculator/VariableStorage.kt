@@ -2,72 +2,76 @@ package com.alexey.minay.labs.lab03.calculator
 
 import kotlin.math.round
 
-class VariableStorage {
+class VariableStorage(
+        private val display: (s: String) -> Unit
+) {
 
-    private val mVariables = mutableMapOf<String, Double>()
-    private val mFunctions = mutableMapOf<String, Function>()
+    private val variables = mutableMapOf<String, Double>()
+    private val functions = mutableMapOf<String, Function>()
 
     fun `var`(variableName: String) {
         if (variableName.isNullOrEmpty()) {
             return
         }
-        mVariables[variableName] = Double.NaN
+        variables[variableName] = Double.NaN
     }
 
     fun let(variableName: String, variable: String) {
         try {
             val doubleValue = variable.toDouble()
-            mVariables[variableName] = doubleValue
+            variables[variableName] = doubleValue
             return
         } catch (e: Exception) {
-            mVariables[variableName] = mVariables[variable] ?: Double.NaN
+            variables[variableName] = variables[variable] ?: Double.NaN
         }
     }
 
     fun fn(functionName: String, functionOrNameFunction: String) {
         when (val parsedFunction = FunctionParser.parse(functionOrNameFunction)) {
             is ParserState.IncorrectFunction -> {
-                if (mFunctions[functionOrNameFunction] != null) {
-                    mFunctions[functionName] = mFunctions[functionOrNameFunction]!!
+                if (functions[functionOrNameFunction] != null) {
+                    functions[functionName] = functions[functionOrNameFunction]!!
                 }
 
             }
-            is ParserState.Success -> mFunctions[functionName] = parsedFunction.function
+            is ParserState.Success -> functions[functionName] = parsedFunction.function
         }
     }
 
     fun print(key: String) {
-        if (mVariables[key] != null) {
-            println(mVariables[key]?.roundTo2Char())
-            return
-        }
-        println(calculateFunction(key).roundTo2Char())
+        display(getResult(key) + "\n")
     }
 
     fun printVars() {
-        mVariables.forEach {
-            println(it.key + ":" + it.value)
+        variables.forEach {
+            display("${it.key}: ${it.value} \n")
         }
     }
 
     fun printFns() {
-        mFunctions.forEach {
-            kotlin.io.print(it.key + ":")
-            print(it.key)
+        functions.forEach {
+            display("${it.key}: ${getResult(it.key)} \n")
         }
     }
 
+    private fun getResult(key: String): String {
+        if (variables[key] != null) {
+            return variables[key]?.roundTo2Char().toString()
+        }
+        return calculateFunction(key).roundTo2Char().toString()
+    }
+
     private fun calculateFunction(key: String): Double {
-        val function = mFunctions[key]
+        val function = functions[key]
         if (function != null) {
             var result = function.lazyResult
             if (result != null) {
                 return result
             }
-            val firstArg = mVariables[function.firstKeyVariable]
+            val firstArg = variables[function.firstKeyVariable]
                     ?: calculateFunction(function.firstKeyVariable)
                     ?: Double.NaN
-            val secondArg = mVariables[function.secondKeyVariable]
+            val secondArg = variables[function.secondKeyVariable]
                     ?: calculateFunction(function.secondKeyVariable)
                     ?: Double.NaN
             result = function.function.invoke(firstArg, secondArg)
