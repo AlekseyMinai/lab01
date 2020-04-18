@@ -6,8 +6,8 @@ class VariableStorage(
         private val display: (s: String) -> Unit
 ) {
 
-    private val variables = mutableMapOf<String, Double>()
-    private val functions = mutableMapOf<String, Function>()
+    val variables = mutableMapOf<String, Double>()
+    val functions = mutableMapOf<String, Function>()
 
     fun `var`(variableName: String) {
         if (variableName.isNullOrEmpty()) {
