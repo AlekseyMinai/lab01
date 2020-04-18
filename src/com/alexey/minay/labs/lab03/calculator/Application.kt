@@ -37,11 +37,11 @@ fun main() {
     }
 }
 
-fun fillFibonacciFunctions(variableStorage: VariableStorage){
+fun fillFibonacciFunctions(variableStorage: VariableStorage) {
     variableStorage.let("x0", "0")
     variableStorage.let("x1", "1")
     variableStorage.let("x2", "1")
-    for (i in 3..100){
-        variableStorage.fn("x$i", "x${i-1}+x${i-2}")
+    for (i in 3..100) {
+        variableStorage.fn("x$i", "x${i - 1}+x${i - 2}")
     }
 }

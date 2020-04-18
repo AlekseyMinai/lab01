@@ -22,7 +22,7 @@ object FunctionParser {
 
     private fun getFunction(function: String, operator: String): Function {
         val splittedFun = function.split(operator)
-        val function =
+        val parseFunction =
                 when (operator) {
                     "+" -> FunctionParser::plus
                     "-" -> FunctionParser::minus
@@ -33,7 +33,7 @@ object FunctionParser {
         return Function(
                 firstKeyVariable = splittedFun[0].trim(),
                 secondKeyVariable = splittedFun[1].trim(),
-                function = function
+                function = parseFunction
         )
     }
 

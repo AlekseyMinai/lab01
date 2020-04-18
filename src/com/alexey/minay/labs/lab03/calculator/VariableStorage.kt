@@ -4,74 +4,77 @@ import kotlin.math.round
 
 class VariableStorage {
 
-    private val variables = mutableMapOf<String, Double>()
-    private val functions = mutableMapOf<String, Function>()
+    private val mVariables = mutableMapOf<String, Double>()
+    private val mFunctions = mutableMapOf<String, Function>()
 
-    fun `var`(variableName: String){
-        if (variableName.isNullOrEmpty()){
+    fun `var`(variableName: String) {
+        if (variableName.isNullOrEmpty()) {
             return
         }
-        variables[variableName] = Double.NaN
+        mVariables[variableName] = Double.NaN
     }
 
     fun let(variableName: String, variable: String) {
         try {
             val doubleValue = variable.toDouble()
-            variables[variableName] = doubleValue
+            mVariables[variableName] = doubleValue
             return
         } catch (e: Exception) {
-            variables[variableName] = variables[variable] ?: Double.NaN
+            mVariables[variableName] = mVariables[variable] ?: Double.NaN
         }
     }
 
     fun fn(functionName: String, functionOrNameFunction: String) {
         when (val parsedFunction = FunctionParser.parse(functionOrNameFunction)) {
             is ParserState.IncorrectFunction -> {
-                if (functions[functionOrNameFunction] != null) {
-                    functions[functionName] = functions[functionOrNameFunction]!!
+                if (mFunctions[functionOrNameFunction] != null) {
+                    mFunctions[functionName] = mFunctions[functionOrNameFunction]!!
                 }
 
             }
-            is ParserState.Success -> functions[functionName] = parsedFunction.function
+            is ParserState.Success -> mFunctions[functionName] = parsedFunction.function
         }
     }
 
     fun print(key: String) {
-        if (variables[key] != null) {
-            println(variables[key]?.roundTo2Char())
+        if (mVariables[key] != null) {
+            println(mVariables[key]?.roundTo2Char())
             return
         }
-        println(calculateFunction(key))
-//        val function = functions[key]
-//        if (function != null) {
-//            val firstArg = variables[function.firstKeyVariable] ?: Double.NaN
-//            val secondArg = variables[function.secondKeyVariable] ?: Double.NaN
-//            println(function.function.invoke(firstArg, secondArg).roundTo2Char())
-//            return
-//        }
-    }
-
-    private fun calculateFunction(key: String): Double {
-        val function = functions[key]
-        if (function != null) {
-            val firstArg = variables[function.firstKeyVariable] ?: calculateFunction(function.firstKeyVariable) ?: Double.NaN
-            val secondArg = variables[function.secondKeyVariable] ?: calculateFunction(function.secondKeyVariable) ?: Double.NaN
-            return function.function.invoke(firstArg, secondArg)
-        }
-        return Double.NaN
+        println(calculateFunction(key).roundTo2Char())
     }
 
     fun printVars() {
-        variables.forEach {
+        mVariables.forEach {
             println(it.key + ":" + it.value)
         }
     }
 
     fun printFns() {
-        functions.forEach {
+        mFunctions.forEach {
             kotlin.io.print(it.key + ":")
             print(it.key)
         }
+    }
+
+    private fun calculateFunction(key: String): Double {
+        val function = mFunctions[key]
+        if (function != null) {
+            var result = function.lazyResult
+            if (result != null) {
+                return result
+            }
+            val firstArg = mVariables[function.firstKeyVariable]
+                    ?: calculateFunction(function.firstKeyVariable)
+                    ?: Double.NaN
+            val secondArg = mVariables[function.secondKeyVariable]
+                    ?: calculateFunction(function.secondKeyVariable)
+                    ?: Double.NaN
+            result = function.function.invoke(firstArg, secondArg)
+            function.lazyResult = result
+            return result
+        }
+        return Double.NaN
     }
 
     private fun Double.roundTo2Char() = round(this * 100) / 100
