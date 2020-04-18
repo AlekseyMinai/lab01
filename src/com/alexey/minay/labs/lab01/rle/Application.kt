@@ -5,7 +5,11 @@ import java.io.FileOutputStream
 
 fun main(args: Array<String>) {
     if (args.size != 3) {
-        print("incorrect args")
+        print("Incorrect args. " +
+                "For packing enter:\n" +
+                "java -jar rle.jar pack <input file> <output file>\n" +
+                "For unpacking enter:\n" +
+                "java -jar rle.jar unpack <input file> <output file>\n")
         return
     }
     when (args[0]) {
@@ -44,9 +48,9 @@ fun pack(inputUrl: String, outputUrl: String) {
     output.close()
 }
 
-private fun writeBytes(output: FileOutputStream, theSameByteQuantity: Int, lastByte: Int) {
-    output.write(theSameByteQuantity)
-    output.write(lastByte)
+private fun writeBytes(output: FileOutputStream, quantity: Int, symbol: Int) {
+    output.write(quantity)
+    output.write(symbol)
 }
 
 fun unpack(inputUrl: String, outputUrl: String) {
