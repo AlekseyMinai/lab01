@@ -2,9 +2,13 @@ package com.alexey.minay.labs.lab01.live
 
 import java.io.File
 
+private const val LIVING_CELL_STATE = '#'
+private const val DEAD_CELL_STATE = ' '
+
 fun main(args: Array<String>) {
     if (args.isEmpty()) {
-        print("Incorrect params")
+        print("Incorrect params. \n" +
+                "To correct calculating enter: java -jar life.jar <input file> [<output file>]\n")
         return
     }
     val screenBefore = readScreen(args[0])
@@ -36,15 +40,19 @@ fun calculateNextIteration(screen: Array<CharArray>): Array<CharArray> {
     val newScreen = copyOf(screen)
     for (i in 1 until screen.size - 1) {
         for (k in 1 until screen.size - 1) {
-            var quantityLiveCell = 0
-            if (screen[i - 1][k] == '#') quantityLiveCell++
-            if (screen[i][k - 1] == '#') quantityLiveCell++
-            if (screen[i + 1][k] == '#') quantityLiveCell++
-            if (screen[i][k + 1] == '#') quantityLiveCell++
-            if (quantityLiveCell == 3) {
-                newScreen[i][k] = '#'
-            } else if (quantityLiveCell > 3 || quantityLiveCell < 2) {
-                newScreen[i][k] = ' '
+            var numberOfLivingCell = 0
+            if (screen[i - 1][k - 1] == LIVING_CELL_STATE) numberOfLivingCell++
+            if (screen[i - 1][k] == LIVING_CELL_STATE) numberOfLivingCell++
+            if (screen[i - 1][k + 1] == LIVING_CELL_STATE) numberOfLivingCell++
+            if (screen[i][k - 1] == LIVING_CELL_STATE) numberOfLivingCell++
+            if (screen[i][k + 1] == LIVING_CELL_STATE) numberOfLivingCell++
+            if (screen[i + 1][k - 1] == LIVING_CELL_STATE) numberOfLivingCell++
+            if (screen[i + 1][k] == LIVING_CELL_STATE) numberOfLivingCell++
+            if (screen[i + 1][k + 1] == LIVING_CELL_STATE) numberOfLivingCell++
+            if (numberOfLivingCell == 3) {
+                newScreen[i][k] = LIVING_CELL_STATE
+            } else if (numberOfLivingCell > 3 || numberOfLivingCell < 2) {
+                newScreen[i][k] = DEAD_CELL_STATE
             }
         }
     }
@@ -54,11 +62,8 @@ fun calculateNextIteration(screen: Array<CharArray>): Array<CharArray> {
 fun copyOf(oldScreen: Array<CharArray>): Array<CharArray> {
     val screen = mutableListOf<CharArray>()
     for (row in oldScreen) {
-        val rowChars = mutableListOf<Char>()
-        for (element in row) {
-            rowChars.add(element)
-        }
-        screen.add(rowChars.toCharArray())
+        val rowChars = row.copyOf()
+        screen.add(rowChars)
     }
     return screen.toTypedArray()
 }
