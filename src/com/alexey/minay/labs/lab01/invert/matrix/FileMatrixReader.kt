@@ -1,30 +1,43 @@
 package com.alexey.minay.labs.lab01.invert.matrix
 
-import com.alexey.minay.labs.lab01.invert.matrix.handler.HandlerState
-import com.alexey.minay.labs.lab01.invert.matrix.handler.DataHandler
 import java.io.File
 
-class FileMatrixReader(
-        private val readDataHandler: DataHandler,
-        private var url: String
-) : MatrixReader {
+class FileMatrixReader {
 
-    override fun read(): ReaderState {
+    fun read(url: String): ReaderState {
         val file = File(url)
         if (!file.exists()) {
             return ReaderState.Error
         }
         val bufferedReader = file.bufferedReader()
         val iterator = bufferedReader.lineSequence().iterator()
-        val data = mutableListOf<String>()
+        val readRows = mutableListOf<String>()
         iterator.forEach {
-            data.add(it)
+            readRows.add(it)
         }
+        return getSquareMatrixFrom(readRows.toTypedArray())
+    }
 
-        val handlerState = readDataHandler.getSquareMatrixFrom(data.toTypedArray())
-        return when (handlerState) {
-            is HandlerState.Error -> ReaderState.Error
-            is HandlerState.Success -> ReaderState.Success(handlerState.matrix)
+    private fun getSquareMatrixFrom(matrixRows: Array<String>?): ReaderState {
+        if (matrixRows == null || matrixRows.size < 2) {
+            return ReaderState.Error
         }
+        val matrix = mutableListOf<DoubleArray>()
+        matrixRows.forEach { row ->
+            val matrixCells = row.split("\t")
+            if (matrixCells.size != matrixRows.size) {
+                return ReaderState.Error
+            }
+            val matrixRow = mutableListOf<Double>()
+            matrixCells.forEach {
+                try {
+                    matrixRow.add(it.toDouble())
+                } catch (e: Exception) {
+                    return ReaderState.Error
+                }
+            }
+            matrix.add(matrixRow.toDoubleArray())
+        }
+        return ReaderState.Success(matrix.toTypedArray())
     }
 }

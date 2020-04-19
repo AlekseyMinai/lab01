@@ -1,21 +1,6 @@
 package com.alexey.minay.labs.lab01.invert.matrix
 
-import java.util.*
-
 object MatrixUtils {
-
-    fun getRandomMatrixWith(size: Int): Array<FloatArray> {
-        val randomMatrix = mutableListOf<FloatArray>()
-        for (i in 0 until size) {
-            val rowUnitMatrix = mutableListOf<Float>()
-            for (k in 0 until size) {
-                val value = Random().nextInt(9)
-                rowUnitMatrix.add(value.toFloat())
-            }
-            randomMatrix.add(rowUnitMatrix.toFloatArray())
-        }
-        return randomMatrix.toTypedArray()
-    }
 
     fun invert(matrix: Array<DoubleArray>): Array<DoubleArray> {
         val matrixSize = matrix.size
@@ -30,6 +15,7 @@ object MatrixUtils {
             getZerosUnderDiagonal(matrix, unitMatrix, rowIndex)
         }
         getZerosAboveDiagonal(matrix, unitMatrix)
+
         return unitMatrix
     }
 
@@ -47,6 +33,15 @@ object MatrixUtils {
     }
 
     private fun getRideOfDiagonalZero(matrix: Array<DoubleArray>, unitMatrix: Array<DoubleArray>, rowIndex: Int) {
+        var numberOfZerosInRow = 0
+        for (cell in 0 until matrix.size) {
+            if (matrix[rowIndex][cell] == 0.0) {
+                numberOfZerosInRow++
+            }
+        }
+        if (numberOfZerosInRow == matrix.size) {
+            throw ArithmeticException("Determinant of this matrix equals zero")
+        }
         var rowForSumIndex = 0
         while (matrix[rowForSumIndex][rowIndex] == 0.0) {
             rowForSumIndex++
