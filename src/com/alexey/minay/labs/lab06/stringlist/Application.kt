@@ -10,18 +10,16 @@ fun main() {
 
 
     val iterator = list.iterator()
-    while (iterator.hasNext()){
-        print(iterator.next())
-    }
+
     while (iterator.hasPrevious()){
         val p = iterator.previous()
         if (p == "2"){
-            //iterator.set("f")
+            iterator.set("f")
         }
     }
     while (iterator.hasNext()){
         val p = iterator.next()
-        if (p == "1"){
+        if (p == "3"){
             iterator.set("a")
         }
     }

@@ -1,6 +1,7 @@
 package com.alexey.minay.labs.lab06.stringlist
 
 import java.util.*
+import kotlin.NoSuchElementException
 
 class StringList : MutableIterable<String> {
 
@@ -54,7 +55,7 @@ class StringList : MutableIterable<String> {
         return stringBuilder.toString()
     }
 
-    override fun iterator() = StringListIterator(root)
+    override fun iterator() = StringListIterator()
 
     class Node(
             var value: String,
@@ -62,14 +63,15 @@ class StringList : MutableIterable<String> {
             var previous: Node?
     )
 
-    inner class StringListIterator(
-            private var cursor: Node?
-    ) : MutableListIterator<String> {
+    inner class StringListIterator: MutableListIterator<String> {
 
         private var index: Int = 0
+        private var cursor: Node? = null
 
         override fun add(element: String) {
-            this@StringList.add(element)
+            val newNode = Node(element, cursor, cursor?.next)
+            cursor?.next = newNode
+            newNode.next?.previous = newNode
         }
 
         override fun remove() {
@@ -86,13 +88,16 @@ class StringList : MutableIterable<String> {
 
         override fun next(): String {
             if (!hasNext()) {
-                index = 0
                 throw NoSuchElementException()
             }
-            val value = cursor?.value ?: ""
-            cursor = if (cursor?.next == null) cursor else cursor?.next
+            if (cursor == null){
+                cursor = root
+                index = 0
+                return cursor?.value ?: ""
+            }
+            cursor = if (cursor == null) cursor else cursor?.next
             index++
-            return value
+            return cursor?.value ?: ""
         }
 
         override fun hasPrevious() = index > 0
@@ -101,13 +106,17 @@ class StringList : MutableIterable<String> {
             if (!hasPrevious()) {
                 throw NoSuchElementException()
             }
-            val value = cursor?.value ?: ""
-            cursor = if (cursor?.previous == null) cursor else cursor?.previous
+            if (cursor == null){
+                cursor = last
+                index = size
+                return cursor?.value ?: ""
+            }
+            cursor = if (cursor == null) cursor else cursor?.previous
             index--
-            return value
+            return cursor?.value ?: ""
         }
 
-        override fun previousIndex() = index - 1
+        override fun previousIndex() = index
     }
 
 }
