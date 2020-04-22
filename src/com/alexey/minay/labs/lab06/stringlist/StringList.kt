@@ -31,7 +31,9 @@ class StringList : MutableListIterator<String>, MutableIterable<String> {
         root = null
         last = null
         next = null
+        lastReturned = null
         size = 0
+        nextIndex = 0
     }
 
     override fun hasNext() = nextIndex < size
@@ -94,13 +96,51 @@ class StringList : MutableListIterator<String>, MutableIterable<String> {
         lastReturned?.value = element
     }
 
-//    override fun set(element: String) {
-//        val previous = next?.previous
-//        val nextCursor = next
-//        next = Node(element, nextCursor, next?.previous)
-//        previous?.next = next
-//        nextCursor?.previous = next
-//        size++
-//    }
+    fun setIntoCurrent(element: String) {
+        val previous = next?.previous
+        val nextCursor = next
+        next = Node(element, nextCursor, next?.previous)
+        previous?.next = next
+        nextCursor?.previous = next
+        size++
+    }
+
+    inner class StringListIterator: MutableListIterator<String>{
+
+        override fun hasPrevious() = nextIndex > 0
+
+        override fun nextIndex(): Int {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun previous(): String {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun previousIndex(): Int {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun add(element: String) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun hasNext(): Boolean {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun next(): String {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun remove() {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun set(element: String) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+    }
 
 }
