@@ -6,18 +6,28 @@ fun main() {
     list.add("2")
     list.add("3")
     list.add("4")
-    list.add("35")
+    list.add("5")
 
-    list.next()
-    list.next()
-    list.remove()
-    println(list)
 
-    list.remove()
-    println(list)
-
-    for (i in list){
-        print(i)
+    val iterator = list.iterator()
+    while (iterator.hasNext()){
+        print(iterator.next())
     }
+    while (iterator.hasPrevious()){
+        val p = iterator.previous()
+        if (p == "2"){
+            //iterator.set("f")
+        }
+    }
+    while (iterator.hasNext()){
+        val p = iterator.next()
+        if (p == "1"){
+            iterator.set("a")
+        }
+    }
+    while (iterator.hasPrevious()){
+        print(iterator.previous())
+    }
+
 
 }

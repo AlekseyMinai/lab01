@@ -2,17 +2,15 @@ package com.alexey.minay.labs.lab06.stringlist
 
 import java.util.*
 
-class StringList : MutableListIterator<String>, MutableIterable<String> {
+class StringList : MutableIterable<String> {
 
     private var root: Node? = null
     private var last: Node? = null
     private var next: Node? = null
-    private var lastReturned: Node? = null
-    private var nextIndex = 0
+
     private var size: Int = 0
 
-    override fun add(element: String) {
-        lastReturned = null
+    fun add(element: String) {
         if (size == 0) {
             root = Node(element, null, null)
             last = root
@@ -27,76 +25,21 @@ class StringList : MutableListIterator<String>, MutableIterable<String> {
 
     fun size() = size
 
-    fun clear() {
-        root = null
-        last = null
-        next = null
-        lastReturned = null
-        size = 0
-        nextIndex = 0
-    }
-
-    override fun hasNext() = nextIndex < size
-
-    override fun next(): String {
-        if (!hasNext()) {
-            nextIndex = 0
-            throw NoSuchElementException()
-        }
-        lastReturned = next
-        val value = lastReturned?.value ?: ""
-        nextIndex++
-        next = next?.next
-
-        return value
-    }
-
-    override fun hasPrevious() = nextIndex > 0
-
-    override fun nextIndex() = nextIndex
-
-    override fun previous(): String {
-        if (!hasPrevious()) {
-            throw IndexOutOfBoundsException()
-        }
-        lastReturned = if (next == null) last else next?.previous
-        nextIndex--
-        return lastReturned?.value ?: ""
-    }
-
-    override fun previousIndex() = nextIndex - 1
-
-    class Node(
-            var value: String,
-            var next: Node?,
-            var previous: Node?
-    )
-
-    override fun toString(): String {
-        val stringBuilder = StringBuilder()
-        forEach { stringBuilder.append("$it, ") }
-        return stringBuilder.toString()
-    }
-
-    override fun iterator(): MutableIterator<String> {
-        next = root
-        lastReturned = root
-        nextIndex = 0
-        return this
-    }
-
-    override fun remove() {
+    fun remove() {
         next?.previous?.next = next?.next
         next?.next?.previous = next?.previous
         next = next?.next
         size--
     }
 
-    override fun set(element: String) {
-        lastReturned?.value = element
+    fun clear() {
+        root = null
+        last = null
+        next = null
+        size = 0
     }
 
-    fun setIntoCurrent(element: String) {
+    fun set(position: Int, element: String) {
         val previous = next?.previous
         val nextCursor = next
         next = Node(element, nextCursor, next?.previous)
@@ -105,42 +48,66 @@ class StringList : MutableListIterator<String>, MutableIterable<String> {
         size++
     }
 
-    inner class StringListIterator: MutableListIterator<String>{
+    override fun toString(): String {
+        val stringBuilder = StringBuilder()
+        forEach { stringBuilder.append("$it, ") }
+        return stringBuilder.toString()
+    }
 
-        override fun hasPrevious() = nextIndex > 0
+    override fun iterator() = StringListIterator(root)
 
-        override fun nextIndex(): Int {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
+    class Node(
+            var value: String,
+            var next: Node?,
+            var previous: Node?
+    )
 
-        override fun previous(): String {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
+    inner class StringListIterator(
+            private var cursor: Node?
+    ) : MutableListIterator<String> {
 
-        override fun previousIndex(): Int {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
+        private var index: Int = 0
 
         override fun add(element: String) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-        override fun hasNext(): Boolean {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-        override fun next(): String {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            this@StringList.add(element)
         }
 
         override fun remove() {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            this@StringList.remove()
         }
 
         override fun set(element: String) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            cursor?.value = element
         }
 
+        override fun nextIndex() = index
+
+        override fun hasNext() = index < size
+
+        override fun next(): String {
+            if (!hasNext()) {
+                index = 0
+                throw NoSuchElementException()
+            }
+            val value = cursor?.value ?: ""
+            cursor = if (cursor?.next == null) cursor else cursor?.next
+            index++
+            return value
+        }
+
+        override fun hasPrevious() = index > 0
+
+        override fun previous(): String {
+            if (!hasPrevious()) {
+                throw NoSuchElementException()
+            }
+            val value = cursor?.value ?: ""
+            cursor = if (cursor?.previous == null) cursor else cursor?.previous
+            index--
+            return value
+        }
+
+        override fun previousIndex() = index - 1
     }
 
 }
