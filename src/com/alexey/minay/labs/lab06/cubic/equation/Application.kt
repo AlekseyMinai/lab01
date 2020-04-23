@@ -6,7 +6,7 @@ import kotlin.math.roundToInt
 fun main() {
     val coefficients = mutableListOf<Double>()
     var input: String?
-    println("To exit input (ctrl + z)...")
+    println("To exit input (ctrl + d)...")
     do {
         if (coefficients.isEmpty())
             println("Input four coefficients: ")
