@@ -1,31 +1,19 @@
 package com.alexey.minay.labs.lab06.stringlist
 
 fun main() {
-    val list = StringList()
-    list.add("1")
-    list.add("2")
-    list.add("3")
-    list.add("4")
-    list.add("5")
+    var mStringList = StringList()
 
-
-    val iterator = list.iterator()
-
-    while (iterator.hasPrevious()){
-        val p = iterator.previous()
-        if (p == "2"){
-            iterator.set("f")
-        }
-    }
-    while (iterator.hasNext()){
-        val p = iterator.next()
-        if (p == "3"){
-            iterator.set("a")
-        }
-    }
-    while (iterator.hasPrevious()){
-        print(iterator.previous())
-    }
+    val element1 = "element1"
+    val element2 = "element2"
+    val element3 = "element3"
+    mStringList.add(element1)
+    mStringList.add(element2)
+    mStringList.add(element3)
+    var iterator = mStringList.iterator()
+    iterator.next()
+    iterator.next()
+    iterator.set("set")
+    println(mStringList)
 
 
 }

@@ -1,57 +1,44 @@
 package com.alexey.minay.labs.lab06.stringlist
 
-import java.util.*
-import kotlin.NoSuchElementException
-
 class StringList : MutableIterable<String> {
 
-    private var root: Node? = null
-    private var last: Node? = null
-    private var next: Node? = null
+    private var mRoot: Node? = null
+    private var mLast: Node? = null
+    private var mNext: Node? = null
 
-    private var size: Int = 0
+    private var mSize: Int = 0
 
     fun add(element: String) {
-        if (size == 0) {
-            root = Node(element, null, null)
-            last = root
-            next = root
-            size++
+        if (mSize == 0) {
+            mRoot = Node(element, null, null)
+            mLast = mRoot
+            mNext = mRoot
+            mSize++
             return
         }
-        last?.next = Node(element, null, last)
-        last = last?.next
-        size++
+        mLast?.next = Node(element, null, mLast)
+        mLast = mLast?.next
+        mSize++
     }
 
-    fun size() = size
+    fun size() = mSize
 
     fun remove() {
-        next?.previous?.next = next?.next
-        next?.next?.previous = next?.previous
-        next = next?.next
-        size--
+        mLast?.previous?.next = null
+        mLast = mLast?.previous
+        mSize--
     }
 
     fun clear() {
-        root = null
-        last = null
-        next = null
-        size = 0
-    }
-
-    fun set(position: Int, element: String) {
-        val previous = next?.previous
-        val nextCursor = next
-        next = Node(element, nextCursor, next?.previous)
-        previous?.next = next
-        nextCursor?.previous = next
-        size++
+        mRoot = null
+        mLast = null
+        mNext = null
+        mSize = 0
     }
 
     override fun toString(): String {
         val stringBuilder = StringBuilder()
-        forEach { stringBuilder.append("$it, ") }
+        forEach { stringBuilder.append("$it ") }
         return stringBuilder.toString()
     }
 
@@ -63,60 +50,71 @@ class StringList : MutableIterable<String> {
             var previous: Node?
     )
 
-    inner class StringListIterator: MutableListIterator<String> {
+    inner class StringListIterator : MutableListIterator<String> {
 
-        private var index: Int = 0
-        private var cursor: Node? = null
+        private var mIndex: Int = 0
+        private var mCursor: Node? = null
 
         override fun add(element: String) {
-            val newNode = Node(element, cursor, cursor?.next)
-            cursor?.next = newNode
+            val newNode = Node(element, mCursor, mCursor?.next)
+            mCursor?.next = newNode
             newNode.next?.previous = newNode
         }
 
         override fun remove() {
-            this@StringList.remove()
+            if(mCursor == null){
+                mRoot = mRoot?.next
+                mRoot?.previous = null
+                mSize--
+                return
+            }
+            mCursor = mCursor?.next
+            mCursor?.previous?.next = mCursor?.next
+            mCursor?.next?.previous = mCursor?.previous
+            mCursor = mCursor?.next
+            mSize--
         }
 
         override fun set(element: String) {
-            cursor?.value = element
+            mCursor?.value = element
         }
 
-        override fun nextIndex() = index
+        override fun nextIndex() = mIndex
 
-        override fun hasNext() = index < size
+        override fun hasNext() = mIndex < mSize
 
         override fun next(): String {
             if (!hasNext()) {
                 throw NoSuchElementException()
             }
-            if (cursor == null){
-                cursor = root
-                index = 0
-                return cursor?.value ?: ""
+            if (mCursor == null) {
+                mCursor = mRoot
+                mIndex = 0
+                return mCursor?.value ?: ""
             }
-            cursor = if (cursor == null) cursor else cursor?.next
-            index++
-            return cursor?.value ?: ""
+            mCursor = if (mCursor == null) mCursor else mCursor?.next
+            mIndex++
+            return mCursor?.value ?: ""
         }
 
-        override fun hasPrevious() = index > 0
+        override fun hasPrevious() = mIndex > 0
 
         override fun previous(): String {
             if (!hasPrevious()) {
                 throw NoSuchElementException()
             }
-            if (cursor == null){
-                cursor = last
-                index = size
-                return cursor?.value ?: ""
+            if (mCursor == null) {
+                mCursor = mLast
+                mIndex = mSize
+                return mCursor?.value ?: ""
             }
-            cursor = if (cursor == null) cursor else cursor?.previous
-            index--
-            return cursor?.value ?: ""
+            mCursor = if (mCursor == null) mCursor else mCursor?.previous
+            mIndex--
+            return mCursor?.value ?: ""
         }
 
-        override fun previousIndex() = index
+        override fun previousIndex() = mIndex
+
     }
 
 }

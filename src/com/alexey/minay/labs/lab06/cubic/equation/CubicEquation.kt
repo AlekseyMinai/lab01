@@ -1,4 +1,4 @@
-package com.alexey.minay.labs.lab06.fourth.degree.equation
+package com.alexey.minay.labs.lab06.cubic.equation
 
 import kotlin.math.*
 
