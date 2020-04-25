@@ -7,6 +7,7 @@ class MyArray<T>(var capacity: Int = DEFAULT_CAPACITY) {
 
     constructor(myArray: MyArray<T>) : this() {
         mContainer = Array(myArray.size()) { myArray[it] }
+        mLastIndex = myArray.size() - 1
     }
 
     fun add(element: T) {

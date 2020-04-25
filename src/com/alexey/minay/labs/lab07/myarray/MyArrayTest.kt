@@ -124,4 +124,13 @@ class MyArrayTest {
         assertEquals(2, mMyArray.size())
     }
 
+    @Test
+    fun shouldCopy(){
+        mMyArray.add(0.0)
+        mMyArray.add(1.0)
+        mMyArray.add(2.0)
+        val newMyArray = MyArray(mMyArray)
+        assertEquals(3, newMyArray.size())
+    }
+
 }
