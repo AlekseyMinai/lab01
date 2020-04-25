@@ -6,7 +6,7 @@ import com.alexey.minay.labs.lab07.vehicle.vehicles.interfaces.IVehicle
 abstract class Vehicle<T : IPerson> : IVehicle<T> {
 
     private var passengers = mutableListOf<T>()
-    protected abstract var quantityPlace: Int
+    protected abstract val quantityPlace: Int
 
     override fun addPassenger(passenger: T) {
         if (passengers.size >= quantityPlace) {
@@ -31,6 +31,12 @@ abstract class Vehicle<T : IPerson> : IVehicle<T> {
 
     override fun removeAllPassengers() {
         passengers.clear()
+    }
+
+    override fun toString(): String {
+        val stringBuilder = StringBuilder()
+        passengers.forEach { stringBuilder.append(it).append("\n") }
+        return stringBuilder.toString()
     }
 
 }
