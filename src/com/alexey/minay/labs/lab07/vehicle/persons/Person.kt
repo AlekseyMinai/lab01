@@ -1,6 +1,6 @@
-package com.alexey.minay.labs.lab07.vehicle.pepsons
+package com.alexey.minay.labs.lab07.vehicle.persons
 
-import com.alexey.minay.labs.lab07.vehicle.pepsons.interfaces.IPerson
+import com.alexey.minay.labs.lab07.vehicle.persons.interfaces.IPerson
 
 open class Person(
         protected open val personName: String

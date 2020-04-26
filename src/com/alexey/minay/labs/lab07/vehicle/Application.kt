@@ -1,8 +1,8 @@
 package com.alexey.minay.labs.lab07.vehicle
 
-import com.alexey.minay.labs.lab07.vehicle.pepsons.Person
-import com.alexey.minay.labs.lab07.vehicle.pepsons.PoliceMan
-import com.alexey.minay.labs.lab07.vehicle.pepsons.Racer
+import com.alexey.minay.labs.lab07.vehicle.persons.Person
+import com.alexey.minay.labs.lab07.vehicle.persons.PoliceMan
+import com.alexey.minay.labs.lab07.vehicle.persons.Racer
 import com.alexey.minay.labs.lab07.vehicle.vehicles.MakeOfTheCar
 import com.alexey.minay.labs.lab07.vehicle.vehicles.PoliceCar
 import com.alexey.minay.labs.lab07.vehicle.vehicles.Taxi

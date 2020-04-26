@@ -1,6 +1,6 @@
-package com.alexey.minay.labs.lab07.vehicle.pepsons
+package com.alexey.minay.labs.lab07.vehicle.persons
 
-import com.alexey.minay.labs.lab07.vehicle.pepsons.interfaces.IRacer
+import com.alexey.minay.labs.lab07.vehicle.persons.interfaces.IRacer
 
 class Racer(
         override val personName: String,
