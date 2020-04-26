@@ -1,4 +1,4 @@
-package com.alexey.minay.labs.lab02.dictionary03
+package com.alexey.minay.labs.lab02.dictionary03.tests
 
 class WordHandler(
         private val output: (value: String) -> Unit,

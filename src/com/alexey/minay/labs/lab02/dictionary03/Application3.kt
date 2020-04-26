@@ -1,5 +1,7 @@
 package com.alexey.minay.labs.lab02.dictionary03
 
+import com.alexey.minay.labs.lab02.dictionary03.tests.WordHandler
+
 fun main(args: Array<String>) {
     if (args.isNullOrEmpty()) {
         println("When starting the program, enter the file name")
