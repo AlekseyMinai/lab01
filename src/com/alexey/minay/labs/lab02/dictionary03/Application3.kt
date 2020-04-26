@@ -3,14 +3,24 @@ package com.alexey.minay.labs.lab02.dictionary03
 import java.io.File
 
 fun main(args: Array<String>) {
-    val dictionaryProvider = DictionaryProvider(args[0])
-    val dictionary = dictionaryProvider.readDictionary()
+    if (args.isNullOrEmpty()){
+        println("When starting the program, enter the file name")
+        return
+    }
+    val url = args[0]
+    val dictionaryProvider = DictionaryProvider(url, ::println, ::readLine)
+    val dictionary = try {
+        dictionaryProvider.readDictionary()
+    }catch (e: RuntimeException){
+        println(e.message)
+        return
+    }
     var isResumed = true
     while (isResumed) {
         print("Введите слово для перевода: ")
         val inputWord = readLine()
         if (inputWord.isNullOrBlank()) {
-            print("Некорректный ввод. \n")
+            println("Некорректный ввод.")
             continue
         }
         when (inputWord) {
@@ -23,21 +33,25 @@ fun main(args: Array<String>) {
     }
 }
 
-class DictionaryProvider(private val url: String) {
+class DictionaryProvider(
+        private val url: String,
+        private val output: (value: String) -> Unit,
+        private val input: () -> String?
+) {
 
     private val newWords = mutableMapOf<String, String>()
 
     fun readDictionary(): Map<String, String> {
         val dictionaryFile = getFile(url)
-        val bufferedReader = dictionaryFile.bufferedReader()
-        val iterator = bufferedReader.lineSequence().iterator()
         val dictionary = mutableMapOf<String, String>()
-        while (iterator.hasNext()) {
-            val line = iterator.next()
+        dictionaryFile.forEachLine{line ->
             val splittedLine = line.split("=")
+            if (splittedLine.size != 2){
+                throw RuntimeException("Invalid file contents")
+            }
             dictionary[splittedLine[0]] = splittedLine[1]
         }
-        bufferedReader.close()
+
         return dictionary
     }
 
@@ -58,31 +72,31 @@ class DictionaryProvider(private val url: String) {
                 return
             }
         }
-        print("Перевод: $translate \n")
+        output.invoke("Перевод: $translate ")
     }
 
     private fun startAddCase(inputWord: String?) {
-        print("Слово не найдено, введите перевод: ")
-        val translate = readLine()
+        output.invoke("Слово не найдено, введите перевод: ")
+        val translate = input.invoke()
         if (translate.isNullOrBlank()) {
-            print("Слово проигнорированно. \n")
+            output.invoke("Слово проигнорированно.")
         } else {
             if (inputWord != null) newWords[inputWord] = translate
-            print("Слово $inputWord сохранено в словаре как: $translate. \n")
+            output.invoke("Слово $inputWord сохранено в словаре как: $translate.")
         }
     }
 
     fun close() {
-        print("В словарь были внесены изменения. Сохранить Y/N? ")
+        output.invoke("В словарь были внесены изменения. Сохранить Y/N?")
         var isIncorrectInput = true
         while (isIncorrectInput) {
-            when (readLine()?.toLowerCase()) {
+            when (input.invoke()?.toLowerCase()) {
                 "y" -> {
                     saveNewWords()
                     isIncorrectInput = false
                 }
                 "n" -> isIncorrectInput = false
-                else -> print("Некорректная команда, введите y или n. ")
+                else -> output.invoke("Некорректная команда, введите y или n.")
             }
         }
     }

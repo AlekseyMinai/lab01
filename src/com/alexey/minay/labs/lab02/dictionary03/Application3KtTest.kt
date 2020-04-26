@@ -16,7 +16,7 @@ class Application3KtTest {
     private var input = ByteArrayInputStream(byteArrayOf())
 
     @Test
-    fun shouldReturnNotEmptyList() {
+    fun shouldReturnNotEmptyDictionary() {
         val dictionary = dictionaryProvider.readDictionary()
         assert(!dictionary.isNullOrEmpty())
     }
@@ -29,7 +29,7 @@ class Application3KtTest {
     }
 
     @Test
-    fun shouldAddNewWord() {
+    fun shouldCorrectSaveNewWord() {
         val dictionary = dictionaryProvider.readDictionary()
         provideInput("чашка")
         dictionaryProvider.handleWord("cap", dictionary)
@@ -37,7 +37,7 @@ class Application3KtTest {
     }
 
     @Test
-    fun shouldIgnoreNewWord() {
+    fun shouldIgnoreNewWordIfInputIsEmpty() {
         val dictionary = dictionaryProvider.readDictionary()
         provideInput("\n")
         dictionaryProvider.handleWord("asdffasdf", dictionary)
@@ -87,7 +87,7 @@ class Application3KtTest {
 
     @Before
     fun setUpDictionaryProvider() {
-        dictionaryProvider = DictionaryProvider(getMockDictionaryFilePath())
+        //dictionaryProvider = DictionaryProvider(getMockDictionaryFilePath())
     }
 
     @After
