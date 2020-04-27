@@ -8,7 +8,6 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 
-
 class AppKtTest {
 
     private val output = ByteArrayOutputStream()
@@ -31,46 +30,40 @@ class AppKtTest {
     }
 
     @Test
-    fun appCase() {
-        val testString = "1 2 3"
+    fun shouldPrintCorrectResult() {
+        val testString = "-1 1 2 3"
         val info = "Введите числа с плавающей точкой, разделенные пробелами:"
         provideInput(testString)
         main()
-        assertEquals("$info\n3.0 4.0 5.0 ", output.toString());
+        assertEquals("$info\n1.0 3.0 4.0 5.0 ", output.toString());
     }
 
     @Test
     fun shouldReadStringAndReturnListOfDouble() {
         val testString = "1 2 3"
         provideInput(testString)
-        val listDouble = readIn()
+        val listDouble = readInput()
         assertEquals(mutableListOf(1.0, 2.0, 3.0), listDouble)
     }
 
     @Test
-    fun stringShouldMapToDoubleList() {
+    fun shouldMapToListOfDouble() {
         val str = "1 2 3 4"
-        assertEquals(mutableListOf(1.0, 2.0, 3.0, 4.0), str.toDoubleList())
+        assertEquals(mutableListOf(1.0, 2.0, 3.0, 4.0), str.toListOfDouble())
     }
 
     @Test
     fun shouldNotReadNotNumber() {
         val str = "1 a 3 4"
-        val listDouble = str.toDoubleList()
+        val listDouble = str.toListOfDouble()
         assertEquals(mutableListOf(1.0, 3.0, 4.0), listDouble)
     }
 
     @Test
     fun shouldPrintError() {
         val str = "1 a 3 4"
-        str.toDoubleList()
+        str.toListOfDouble()
         assertEquals("\"a\" - не число \n", output.toString());
-    }
-
-    @Test
-    fun shouldAverageToOnlyPositiveNumbers() {
-        val listDouble = mutableListOf(1.0, 2.0, -9.0)
-        assertEquals(mutableListOf(-1.0, 0.0, -9.0), listDouble.addAverageToPositiveValue())
     }
 
     @Test
