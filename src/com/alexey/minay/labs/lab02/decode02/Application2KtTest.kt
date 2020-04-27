@@ -1,41 +1,57 @@
 package com.alexey.minay.labs.lab02.decode02
 
-import org.junit.After
-import org.junit.Assert.*
-import org.junit.Before
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 
-class Application2KtTest{
+class Application2KtTest {
 
-    private val output = ByteArrayOutputStream()
-    private var input = ByteArrayInputStream(byteArrayOf())
-
-    @Before
-    fun setUpStreams() {
-        System.setOut(PrintStream(output))
-    }
-
-    @After
-    fun restoreSystemInputOutput() {
-        input.close()
-        output.close()
-    }
-
-    private fun provideInput(data: String) {
-        input = ByteArrayInputStream(data.toByteArray())
-        System.setIn(input)
+    @Test
+    fun shouldDecodeString() {
+        val testString = "Car &it;says&gt; &quot;Meow&quot; M&amp;M&apos;s"
+        val result = htmlDecode(testString)
+        assertEquals("Car <says> \"Meow\" M&M's", result);
     }
 
     @Test
-    fun appCase() {
-        val testString = "Car &it;says&gt; &quot;Meow&quot; M&amp;M&apos;s"
-        val info = "введите закодированную строку:"
-        provideInput(testString)
-        main()
-        assertEquals(info + "Car <says> \"Meow\" M&M's", output.toString());
+    fun shouldDecodeQuote() {
+        val testString = "&quot;"
+        val result = htmlDecode(testString)
+        assertEquals("\"", result);
+    }
+
+    @Test
+    fun shouldDecodeApostrophe() {
+        val testString = "&apos;"
+        val result = htmlDecode(testString)
+        assertEquals("\'", result);
+    }
+
+    @Test
+    fun shouldDecodeGreaterSign() {
+        val testString = "&gt;"
+        val result = htmlDecode(testString)
+        assertEquals(">", result);
+    }
+
+    @Test
+    fun shouldDecodeAmpersand() {
+        val testString = "&amp;"
+        val result = htmlDecode(testString)
+        assertEquals("&", result);
+    }
+
+    @Test
+    fun shouldReturnTheSameString() {
+        val testString = ""
+        val result = htmlDecode(testString)
+        assertEquals("", result);
+    }
+
+    @Test
+    fun shouldReturnTheSameString2() {
+        val testString = "String"
+        val result = htmlDecode(testString)
+        assertEquals("String", result);
     }
 
 }
