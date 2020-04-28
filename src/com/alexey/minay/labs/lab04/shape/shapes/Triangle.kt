@@ -40,4 +40,9 @@ class Triangle(
         canvas.fillPolygon(mutableListOf(vertex1, vertex2, vertex3), fillColor)
     }
 
+    override fun toString(): String {
+        return "Triangle with vertex1 = $vertex1, vertex2 = $vertex2, " +
+                "vertex3 = $vertex3, fillColor = $fillColor, outlineColor = $outlineColor"
+    }
+
 }

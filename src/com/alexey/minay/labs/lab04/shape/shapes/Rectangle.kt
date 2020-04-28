@@ -30,6 +30,11 @@ class Rectangle(
 
     fun getHeight() = (leftTop.y - rightBottom.y).absoluteValue
 
+    override fun toString(): String {
+        return "Rectangle with leftTopPoint = $leftTop, " +
+                "rightBottomPoint = $rightBottom, fillColor = $fillColor, outlineColor = $outlineColor"
+    }
+
     override fun draw(canvas: ICanvas) {
         canvas.drawLine(rightTop, leftTop, outlineColor)
         canvas.drawLine(rightTop, rightBottom, outlineColor)

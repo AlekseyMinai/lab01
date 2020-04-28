@@ -17,7 +17,7 @@ class LineSegment(
     override fun getOutlineColor() = outlineColor
 
     override fun toString(): String {
-        return "Line Segment with start = $start and end = $end"
+        return "Line Segment with start = $start and end = $end and outline color = $outlineColor"
     }
 
     fun getStartPoint() = start
