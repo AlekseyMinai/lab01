@@ -6,12 +6,12 @@ import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.stage.Stage
 
-class ShapeApplication : Application() {
+class ShapeUIApplication : Application() {
 
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            launch(ShapeApplication::class.java)
+            launch(ShapeUIApplication::class.java)
         }
     }
 

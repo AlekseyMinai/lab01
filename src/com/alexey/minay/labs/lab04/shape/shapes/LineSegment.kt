@@ -12,7 +12,7 @@ class LineSegment(
 
     override fun getArea() = 0.0
 
-    override fun getPerimeter() = 0.0
+    override fun getPerimeter() = getLength()
 
     override fun getOutlineColor() = outlineColor
 
