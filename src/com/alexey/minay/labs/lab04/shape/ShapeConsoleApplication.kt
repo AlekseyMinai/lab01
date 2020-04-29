@@ -46,13 +46,13 @@ fun handleInput(input: String) {
 
 private fun parseRectangle(splittedInput: List<String>): Rectangle? {
     if (splittedInput.size != 7) {
-        println("Incorrect params. Example: \n $RECTANGLE_INPUT")
+        println("Incorrect params. Example: \n$RECTANGLE_INPUT")
         return null
     }
     val pointCoordinateList = splittedInput.subList(1, 5).toDouble()
     val listColors = splittedInput.subList(5, 7).toMyColor()
     if (pointCoordinateList.size != 4 || listColors.size != 2) {
-        println("Incorrect params. Example: \n $RECTANGLE_INPUT")
+        println("Incorrect params. Example: \n$RECTANGLE_INPUT")
         return null
     }
     return Rectangle(
@@ -65,13 +65,13 @@ private fun parseRectangle(splittedInput: List<String>): Rectangle? {
 
 fun parseTriangle(splittedInput: List<String>): Triangle? {
     if (splittedInput.size != 9) {
-        println("Incorrect params. Example: \n $TRIANGLE_INPUT")
+        println("Incorrect params. Example: \n$TRIANGLE_INPUT")
         return null
     }
     val pointCoordinateList = splittedInput.subList(1, 7).toDouble()
     val listColors = splittedInput.subList(7, 9).toMyColor()
     if (pointCoordinateList.size != 6 || listColors.size != 2) {
-        println("Incorrect params. Example: \n $TRIANGLE_INPUT")
+        println("Incorrect params. Example: \n$TRIANGLE_INPUT")
         return null
     }
     return Triangle(
@@ -85,13 +85,13 @@ fun parseTriangle(splittedInput: List<String>): Triangle? {
 
 fun parseCircle(splittedInput: List<String>): Circle? {
     if (splittedInput.size != 6) {
-        println("Incorrect params. Example: \n $CIRCLE_INPUT")
+        println("Incorrect params. Example:\n$CIRCLE_INPUT")
         return null
     }
     val pointCoordinateList = splittedInput.subList(1, 4).toDouble()
     val listColors = splittedInput.subList(4, 6).toMyColor()
     if (pointCoordinateList.size != 3 || listColors.size != 2) {
-        println("Incorrect params. Example: \n $CIRCLE_INPUT")
+        println("Incorrect params. Example:\n$CIRCLE_INPUT")
         return null
     }
     return Circle(
@@ -104,13 +104,13 @@ fun parseCircle(splittedInput: List<String>): Circle? {
 
 fun parseLine(splittedInput: List<String>): LineSegment? {
     if (splittedInput.size != 6) {
-        println("Incorrect params. Example: \n $LINE_INPUT")
+        println("Incorrect params. Example:\n$LINE_INPUT")
         return null
     }
     val pointCoordinateList = splittedInput.subList(1, 5).toDouble()
     val outlineColor = splittedInput[5].toMyColor()
     if (pointCoordinateList.size != 4 || outlineColor == null) {
-        println("Incorrect params. Example: \n $RECTANGLE_INPUT")
+        println("Incorrect params. Example:\n$RECTANGLE_INPUT")
         return null
     }
     return LineSegment(
@@ -132,11 +132,12 @@ private fun List<String>.toMyColor(): List<MyColor> =
 private fun String.toMyColor(): MyColor? =
         try {
             MyColor(
-                    red = Integer.parseInt(this.substring(0, 1), 16).dec() / FF,
-                    green = Integer.parseInt(this.substring(2, 3), 16).dec() / FF,
-                    blue = Integer.parseInt(this.substring(4, 5), 16).dec() / FF
+                    red = Integer.parseInt(this.substring(0, 2), 16) / FF,
+                    green = Integer.parseInt(this.substring(2, 4), 16) / FF,
+                    blue = Integer.parseInt(this.substring(4, 6), 16) / FF
             )
         } catch (e: Exception) {
+            println(e.message)
             null
         }
 
