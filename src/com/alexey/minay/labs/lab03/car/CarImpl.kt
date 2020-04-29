@@ -2,95 +2,95 @@ package com.alexey.minay.labs.lab03.car
 
 class CarImpl : Car {
 
-    private var isEngineStarted = false
-    private var movementState = MovementState.STAND
-    private var speed: Int = 0
-    private var gear: Int = 0
+    private var mIsEngineStarted = false
+    private var mMovementState = MovementState.STAND
+    private var mSpeed: Int = 0
+    private var mGear: Int = 0
 
     override fun turnOnEngine(): Boolean {
-        if (isEngineStarted) {
+        if (mIsEngineStarted) {
             return false
         }
-        isEngineStarted = true
+        mIsEngineStarted = true
         return true
     }
 
     override fun turnOffEngine(): Boolean {
-        if (movementState != MovementState.STAND || gear != 0 || !isEngineStarted) {
+        if (mMovementState != MovementState.STAND || mGear != 0 || !mIsEngineStarted) {
             return false
         }
-        isEngineStarted = false
+        mIsEngineStarted = false
         return true
     }
 
     override fun setGear(newGear: Int): Boolean {
-        if (newGear < -1 || newGear > 5 || !isEngineStarted
-                || (movementState == MovementState.REVERS && speed != 0 && gear != 0)) {
+        if (newGear < -1 || newGear > 5 || !mIsEngineStarted
+                || (mMovementState == MovementState.REVERS && mSpeed != 0 && mGear != 0)) {
             return false
         }
         if (newGear == -1) {
-            if (speed != 0) {
+            if (mSpeed != 0) {
                 return false
             }
-            gear = newGear
+            mGear = newGear
             return true
         }
         if (newGear == 0) {
-            gear = newGear
+            mGear = newGear
             return true
         }
         val gearRange = GEAR_RANGES[newGear.toString()] ?: return false
-        if (speed !in gearRange) {
+        if (mSpeed !in gearRange) {
             return false
         }
-        gear = newGear
+        mGear = newGear
         return true
     }
 
     override fun setSpeed(newSpeed: Int): Boolean {
-        if (!isEngineStarted || speed < 0 || speed > 150) {
+        if (!mIsEngineStarted || mSpeed < 0 || mSpeed > 150) {
             return false
         }
-        if (gear == -1) {
-            val gearRange = GEAR_RANGES[gear.toString()] ?: return false
+        if (mGear == -1) {
+            val gearRange = GEAR_RANGES[mGear.toString()] ?: return false
             if (newSpeed !in gearRange) {
                 return false
             }
             if (newSpeed != 0) {
-                movementState = MovementState.REVERS
+                mMovementState = MovementState.REVERS
             }
-            speed = newSpeed
+            mSpeed = newSpeed
             return true
         }
-        if (gear == 0) {
-            return if (newSpeed > speed) {
+        if (mGear == 0) {
+            return if (newSpeed > mSpeed) {
                 false
             } else {
-                speed = newSpeed
+                mSpeed = newSpeed
                 true
             }
         }
-        val gearRange = GEAR_RANGES[gear.toString()] ?: return false
+        val gearRange = GEAR_RANGES[mGear.toString()] ?: return false
         if (newSpeed !in gearRange) {
             return false
         }
         if (newSpeed == 0) {
-            speed = newSpeed
-            movementState = MovementState.STAND
+            mSpeed = newSpeed
+            mMovementState = MovementState.STAND
             return true
         }
-        speed = newSpeed
-        movementState = MovementState.FORWARD
+        mSpeed = newSpeed
+        mMovementState = MovementState.FORWARD
         return true
     }
 
-    override fun isEngineStarted() = isEngineStarted
+    override fun isEngineStarted() = mIsEngineStarted
 
-    override fun getMovementState() = movementState.value
+    override fun getMovementState() = mMovementState.value
 
-    override fun getSpeed() = speed
+    override fun getSpeed() = mSpeed
 
-    override fun getGear() = gear
+    override fun getGear() = mGear
 
     enum class MovementState(val value: String) {
         FORWARD("движется вперед"),
