@@ -28,7 +28,7 @@ data class Rational(
                 denominator = -denominator
             }
         }
-        return Pair(intNum, this)
+        return intNum to this
     }
 
     override fun toDouble() = (numeration / denominator).toDouble()
