@@ -2,29 +2,29 @@ package com.alexey.minay.labs.lab05.string
 
 import java.util.*
 
-class MyString() {
+class MyString {
 
     private var chars: Array<Char> = arrayOf()
 
-    constructor(chars: Array<Char>) : this() {
+    constructor(chars: Array<Char>) {
         this.chars = chars
     }
 
-    constructor(char: Char) : this() {
+    constructor(char: Char) {
         chars = arrayOf(char)
     }
 
-    constructor(any: Any) : this() {
+    constructor(any: Any) {
         val stringFromAny = any.toString()
-        chars = Array(stringFromAny.length){ stringFromAny[it] }
+        chars = Array(stringFromAny.length) { stringFromAny[it] }
     }
 
-    constructor(myString: MyString) : this() {
+    constructor(myString: MyString) {
         this.chars = myString.chars
     }
 
-    constructor(myString: String) : this() {
-        this.chars = Array(myString.length){ myString[it] }
+    constructor(myString: String) {
+        this.chars = Array(myString.length) { myString[it] }
     }
 
     fun getLength() = chars.size
@@ -39,7 +39,7 @@ class MyString() {
         return MyString(Array(newArrayLength) { chars[it + start] })
     }
 
-    fun clear(){
+    fun clear() {
         chars = arrayOf()
     }
 
@@ -66,6 +66,32 @@ class MyString() {
 
     operator fun compareTo(myString2: MyString) = chars.toString().compareTo(myString2.toString())
 
+    fun begin() = MyStringIterator(-1)
 
+    fun end() = MyStringIterator(chars.size)
+
+    inner class MyStringIterator(
+            private var cursor: Int
+    ) : ListIterator<Char> {
+
+        override fun hasPrevious() = cursor > 0
+
+        override fun nextIndex() = cursor + 1
+
+        override fun previous(): Char {
+            cursor--
+            return chars[cursor]
+        }
+
+        override fun previousIndex() = cursor - 1
+
+        override fun hasNext() = cursor < chars.lastIndex
+
+        override fun next(): Char {
+            cursor++
+            return chars[cursor]
+        }
+
+    }
 
 }

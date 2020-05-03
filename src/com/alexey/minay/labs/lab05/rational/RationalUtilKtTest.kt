@@ -1,6 +1,7 @@
 package com.alexey.minay.labs.lab05.rational
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
 
 class RationalUtilKtTest{

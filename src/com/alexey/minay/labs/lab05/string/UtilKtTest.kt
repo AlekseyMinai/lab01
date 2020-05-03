@@ -1,24 +1,13 @@
 package com.alexey.minay.labs.lab05.string
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
 
-class UtilKtTest{
+class UtilKtTest {
 
     @Test
-    fun shouldAttachTheSameType(){
-        val myString = MyString("myString")
-        assertEquals(myString, MyString(myString))
-    }
-
-    @Test
-    fun shouldAttachAnotherType(){
-        val myString = MyString(1)
-        assertEquals("1", myString.toString())
-    }
-
-    @Test
-    fun shouldConcatenateMyStringWithMyString(){
+    fun shouldConcatenateMyStringWithMyString() {
         val myString1 = MyString("my")
         val myString2 = MyString("String")
         val result = myString1 + myString2
@@ -26,7 +15,7 @@ class UtilKtTest{
     }
 
     @Test
-    fun shouldConcatenateMyStringWithString(){
+    fun shouldConcatenateMyStringWithString() {
         val myString = MyString("my")
         val string = "String"
         val result = myString + string
@@ -34,7 +23,7 @@ class UtilKtTest{
     }
 
     @Test
-    fun shouldConcatenateCharWithMyString(){
+    fun shouldConcatenateCharWithMyString() {
         val char = 'm'
         val myString = MyString("yString")
         val result = char + myString
@@ -42,7 +31,7 @@ class UtilKtTest{
     }
 
     @Test
-    fun shouldConcatenateWithAttach(){
+    fun shouldConcatenateWithAttach() {
         var myString1 = MyString("my")
         val myString2 = MyString("String")
         myString1 += myString2
@@ -50,55 +39,55 @@ class UtilKtTest{
     }
 
     @Test
-    fun shouldEquals(){
+    fun shouldEquals() {
         val myString1 = MyString("String")
         val myString2 = MyString("String")
         assert(myString1 == myString2)
     }
 
     @Test
-    fun shouldNotEquals(){
+    fun shouldNotEquals() {
         val myString1 = MyString("my")
         val myString2 = MyString("String")
         assert(myString1 != myString2)
     }
 
     @Test
-    fun shouldCompareAlphabetically1(){
+    fun shouldCompareAlphabetically1() {
         val myString1 = MyString("my")
         val myString2 = MyString("String")
         assert(myString1 > myString2)
     }
 
     @Test
-    fun shouldCompareAlphabetically2(){
+    fun shouldCompareAlphabetically2() {
         val myString1 = MyString("my")
         val myString2 = MyString("String")
         assertFalse(myString1 < myString2)
     }
 
     @Test
-    fun shouldCompareAlphabetically3(){
+    fun shouldCompareAlphabetically3() {
         val myString1 = MyString("my")
         val myString2 = MyString("String")
         assertFalse(myString1 <= myString2)
     }
 
     @Test
-    fun shouldCompareAlphabetically4(){
+    fun shouldCompareAlphabetically4() {
         val myString1 = MyString("my")
         val myString2 = MyString("String")
         assert(myString1 >= myString2)
     }
 
     @Test
-    fun shouldGetByIndex(){
+    fun shouldGetByIndex() {
         val myString = MyString("my")
         assertEquals('y', myString[1])
     }
 
     @Test
-    fun shouldSetByIndex(){
+    fun shouldSetByIndex() {
         val myString = MyString("my")
         myString[1] = 'm'
         assertEquals('m', myString[1])
