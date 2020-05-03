@@ -10,17 +10,17 @@ fun main(args: Array<String>) {
     print(e)
 }
 
-private operator fun MyString.plus(myString: MyString) = MyString(getStringData() + myString.getStringData())
+operator fun MyString.plus(myString: MyString) = MyString(getStringData() + myString.getStringData())
 
-private operator fun MyString.plus(string: String) = MyString(this.toString() + string)
+operator fun MyString.plus(string: String) = MyString(this.toString() + string)
 
-private operator fun Char.plus(myString: MyString) = MyString(addCharToStart(myString, this))
+operator fun Char.plus(myString: MyString) = MyString(addCharToStart(myString, this))
 
-private operator fun MyString.plus(char: Char) = MyString(addCharToEnd(this, char))
+operator fun MyString.plus(char: Char) = MyString(addCharToEnd(this, char))
 
-private operator fun MyString.get(position: Int) = getStringData()[position]
+operator fun MyString.get(position: Int) = getStringData()[position]
 
-private operator fun MyString.set(position: Int, value: Char){
+operator fun MyString.set(position: Int, value: Char){
     getStringData()[position] = value
 }
 

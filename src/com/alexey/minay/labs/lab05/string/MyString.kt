@@ -14,6 +14,11 @@ class MyString() {
         chars = arrayOf(char)
     }
 
+    constructor(any: Any) : this() {
+        val stringFromAny = any.toString()
+        chars = Array(stringFromAny.length){ stringFromAny[it] }
+    }
+
     constructor(myString: MyString) : this() {
         this.chars = myString.chars
     }
@@ -32,6 +37,10 @@ class MyString() {
             newArrayLength = chars.size - start
         }
         return MyString(Array(newArrayLength) { chars[it + start] })
+    }
+
+    fun clear(){
+        chars = arrayOf()
     }
 
     override fun toString(): String {
@@ -54,6 +63,9 @@ class MyString() {
     override fun hashCode(): Int {
         return Arrays.hashCode(chars)
     }
+
+    operator fun compareTo(myString2: MyString) = chars.toString().compareTo(myString2.toString())
+
 
 
 }

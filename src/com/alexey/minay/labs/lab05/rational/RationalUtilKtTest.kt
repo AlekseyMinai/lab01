@@ -40,7 +40,7 @@ class RationalUtilKtTest{
     }
 
     @Test
-    fun `should support +=`(){
+    fun `should support '+='`(){
         var rational1 = Rational(-9, 2)
         val rational2 = Rational(1, 4)
         rational1 += rational2
@@ -49,7 +49,7 @@ class RationalUtilKtTest{
     }
 
     @Test
-    fun `should support -=`(){
+    fun `should support '-='`(){
         var rational1 = Rational(-9, 2)
         val rational2 = Rational(1, 4)
         rational1 -= rational2
