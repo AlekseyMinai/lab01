@@ -93,7 +93,7 @@ class MyArrayTest {
     }
 
     @Test
-    fun shouldAddIntoCurrentPosition2() {
+    fun shouldAddIntoCurrentPositionTwoNumbers() {
         mMyArray.add(0.0)
         mMyArray.add(1.0)
         mMyArray.add(2.0)
@@ -112,7 +112,7 @@ class MyArrayTest {
     }
 
     @Test
-    fun shouldRemoveIntoCurrentPosition2() {
+    fun shouldRemoveIntoCurrentPosition() {
         mMyArray.add(0.0)
         mMyArray.add(1.0)
         mMyArray.add(2.0)
