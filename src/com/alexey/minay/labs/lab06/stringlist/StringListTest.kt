@@ -21,6 +21,19 @@ class StringListTest{
     }
 
     @Test
+    fun shouldAddFirstElement(){
+        val element1 = "element1"
+        val element2 = "element2"
+        mStringList.add(element1)
+        mStringList.add(element2)
+        val firstElement = "first"
+        mStringList.addFirst(firstElement)
+        val iterator = mStringList.iterator()
+        assertEquals(firstElement, iterator.next())
+        assertEquals(element1, iterator.next())
+    }
+
+    @Test
     fun shouldAddTwoElements(){
         val element1 = "element1"
         val element2 = "element2"
@@ -77,7 +90,7 @@ class StringListTest{
     }
 
     @Test
-    fun shouldRemoveCurrent(){
+    fun shouldRemoveFirstElement(){
         val element1 = "element1"
         val element2 = "element2"
         mStringList.add(element1)
@@ -89,7 +102,7 @@ class StringListTest{
     }
 
     @Test
-    fun shouldRemoveCurrent2(){
+    fun shouldRemoveSecondElement(){
         val element1 = "element1"
         val element2 = "element2"
         val element3 = "element3"
@@ -105,7 +118,7 @@ class StringListTest{
     }
 
     @Test
-    fun shouldSet(){
+    fun shouldSetNewValue(){
         val element1 = "element1"
         val element2 = "element2"
         val element3 = "element3"

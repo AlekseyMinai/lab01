@@ -4,7 +4,6 @@ class StringList : MutableIterable<String> {
 
     private var mRoot: Node? = null
     private var mLast: Node? = null
-    private var mNext: Node? = null
 
     private var mSize: Int = 0
 
@@ -12,13 +11,21 @@ class StringList : MutableIterable<String> {
         if (mSize == 0) {
             mRoot = Node(element, null, null)
             mLast = mRoot
-            mNext = mRoot
             mSize++
             return
         }
         mLast?.next = Node(element, null, mLast)
         mLast = mLast?.next
         mSize++
+    }
+
+    fun addFirst(element: String) {
+        val oldRoot = mRoot
+        mRoot = Node(element, oldRoot, null)
+        oldRoot?.previous = mRoot
+        mSize++
+        return
+
     }
 
     fun size() = mSize
@@ -32,7 +39,6 @@ class StringList : MutableIterable<String> {
     fun clear() {
         mRoot = null
         mLast = null
-        mNext = null
         mSize = 0
     }
 
@@ -44,7 +50,7 @@ class StringList : MutableIterable<String> {
 
     override fun iterator() = StringListIterator()
 
-    class Node(
+    private class Node(
             var value: String,
             var next: Node?,
             var previous: Node?
@@ -62,7 +68,7 @@ class StringList : MutableIterable<String> {
         }
 
         override fun remove() {
-            if(mCursor == null){
+            if (mCursor == null) {
                 mRoot = mRoot?.next
                 mRoot?.previous = null
                 mSize--
