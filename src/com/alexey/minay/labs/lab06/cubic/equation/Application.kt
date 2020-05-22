@@ -42,9 +42,8 @@ fun String?.toDoubleOrNull(): Double? {
 }
 
 fun solve3(a: Double, b: Double, c: Double, d: Double): CubicEquation.Roots {
-    val hasZeroArgs = a == 0.0 || b == 0.0 || c == 0.0 || d == 0.0
-    if (hasZeroArgs) {
-        throw IllegalArgumentException("Arguments cannot be equals 0")
+    if (a == 0.0) {
+        throw IllegalArgumentException("The first argument cannot be equals 0")
     }
     return CubicEquation(a, b, c, d).getRoots()
 }
