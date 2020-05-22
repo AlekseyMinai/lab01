@@ -53,28 +53,28 @@ class UtilKtTest {
     }
 
     @Test
-    fun shouldCompareAlphabetically1() {
+    fun shouldFirstStringIsMoreThenSecond() {
         val myString1 = MyString("my")
         val myString2 = MyString("String")
         assert(myString1 > myString2)
     }
 
     @Test
-    fun shouldCompareAlphabetically2() {
+    fun shouldFirstStringIsLessThenSecond() {
         val myString1 = MyString("my")
         val myString2 = MyString("String")
         assertFalse(myString1 < myString2)
     }
 
     @Test
-    fun shouldCompareAlphabetically3() {
+    fun shouldFirstStringIsMoreOrEqualsThenSecond() {
         val myString1 = MyString("my")
         val myString2 = MyString("String")
         assertFalse(myString1 <= myString2)
     }
 
     @Test
-    fun shouldCompareAlphabetically4() {
+    fun shouldFirstStringIsLessOrEqualsThenSecond() {
         val myString1 = MyString("my")
         val myString2 = MyString("String")
         assert(myString1 >= myString2)

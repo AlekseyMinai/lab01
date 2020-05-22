@@ -2,50 +2,50 @@ package com.alexey.minay.labs.lab05.string
 
 import java.util.*
 
-class MyString {
+class MyString: Iterable<Char>{
 
-    private var chars: Array<Char> = arrayOf()
+    private var mChars: Array<Char> = arrayOf()
 
     constructor(chars: Array<Char>) {
-        this.chars = chars
+        this.mChars = chars
     }
 
     constructor(char: Char) {
-        chars = arrayOf(char)
+        mChars = arrayOf(char)
     }
 
     constructor(any: Any) {
         val stringFromAny = any.toString()
-        chars = Array(stringFromAny.length) { stringFromAny[it] }
+        mChars = Array(stringFromAny.length) { stringFromAny[it] }
     }
 
     constructor(myString: MyString) {
-        this.chars = myString.chars
+        this.mChars = myString.mChars
     }
 
     constructor(myString: String) {
-        this.chars = Array(myString.length) { myString[it] }
+        this.mChars = Array(myString.length) { myString[it] }
     }
 
-    fun getLength() = chars.size
+    fun getLength() = mChars.size
 
-    fun getStringData() = chars
+    fun getStringData() = mChars
 
     fun subString(start: Int, length: Int): MyString {
         var newArrayLength = length
-        if (length > chars.size - start) {
-            newArrayLength = chars.size - start
+        if (length > mChars.size - start) {
+            newArrayLength = mChars.size - start
         }
-        return MyString(Array(newArrayLength) { chars[it + start] })
+        return MyString(Array(newArrayLength) { mChars[it + start] })
     }
 
     fun clear() {
-        chars = arrayOf()
+        mChars = arrayOf()
     }
 
     override fun toString(): String {
         val builder = StringBuilder()
-        chars.forEach { builder.append(it) }
+        mChars.forEach { builder.append(it) }
         return builder.toString()
     }
 
@@ -55,22 +55,20 @@ class MyString {
 
         other as MyString
 
-        if (!Arrays.equals(chars, other.chars)) return false
+        if (!Arrays.equals(mChars, other.mChars)) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return Arrays.hashCode(chars)
+        return Arrays.hashCode(mChars)
     }
 
-    operator fun compareTo(myString2: MyString) = chars.toString().compareTo(myString2.toString())
+    operator fun compareTo(myString2: MyString) = mChars.toString().compareTo(myString2.toString())
 
-    fun begin() = MyStringIterator(-1)
+    override fun iterator(): Iterator<Char> = MyStringIterator(-1)
 
-    fun end() = MyStringIterator(chars.size)
-
-    inner class MyStringIterator(
+    private inner class MyStringIterator(
             private var cursor: Int
     ) : ListIterator<Char> {
 
@@ -80,16 +78,16 @@ class MyString {
 
         override fun previous(): Char {
             cursor--
-            return chars[cursor]
+            return mChars[cursor]
         }
 
         override fun previousIndex() = cursor - 1
 
-        override fun hasNext() = cursor < chars.lastIndex
+        override fun hasNext() = cursor < mChars.lastIndex
 
         override fun next(): Char {
             cursor++
-            return chars[cursor]
+            return mChars[cursor]
         }
 
     }

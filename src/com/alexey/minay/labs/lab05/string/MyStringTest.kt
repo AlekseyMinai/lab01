@@ -31,17 +31,10 @@ class MyStringTest {
     }
 
     @Test
-    fun shouldReturnBeginIterator() {
+    fun shouldReturnIterator() {
         val myString = MyString("myString")
-        val beginIterator = myString.begin()
+        val beginIterator = myString.iterator()
         assertEquals('m', beginIterator.next())
-    }
-
-    @Test
-    fun shouldReturnEndIterator() {
-        val myString = MyString("myString")
-        val endIterator = myString.end()
-        assertEquals('g', endIterator.previous())
     }
 
 }
