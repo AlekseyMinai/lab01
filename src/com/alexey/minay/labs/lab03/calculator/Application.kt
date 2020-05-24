@@ -11,7 +11,7 @@ fun main() {
         val input = readLine()
         val splittedInput = input?.split(" ")
 
-        if (splittedInput == null || splittedInput.isEmpty()) {
+        if (input.isNullOrEmpty() || splittedInput == null || splittedInput.isEmpty()) {
             println("Некорректный ввод")
             continue
         }
@@ -19,6 +19,10 @@ fun main() {
         val identifier = if (splittedInput.size == 2) splittedInput[1] else ""
         val splittedIdentifier = identifier.split("=")
         val variable = splittedIdentifier[0]
+        if (!variable[0].isLetter()) {
+            println("Идентификатор не должен начинаться с цифры")
+            continue
+        }
         val value = if (splittedIdentifier.size == 2) {
             splittedIdentifier[1]
         } else {

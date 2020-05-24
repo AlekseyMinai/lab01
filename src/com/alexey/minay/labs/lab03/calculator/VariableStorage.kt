@@ -9,32 +9,32 @@ class VariableStorage {
     var functions = mutableMapOf<String, Function>()
         private set
 
-    fun `var`(variableName: String) {
-        if (variableName.isNullOrEmpty()) {
+    fun `var`(identifier: String) {
+        if (identifier.isNullOrEmpty()) {
             return
         }
-        variables[variableName] = Double.NaN
+        variables[identifier] = Double.NaN
     }
 
-    fun let(variableName: String, variable: String) {
+    fun let(identifier: String, variable: String) {
         try {
             val doubleValue = variable.toDouble()
-            variables[variableName] = doubleValue
+            variables[identifier] = doubleValue
             return
         } catch (e: Exception) {
-            variables[variableName] = variables[variable] ?: Double.NaN
+            variables[identifier] = variables[variable] ?: Double.NaN
         }
     }
 
-    fun fn(functionName: String, functionOrNameFunction: String) {
-        when (val parsedFunction = FunctionParser.parse(functionOrNameFunction)) {
+    fun fn(identifier: String, expressionOrIdentifier: String) {
+        when (val parsedFunction = FunctionParser.parse(expressionOrIdentifier)) {
             is ParserState.IncorrectFunction -> {
-                if (functions[functionOrNameFunction] != null) {
-                    functions[functionName] = functions[functionOrNameFunction]!!
+                if (functions[expressionOrIdentifier] != null) {
+                    functions[identifier] = functions[expressionOrIdentifier]!!
+                    return
                 }
-
             }
-            is ParserState.Success -> functions[functionName] = parsedFunction.function
+            is ParserState.Success -> functions[identifier] = parsedFunction.function
         }
     }
 
