@@ -2,22 +2,11 @@ package com.alexey.minay.labs.lab03.calculator.tests
 
 import com.alexey.minay.labs.lab03.calculator.VariableStorage
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Test
-import java.lang.StringBuilder
 
 class VariableStorageTest {
 
-    private var fromDisplay = mutableListOf<String>()
-
-    private val mockDisplay: (s: String) -> Unit = { fromDisplay.add(it) }
-
-    private val variableStorage = VariableStorage(mockDisplay)
-
-    @Before
-    fun clearDisplaying(){
-        fromDisplay .clear()
-    }
+    private val variableStorage = VariableStorage()
 
     @Test
     fun shouldAddVariable() {
@@ -85,63 +74,4 @@ class VariableStorageTest {
         assertFalse(variableStorage.functions.containsKey(functionName))
     }
 
-    @Test
-    fun shouldPrintVariable() {
-        val variable = "x"
-        val value = "5"
-        variableStorage.let(variable, value)
-        variableStorage.print(variable)
-        assertEquals("5.0\n", fromDisplay.toStringPresentation())
-    }
-
-    @Test
-    fun shouldPrintVariables() {
-        val variable1 = "x1"
-        val value1 = "5"
-        val variable2 = "x2"
-        val value2 = "7"
-        variableStorage.let(variable1, value1)
-        variableStorage.let(variable2, value2)
-        variableStorage.printVars()
-        assertEquals("x1: 5.0 \nx2: 7.0 \n", fromDisplay.toStringPresentation())
-    }
-
-    @Test
-    fun shouldPrintFunction() {
-        val variable1 = "x"
-        val value1 = "5"
-        val variable2 = "y"
-        val value2 = "7"
-        variableStorage.let(variable1, value1)
-        variableStorage.let(variable2, value2)
-        val functionName = "f"
-        val function = "x*y"
-        variableStorage.fn(functionName, function)
-        variableStorage.print(functionName)
-        assertEquals("35.0\n", fromDisplay.toStringPresentation())
-    }
-
-    @Test
-    fun shouldPrintFunctions() {
-        val variable1 = "x"
-        val value1 = "5"
-        val variable2 = "y"
-        val value2 = "7"
-        variableStorage.let(variable1, value1)
-        variableStorage.let(variable2, value2)
-        val functionName1 = "f1"
-        val function1 = "x*y"
-        val functionName2 = "f2"
-        val function2 = "f1*y"
-        variableStorage.fn(functionName1, function1)
-        variableStorage.fn(functionName2, function2)
-        variableStorage.printFns()
-        assertEquals("f1: 35.0 \nf2: 245.0 \n", fromDisplay.toStringPresentation())
-    }
-
-    private fun List<String>.toStringPresentation(): String{
-        val stringBuilder = StringBuilder()
-        this.forEach { stringBuilder.append(it) }
-        return stringBuilder.toString()
-    }
 }

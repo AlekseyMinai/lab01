@@ -4,7 +4,7 @@ import com.alexey.minay.labs.lab04.shape.canvas.ICanvas
 import com.alexey.minay.labs.lab04.shape.shapes.MyColor
 import com.alexey.minay.labs.lab04.shape.shapes.Point
 import com.alexey.minay.labs.lab04.shape.shapes.Rectangle
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert
 import org.junit.Test
 

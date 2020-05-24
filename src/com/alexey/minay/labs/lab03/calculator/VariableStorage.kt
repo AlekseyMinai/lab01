@@ -2,12 +2,12 @@ package com.alexey.minay.labs.lab03.calculator
 
 import kotlin.math.round
 
-class VariableStorage(
-        private val display: (s: String) -> Unit
-) {
+class VariableStorage {
 
-    val variables = mutableMapOf<String, Double>()
-    val functions = mutableMapOf<String, Function>()
+    var variables = mutableMapOf<String, Double>()
+        private set
+    var functions = mutableMapOf<String, Function>()
+        private set
 
     fun `var`(variableName: String) {
         if (variableName.isNullOrEmpty()) {
@@ -38,23 +38,7 @@ class VariableStorage(
         }
     }
 
-    fun print(key: String) {
-        display(getResult(key) + "\n")
-    }
-
-    fun printVars() {
-        variables.forEach {
-            display("${it.key}: ${it.value} \n")
-        }
-    }
-
-    fun printFns() {
-        functions.forEach {
-            display("${it.key}: ${getResult(it.key)} \n")
-        }
-    }
-
-    private fun getResult(key: String): String {
+    internal fun getResult(key: String): String {
         if (variables[key] != null) {
             return variables[key]?.roundTo2Char().toString()
         }
