@@ -1,11 +1,24 @@
 package com.alexey.minay.labs.lab02.generator04
 
+import java.lang.NumberFormatException
 import java.lang.StrictMath.sqrt
 import java.util.*
 
 fun main() {
-    val primeMembersSet = generatePrimeMembersSet(100_000_000)
-    print(primeMembersSet.size)
+    println("Введите значение upperBound")
+    val userInput = readLine()
+    val isNumber = userInput?.matches("""[0-9]+""".toRegex()) ?: return
+    if (!isNumber) {
+        println("$userInput не является числом")
+        return
+    }
+    try {
+        val primeMembersSet = generatePrimeMembersSet(userInput.toInt())
+        print(primeMembersSet.size)
+    } catch (e: NumberFormatException){
+        print("$e. Слишком большое число")
+    }
+
 }
 
 fun generatePrimeMembersSet(upperBound: Int): Set<Int> {
@@ -20,7 +33,7 @@ fun generatePrimeMembersSet(upperBound: Int): Set<Int> {
 
 private fun markPrimeNumberIn(numbBitSet: BitSet, upperBound: Int) {
     val before = sqrt(upperBound.toDouble()).toInt()
-    for (i in 0 until before) {
+    for (i in 0..before) {
         if (i < 2) {
             numbBitSet.set(i)
         }
