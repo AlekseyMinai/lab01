@@ -41,7 +41,7 @@ fun parseUrl(url: String,
     }
     protocolRef.invoke(protocol)
 
-    if (!parsePort(protocol, portRef, splittedUrl)) {
+    if (!parsePort(protocol, portRef, splittedUrl[4])) {
         return false
     }
 
@@ -50,8 +50,8 @@ fun parseUrl(url: String,
     return true
 }
 
-fun parsePort(protocol: Protocol, portRef: (Int) -> Unit, splittedUrl: List<String>?): Boolean {
-    var portStr = splittedUrl?.get(4)
+fun parsePort(protocol: Protocol, portRef: (Int) -> Unit, port: String?): Boolean {
+    var portStr = port
     if (portStr.isNullOrBlank()) {
         portStr = when (protocol) {
             Protocol.FTP -> "21"
@@ -61,11 +61,11 @@ fun parsePort(protocol: Protocol, portRef: (Int) -> Unit, splittedUrl: List<Stri
         }
     }
     return try {
-        val port = portStr.removePrefix(":").toInt()
-        if (port !in 1..65535) {
+        val portInt = portStr.removePrefix(":").toInt()
+        if (portInt !in 1..65535) {
             return false
         }
-        portRef.invoke(port)
+        portRef.invoke(portInt)
         true
     } catch (e: Exception) {
         false

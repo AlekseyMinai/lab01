@@ -1,7 +1,8 @@
 package com.alexey.minay.labs.lab02.parser05
 
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
-import org.junit.Assert.*
 
 class ApplicationKtTest {
 
@@ -34,17 +35,52 @@ class ApplicationKtTest {
     }
 
     @Test
-    fun shouldNotHandleIncorrectPort1() {
+    fun shouldNotHandleIncorrectPortIfPortMoreThenAvailable() {
         val url = "https://www.123.com:655366/doc"
         val result = parseUrl(url, protocolRef, portRef, hostRef, documentRef)
         assertFalse(result)
     }
 
     @Test
-    fun shouldNotHandleIncorrectPort2() {
+    fun shouldNotHandleIncorrectPortLessThenAvailable() {
         val url = "https://www.123.com:0/doc"
         val result = parseUrl(url, protocolRef, portRef, hostRef, documentRef)
         assertFalse(result)
+    }
+
+    @Test
+    fun shouldNotValidIncorrectProtocol() {
+        val url = "smtp://www.123.com:32/doc"
+        val result = parseUrl(url, protocolRef, portRef, hostRef, documentRef)
+        assertFalse(result)
+    }
+
+    @Test
+    fun shouldNotHandleEmptyHost() {
+        val url = "http:// /doc"
+        val result = parseUrl(url, protocolRef, portRef, hostRef, documentRef)
+        assertFalse(result)
+    }
+
+    @Test
+    fun shouldSetStandardPortForHttpsIfNotSpecified() {
+        val url = "https://www.123.com/doc"
+        parseUrl(url, protocolRef, portRef, hostRef, documentRef)
+        assertEquals(443, port)
+    }
+
+    @Test
+    fun shouldSetStandardPortForHttpIfNotSpecified() {
+        val url = "http://www.123.com/doc"
+        parseUrl(url, protocolRef, portRef, hostRef, documentRef)
+        assertEquals(80, port)
+    }
+
+    @Test
+    fun shouldSetStandardPortForFTPIfNotSpecified() {
+        val url = "ftp://www.123.com/doc"
+        parseUrl(url, protocolRef, portRef, hostRef, documentRef)
+        assertEquals(21, port)
     }
 
 }
