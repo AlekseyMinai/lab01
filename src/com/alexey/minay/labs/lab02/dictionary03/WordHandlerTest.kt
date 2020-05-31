@@ -15,7 +15,7 @@ class WordHandlerTest {
     private var mockInput: String = ""
 
     @Test
-    fun shouldPrintTranslateCatIntoRussia() {
+    fun shouldPrintTranslateCat() {
         val dictionary = getMockDictionary()
         wordHandler.handle("cat", dictionary)
         assertEquals("Перевод: кошка ", mockOutput)

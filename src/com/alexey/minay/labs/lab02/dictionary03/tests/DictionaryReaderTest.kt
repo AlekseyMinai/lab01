@@ -27,13 +27,13 @@ class DictionaryReaderTest {
 
     @Test(expected = RuntimeException::class)
     fun shouldThrowExceptionIfFileHasIncorrectData(){
-        dictionaryReader = DictionaryReader(getMockIncorrectContentsFile(), { }, { "" })
+        dictionaryReader = DictionaryReader(getMockIncorrectContentsFile())
         dictionaryReader.readDictionary()
     }
 
     @Before
     fun setUpDictionaryProvider() {
-        dictionaryReader = DictionaryReader(getMockDictionaryFilePath(), { }, { "" })
+        dictionaryReader = DictionaryReader(getMockDictionaryFilePath())
     }
 
     @After

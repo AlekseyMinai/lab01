@@ -24,7 +24,7 @@ class DictionaryWriterTest {
     }
 
     @Test
-    fun shouldNotSaveNewWord() {
+    fun shouldNotSaveNewWordIfUserRefused() {
         val newWords = mapOf(Pair("cup", "чашка"))
         mockInput = "n"
         dictionaryWriter.close(newWords)
@@ -36,9 +36,7 @@ class DictionaryWriterTest {
     @Before
     fun setUpDictionaryProvider() {
         dictionaryWriter = DictionaryWriter(getMockDictionaryFilePath(), { mockOutput = it }, { mockInput })
-        dictionaryReader = DictionaryReader(getMockDictionaryFilePath(), { mockOutput = it }, { mockInput })
-        mockInput = ""
-        mockOutput = ""
+        dictionaryReader = DictionaryReader(getMockDictionaryFilePath())
     }
 
     @After

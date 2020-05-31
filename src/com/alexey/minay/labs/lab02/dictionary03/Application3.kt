@@ -8,7 +8,7 @@ fun main(args: Array<String>) {
         return
     }
     val url = args[0]
-    val dictionaryReader = DictionaryReader(url, ::println, ::readLine)
+    val dictionaryReader = DictionaryReader(url)
     val wordHandler = WordHandler(::println, ::readLine)
     val dictionaryWriter = DictionaryWriter(url, ::println, ::readLine)
 

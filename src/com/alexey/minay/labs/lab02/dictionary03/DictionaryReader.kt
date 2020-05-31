@@ -3,9 +3,7 @@ package com.alexey.minay.labs.lab02.dictionary03
 import java.io.File
 
 class DictionaryReader(
-        private val url: String,
-        private val output: (value: String) -> Unit,
-        private val input: () -> String?
+        private val url: String
 ) {
 
     fun readDictionary(): Map<String, String> {

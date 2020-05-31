@@ -14,7 +14,7 @@ fun main() {
     }
     try {
         val primeMembersSet = generatePrimeMembersSet(userInput.toInt())
-        print(primeMembersSet.size)
+        print(primeMembersSet)
     } catch (e: NumberFormatException){
         print("$e. Слишком большое число")
     }
